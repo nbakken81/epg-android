@@ -1,6 +1,6 @@
 package pt.mobiledev.tvalarmes.dao;
 
-import pt.mobiledev.tvalarmes.model.Program;
+import pt.mobiledev.tvalarmes.domain.Program;
 import pt.mobiledev.tvalarmes.util.Dates;
 import android.util.Log;
 import java.io.IOException;
