@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import pt.mobiledev.tvalarmes.R;
 
 public class ProgramsBaseAdapter extends BaseAdapter {
 
