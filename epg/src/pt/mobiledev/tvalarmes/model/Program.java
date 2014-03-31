@@ -1,4 +1,4 @@
-package pt.mobiledev.tvalarmes;
+package pt.mobiledev.tvalarmes.model;
 
 import java.util.Date;
 
