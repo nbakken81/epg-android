@@ -1,4 +1,4 @@
-package pt.mobiledev.tvalarmes.view;
+package pt.mobiledev.tvalarmes;
 
 import pt.mobiledev.tvalarmes.domain.Program;
 import java.util.ArrayList;
@@ -12,7 +12,6 @@ import android.os.StrictMode;
 import android.util.Log;
 import android.widget.ListView;
 import pt.mobiledev.tvalarmes.dao.EPGDao;
-import pt.mobiledev.tvalarmes.R;
 
 public class MainActivity extends Activity {
 

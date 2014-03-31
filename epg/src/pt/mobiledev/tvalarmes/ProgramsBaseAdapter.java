@@ -1,4 +1,6 @@
-package pt.mobiledev.tvalarmes.view;
+package pt.mobiledev.tvalarmes;
+
+
 
 import pt.mobiledev.tvalarmes.domain.Program;
 import java.util.ArrayList;
