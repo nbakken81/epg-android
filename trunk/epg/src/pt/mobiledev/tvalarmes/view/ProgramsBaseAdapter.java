@@ -1,8 +1,7 @@
 package pt.mobiledev.tvalarmes.view;
 
-import pt.mobiledev.tvalarmes.model.Program;
+import pt.mobiledev.tvalarmes.domain.Program;
 import java.util.ArrayList;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,7 +47,6 @@ public class ProgramsBaseAdapter extends BaseAdapter {
 //		}
         convertView = inflater.inflate(R.layout.layout_list_program, null);
         detail(convertView, R.id.tvTitle, programs.get(position).getTitle());
-
         return convertView;
     }
 
@@ -57,5 +55,4 @@ public class ProgramsBaseAdapter extends BaseAdapter {
         tv.setText(text);
         return tv;
     }
-
 }

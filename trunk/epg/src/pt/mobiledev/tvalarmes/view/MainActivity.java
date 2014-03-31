@@ -1,6 +1,6 @@
 package pt.mobiledev.tvalarmes.view;
 
-import pt.mobiledev.tvalarmes.model.Program;
+import pt.mobiledev.tvalarmes.domain.Program;
 import java.util.ArrayList;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
