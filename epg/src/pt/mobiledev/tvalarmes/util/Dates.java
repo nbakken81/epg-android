@@ -6,10 +6,7 @@ import java.util.Date;
 public class Dates {
 
     public static Date subtractDays(int days) {
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, -days);
-        Date startDate = cal.getTime();
-        return startDate;
+        return addDays(-days);
     }
 
     public static Date addDays(int days) {
