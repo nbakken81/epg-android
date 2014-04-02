@@ -15,6 +15,8 @@ import pt.mobiledev.tvalarmes.dao.EPGDao;
 
 public class MainActivity extends Activity {
 
+	/* Commited */
+	
     ListView lvPrograms;
     Context context = MainActivity.this;
 
