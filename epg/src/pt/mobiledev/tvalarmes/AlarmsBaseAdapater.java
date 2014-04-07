@@ -7,28 +7,29 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import java.util.ArrayList;
+import pt.mobiledev.tvalarmes.domain.Alarm;
 import pt.mobiledev.tvalarmes.domain.Program;
 
-public class ProgramsBaseAdapter extends BaseAdapter {
+public class AlarmsBaseAdapater extends BaseAdapter {
 
-    ArrayList<Program> programs = new ArrayList<Program>();
+    ArrayList<Alarm> alarms = new ArrayList<Alarm>();
     LayoutInflater inflater;
     Context context;
 
-    public ProgramsBaseAdapter(Context context, ArrayList<Program> programs) {
-        this.programs = programs;
+    public AlarmsBaseAdapater(Context context, ArrayList<Alarm> programs) {
+        this.alarms = programs;
         this.context = context;
         inflater = LayoutInflater.from(this.context);
     }
 
     @Override
     public int getCount() {
-        return programs.size();
+        return alarms.size();
     }
 
     @Override
     public Program getItem(int position) {
-        return programs.get(position);
+        return alarms.get(position);
     }
 
     @Override
@@ -44,8 +45,8 @@ public class ProgramsBaseAdapter extends BaseAdapter {
 //		} else {
 //			
 //		}
-        convertView = inflater.inflate(R.layout.layout_list_program, null);
-        detail(convertView, R.id.tvTitle, programs.get(position).getTitle());
+        convertView = inflater.inflate(R.layout.layout_list_alarm, null);
+        detail(convertView, R.id.tvTitle, alarms.get(position).getTitle());
         return convertView;
     }
 

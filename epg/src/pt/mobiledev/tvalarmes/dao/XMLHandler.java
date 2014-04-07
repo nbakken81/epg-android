@@ -1,11 +1,11 @@
 package pt.mobiledev.tvalarmes.dao;
 
-import pt.mobiledev.tvalarmes.domain.Program;
 import java.util.ArrayList;
-
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
+import pt.mobiledev.tvalarmes.domain.Channel;
+import pt.mobiledev.tvalarmes.domain.Program;
 
 public class XMLHandler extends DefaultHandler {
 
@@ -27,13 +27,10 @@ public class XMLHandler extends DefaultHandler {
     }
 
     @Override
-    public void endElement(String uri, String localName, String qName)
-            throws SAXException {
-
+    public void endElement(String uri, String localName, String qName) throws SAXException {
         current = false;
-
         if (localName.equals("Id")) {
-            program.setId(currentValue);
+            program.setId(Integer.valueOf(currentValue));
         } else if (localName.equals("Title")) {
             program.setTitle(currentValue);
         } else if (localName.equals("Description")) {
@@ -43,15 +40,14 @@ public class XMLHandler extends DefaultHandler {
         } else if (localName.equals("EndTime")) {
             /*program.setEndDate(currentValue);*/
         } else if (localName.equals("ChannelSigla")) {
-            program.setChannel(currentValue);
+            program.setChannel(new Channel(currentValue));
         } else if (localName.equals("Program")) {
             programs.add(program);
         }
     }
 
     @Override
-    public void characters(char[] ch, int start, int length)
-            throws SAXException {
+    public void characters(char[] ch, int start, int length) throws SAXException {
         if (current) {
             currentValue = new String(ch, start, length);
             current = false;
