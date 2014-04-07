@@ -4,15 +4,13 @@ import java.util.Date;
 
 public class Program {
 
-    private String id;
-    private String title;
-    private String description;
-    private Date startDate;
-    private Date endDate;
-    private String channel;
+    Integer id;
+    String title, description;
+    Date startDate, endDate;
+    Channel channel;
 
-    public Program(String id, String title, String description, Date startDate,
-            Date endDate, String channel) {
+    public Program(Integer id, String title, String description, Date startDate,
+            Date endDate, Channel channel) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -25,11 +23,11 @@ public class Program {
 
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String currentValue) {
+    public void setId(Integer currentValue) {
         this.id = currentValue;
     }
 
@@ -65,11 +63,11 @@ public class Program {
         this.endDate = endDate;
     }
 
-    public String getChannel() {
+    public Channel getChannel() {
         return channel;
     }
 
-    public void setChannel(String channel) {
+    public void setChannel(Channel channel) {
         this.channel = channel;
     }
 }

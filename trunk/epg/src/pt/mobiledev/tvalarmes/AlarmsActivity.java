@@ -1,7 +1,5 @@
 package pt.mobiledev.tvalarmes;
 
-import pt.mobiledev.tvalarmes.domain.Program;
-import java.util.ArrayList;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -9,16 +7,12 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.util.Log;
 import android.widget.ListView;
-import pt.mobiledev.tvalarmes.dao.EPGDao;
 
-public class MainActivity extends Activity {
+public class AlarmsActivity extends Activity {
 
-	/* Commited */
-	
     ListView lvPrograms;
-    Context context = MainActivity.this;
+    Context context = AlarmsActivity.this;
 
     static String TAG = "TVAlarmes";
 
@@ -27,18 +21,10 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_alarms);
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitAll().build());
         }
-
-        ArrayList<Program> programs = EPGDao.getPrograms("RTP2");
-
-        lvPrograms = (ListView) findViewById(R.id.lvPrograms);
-        lvPrograms.setAdapter(new ProgramsBaseAdapter(context, programs));
-
-        for (Program program : programs) {
-            Log.v(TAG, (program.getTitle()));
-        }
+        // exibe ecrã de notificações...
     }
 }
