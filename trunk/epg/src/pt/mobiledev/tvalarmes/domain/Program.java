@@ -12,8 +12,7 @@ public class Program {
     public Program() {
     }
 
-    public Program(Integer id, String title, String description, Date startDate,
-            Date endDate, Channel channel) {
+    public Program(Integer id, String title, String description, Date startDate, Date endDate, Channel channel) {
         this.id = id;
         this.title = title;
         this.description = description;
