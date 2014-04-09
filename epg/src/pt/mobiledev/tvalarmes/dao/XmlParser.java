@@ -23,14 +23,6 @@ public class XmlParser {
         parser.nextTag();
         return parser;
     }
-//
-//    public static void skipToTag(XmlPullParser parser, String tag) throws XmlPullParserException, IOException {
-//        while (parser.next() != END_TAG) {
-//            if (parser.getEventType() != START_TAG) {
-//                continue;
-//            }
-//        }
-//    }
 
     public static void skipTag(XmlPullParser parser) throws XmlPullParserException, IOException {
         if (parser.getEventType() != XmlPullParser.START_TAG) {
