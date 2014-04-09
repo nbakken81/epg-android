@@ -81,7 +81,7 @@ public class EPGDao {
     }
 
     static Channel readChannel(XmlPullParser parser) throws XmlPullParserException, IOException {
-        parser.require(START_TAG, null, "Channel");  // isto é um assert
+        parser.require(START_TAG, null, "Channel");  // isto é só um assert
         String name = null, sigla = null;
         while (parser.next() != END_TAG) {
             if (parser.getEventType() != START_TAG) {
