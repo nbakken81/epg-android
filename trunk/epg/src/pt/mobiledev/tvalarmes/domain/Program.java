@@ -84,4 +84,9 @@ public class Program {
     public void setEpisode(Integer episode) {
         this.episode = episode;
     }
+
+    @Override
+    public String toString() {
+        return getTitle() + "(" + getChannel() + ")";
+    }
 }

@@ -36,4 +36,9 @@ public class Channel {
     public void setLogoUrl(String logoUrl) {
         this.logoUrl = logoUrl;
     }
+
+    @Override
+    public String toString() {
+        return getName();
+    }
 }

@@ -4,8 +4,11 @@ import android.util.Log;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
@@ -19,11 +22,9 @@ import static org.xmlpull.v1.XmlPullParser.END_TAG;
 import static org.xmlpull.v1.XmlPullParser.START_TAG;
 import org.xmlpull.v1.XmlPullParserException;
 import static pt.mobiledev.tvalarmes.dao.XmlParser.getParser;
-import static pt.mobiledev.tvalarmes.dao.XmlParser.readTextElement;
-import static pt.mobiledev.tvalarmes.dao.XmlParser.skipTag;
+import static pt.mobiledev.tvalarmes.dao.XmlParser.readValuesAsMap;
 import pt.mobiledev.tvalarmes.domain.Channel;
 import pt.mobiledev.tvalarmes.domain.Program;
-import static pt.mobiledev.tvalarmes.util.API.formatDate;
 import pt.mobiledev.tvalarmes.util.Dates;
 
 public class EPGDao {
@@ -70,7 +71,9 @@ public class EPGDao {
                     continue;
                 }
                 if (parser.getName().equals("Channel")) {
-                    entries.add(readChannel(parser));
+                    // OK encontrou tag; controi canal!
+                    Map<String, String> channelAsMap = readValuesAsMap(parser, "Name", "Sigla");
+                    entries.add(new Channel(channelAsMap.get("Name"), channelAsMap.get("Sigla")));
                 }
             }
         } catch (IOException ex) {
@@ -81,22 +84,9 @@ public class EPGDao {
         return entries;
     }
 
-    static Channel readChannel(XmlPullParser parser) throws XmlPullParserException, IOException {
-        parser.require(START_TAG, null, "Channel");  // isto é só um assert
-        String name = null, sigla = null;
-        while (parser.next() != END_TAG) {
-            if (parser.getEventType() != START_TAG) {
-                continue;
-            }
-            String tagName = parser.getName();
-            if (tagName.equals("Name")) {
-                name = readTextElement(parser);
-            } else if (tagName.equals("Sigla")) {
-                sigla = readTextElement(parser);
-            } else {
-                skipTag(parser);
-            }
-        }
-        return new Channel(name, sigla);
+    public static String formatDate(Date date) {
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault());
+        String encondedDate = dateFormatter.format(date);
+        return encondedDate.replace(" ", "+").replace(":", "%3A");
     }
 }
