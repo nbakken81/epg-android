@@ -4,8 +4,8 @@ public class Channel {
 
     String name, id, logoUrl;
 
-    public Channel(String id) {
-        this.id = id;
+    public Channel(String sigla) {
+        this.id = sigla;
     }
 
     public Channel(String name, String sigla) {
