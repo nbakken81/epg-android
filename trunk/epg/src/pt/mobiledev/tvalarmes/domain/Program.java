@@ -9,6 +9,9 @@ public class Program {
     Date startDate, endDate;
     Channel channel;
 
+    public Program() {
+    }
+
     public Program(Integer id, String title, String description, Date startDate,
             Date endDate, Channel channel) {
         this.id = id;
@@ -17,10 +20,6 @@ public class Program {
         this.startDate = startDate;
         this.endDate = endDate;
         this.channel = channel;
-    }
-
-    public Program() {
-
     }
 
     public Integer getId() {
