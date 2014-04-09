@@ -9,8 +9,8 @@ public class Channel {
     }
 
     public Channel(String name, String sigla) {
+        this(sigla);
         this.name = name;
-        this.id = sigla;
     }
 
     public String getName() {
