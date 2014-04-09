@@ -1,12 +1,11 @@
 package pt.mobiledev.tvalarmes.dao;
 
 import android.util.Log;
-import android.util.Xml;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
@@ -16,7 +15,11 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xmlpull.v1.XmlPullParser;
+import static org.xmlpull.v1.XmlPullParser.END_TAG;
+import static org.xmlpull.v1.XmlPullParser.START_TAG;
 import org.xmlpull.v1.XmlPullParserException;
+import static pt.mobiledev.tvalarmes.dao.XmlParser.readTextElement;
+import static pt.mobiledev.tvalarmes.dao.XmlParser.skipElement;
 import pt.mobiledev.tvalarmes.domain.Channel;
 import pt.mobiledev.tvalarmes.domain.Program;
 import static pt.mobiledev.tvalarmes.util.API.formatDate;
@@ -59,14 +62,40 @@ public class EPGDao {
         return null;
     }
 
-    public static ArrayList<Channel> getChannels() throws IOException, XmlPullParserException {
-        InputStream in = new URL(BASE_URL + GET_CHANNELS_FUNCTION).openStream();
-        XmlPullParser parser = Xml.newPullParser();
-        parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
-        parser.setInput(in, null);
-        parser.nextTag();
-        in.close();
-        return null;
+    static List<Channel> getChannels() throws IOException, XmlPullParserException {
+        XmlPullParser parser = XmlParser.getParser(BASE_URL + GET_CHANNELS_FUNCTION, "GetChannelListResponse");
+        List<Channel> entries = new ArrayList<Channel>();
+        parser.require(START_TAG, null, "GetChannelListResponse");
+        while (parser.next() != END_TAG) {
+            if (parser.getEventType() != START_TAG) {
+                continue;
+            }
+            if (parser.getName().equals("Channel")) {
+                entries.add(readChannel(parser));
+            } else {
+                skipElement(parser);
+            }
+        }
+        return entries;
+    }
+
+    static Channel readChannel(XmlPullParser parser) throws XmlPullParserException, IOException {
+        parser.require(START_TAG, null, "Channel");
+        String name = null, sigla = null;
+        while (parser.next() != END_TAG) {
+            if (parser.getEventType() != START_TAG) {
+                continue;
+            }
+            String tagName = parser.getName();
+            if (tagName.equals("Name")) {
+                name = readTextElement(parser, "Name");
+            } else if (tagName.equals("Sigla")) {
+                sigla = readTextElement(parser, "Sigla");
+            } else {
+                skipElement(parser);
+            }
+        }
+        return new Channel(name, sigla);
     }
 
 }

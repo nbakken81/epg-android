@@ -8,6 +8,11 @@ public class Channel {
         this.id = id;
     }
 
+    public Channel(String name, String sigla) {
+        this.name = name;
+        this.id = sigla;
+    }
+
     public String getName() {
         return name;
     }
