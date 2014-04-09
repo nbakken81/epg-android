@@ -1,0 +1,24 @@
+C:\Users\user\Documents\NetBeansProjects\EPGAndroid\epg\bin\AndroidApplication1.ap_ \
+ : C:\Users\user\Documents\NetBeansProjects\EPGAndroid\epg\res\drawable-hdpi\ic_launcher.png \
+C:\Users\user\Documents\NetBeansProjects\EPGAndroid\epg\res\drawable-mdpi\ic_launcher.png \
+C:\Users\user\Documents\NetBeansProjects\EPGAndroid\epg\res\drawable-xhdpi\ic_launcher.png \
+C:\Users\user\Documents\NetBeansProjects\EPGAndroid\epg\res\drawable-xxhdpi\ic_launcher.png \
+C:\Users\user\Documents\NetBeansProjects\EPGAndroid\epg\res\layout\activity_alarms.xml \
+C:\Users\user\Documents\NetBeansProjects\EPGAndroid\epg\res\layout\activity_channels.xml \
+C:\Users\user\Documents\NetBeansProjects\EPGAndroid\epg\res\layout\activity_programs.xml \
+C:\Users\user\Documents\NetBeansProjects\EPGAndroid\epg\res\layout\layout_list_alarm.xml \
+C:\Users\user\Documents\NetBeansProjects\EPGAndroid\epg\res\layout\layout_list_channel.xml \
+C:\Users\user\Documents\NetBeansProjects\EPGAndroid\epg\res\layout\layout_list_program.xml \
+C:\Users\user\Documents\NetBeansProjects\EPGAndroid\epg\res\menu\main.xml \
+C:\Users\user\Documents\NetBeansProjects\EPGAndroid\epg\res\values\dimens.xml \
+C:\Users\user\Documents\NetBeansProjects\EPGAndroid\epg\res\values\strings.xml \
+C:\Users\user\Documents\NetBeansProjects\EPGAndroid\epg\res\values\styles.xml \
+C:\Users\user\Documents\NetBeansProjects\EPGAndroid\epg\res\values-sw600dp\dimens.xml \
+C:\Users\user\Documents\NetBeansProjects\EPGAndroid\epg\res\values-sw720dp-land\dimens.xml \
+C:\Users\user\Documents\NetBeansProjects\EPGAndroid\epg\res\values-v11\styles.xml \
+C:\Users\user\Documents\NetBeansProjects\EPGAndroid\epg\res\values-v14\styles.xml \
+C:\Users\user\Documents\NetBeansProjects\EPGAndroid\epg\bin\res\drawable-hdpi\ic_launcher.png \
+C:\Users\user\Documents\NetBeansProjects\EPGAndroid\epg\bin\res\drawable-mdpi\ic_launcher.png \
+C:\Users\user\Documents\NetBeansProjects\EPGAndroid\epg\bin\res\drawable-xhdpi\ic_launcher.png \
+C:\Users\user\Documents\NetBeansProjects\EPGAndroid\epg\bin\res\drawable-xxhdpi\ic_launcher.png \
+C:\Users\user\Documents\NetBeansProjects\EPGAndroid\epg\bin\AndroidManifest.xml \

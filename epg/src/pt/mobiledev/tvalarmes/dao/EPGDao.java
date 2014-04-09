@@ -15,11 +15,11 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xmlpull.v1.XmlPullParser;
+import static org.xmlpull.v1.XmlPullParser.END_DOCUMENT;
 import static org.xmlpull.v1.XmlPullParser.END_TAG;
 import static org.xmlpull.v1.XmlPullParser.START_TAG;
 import org.xmlpull.v1.XmlPullParserException;
 import static pt.mobiledev.tvalarmes.dao.XmlParser.readTextElement;
-import static pt.mobiledev.tvalarmes.dao.XmlParser.skipElement;
 import pt.mobiledev.tvalarmes.domain.Channel;
 import pt.mobiledev.tvalarmes.domain.Program;
 import static pt.mobiledev.tvalarmes.util.API.formatDate;
@@ -62,19 +62,23 @@ public class EPGDao {
         return null;
     }
 
-    static List<Channel> getChannels() throws IOException, XmlPullParserException {
-        XmlPullParser parser = XmlParser.getParser(BASE_URL + GET_CHANNELS_FUNCTION, "GetChannelListResponse");
+    public static List<Channel> getChannels() {
         List<Channel> entries = new ArrayList<Channel>();
-        parser.require(START_TAG, null, "GetChannelListResponse");
-        while (parser.next() != END_TAG) {
-            if (parser.getEventType() != START_TAG) {
-                continue;
+        try {
+            XmlPullParser parser = XmlParser.getParser(BASE_URL + GET_CHANNELS_FUNCTION, "GetChannelListResponse");
+            parser.require(START_TAG, null, "GetChannelListResponse");
+            while (parser.next() != END_DOCUMENT) {
+                if (parser.getEventType() != START_TAG) {
+                    continue;
+                }
+                if (parser.getName().equals("Channel")) {
+                    entries.add(readChannel(parser));
+                }
             }
-            if (parser.getName().equals("Channel")) {
-                entries.add(readChannel(parser));
-            } else {
-                skipElement(parser);
-            }
+        } catch (IOException ex) {
+            Logger.getLogger(EPGDao.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (XmlPullParserException ex) {
+            Logger.getLogger(EPGDao.class.getName()).log(Level.SEVERE, null, ex);
         }
         return entries;
     }
@@ -91,11 +95,8 @@ public class EPGDao {
                 name = readTextElement(parser, "Name");
             } else if (tagName.equals("Sigla")) {
                 sigla = readTextElement(parser, "Sigla");
-            } else {
-                skipElement(parser);
             }
         }
         return new Channel(name, sigla);
     }
-
 }
