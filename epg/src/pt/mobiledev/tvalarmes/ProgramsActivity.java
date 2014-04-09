@@ -15,8 +15,6 @@ public class ProgramsActivity extends Activity {
     ListView lvPrograms;
     Context context = ProgramsActivity.this;
 
-    static String TAG = "TVAlarmes";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +29,7 @@ public class ProgramsActivity extends Activity {
         lvPrograms.setAdapter(new ProgramsBaseAdapter(context, programs));
 
         for (Program program : programs) {
-            Log.v(TAG, (program.getTitle()));
+            Log.v(this.getCallingPackage(), (program.getTitle()));
         }
     }
 }

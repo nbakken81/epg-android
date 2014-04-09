@@ -12,8 +12,6 @@ public class AlarmsActivity extends Activity {
     ListView lvPrograms;
     Context context = AlarmsActivity.this;
 
-    static String TAG = "TVAlarmes";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
