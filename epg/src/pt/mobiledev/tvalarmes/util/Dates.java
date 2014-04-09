@@ -7,7 +7,7 @@ public class Dates {
 
     public static Date addDays(int days) {
         Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, +days);
+        cal.add(Calendar.DATE, days);
         Date endDate = cal.getTime();
         return endDate;
     }
