@@ -40,8 +40,8 @@ public class EPGDao {
             XMLReader xmlR = saxP.getXMLReader();
             URL url = new URL(BASE_URL + GET_CHANNEL_FUNCTION
                     + "?channelSigla=" + siglas[0]
-                    + "&startDate=" + formatDate(Dates.addDays(daysInterval))
-                    + "&endDate=" + formatDate(Dates.subtractDays(daysInterval))); // TODO vários canais
+                    + "&startDate=" + formatDate(Dates.subtractDays(daysInterval))
+                    + "&endDate=" + formatDate(Dates.addDays(daysInterval))); // TODO vários canais
             Log.v(EPGDao.class.getPackage().toString(), url.toString());
 
             // Create the Handler to handle each of the XML tags
@@ -97,6 +97,7 @@ public class EPGDao {
                 sigla = readTextElement(parser, "Sigla");
             }
         }
+//        skipCurrentBlock(parser);
         return new Channel(name, sigla);
     }
 }
