@@ -18,6 +18,7 @@ import org.xmlpull.v1.XmlPullParser;
 import static org.xmlpull.v1.XmlPullParser.END_TAG;
 import static org.xmlpull.v1.XmlPullParser.START_TAG;
 import org.xmlpull.v1.XmlPullParserException;
+import static pt.mobiledev.tvalarmes.dao.XmlParser.getParser;
 import static pt.mobiledev.tvalarmes.dao.XmlParser.readTextElement;
 import static pt.mobiledev.tvalarmes.dao.XmlParser.skipTag;
 import pt.mobiledev.tvalarmes.domain.Channel;
@@ -63,7 +64,7 @@ public class EPGDao {
     public static List<Channel> getChannels() {
         List<Channel> entries = new ArrayList<Channel>();
         try {
-            XmlPullParser parser = XmlParser.getParser(BASE_URL + GET_CHANNELS_FUNCTION);
+            XmlPullParser parser = getParser(BASE_URL + GET_CHANNELS_FUNCTION);
             while (parser.next() != END_TAG) {
                 if (parser.getEventType() != START_TAG) {
                     continue;
