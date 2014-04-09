@@ -7,7 +7,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import pt.mobiledev.tvalarmes.domain.Channel;
 import pt.mobiledev.tvalarmes.domain.Program;
 
-public class XMLHandler extends DefaultHandler {
+public class XMLProgramsHandler extends DefaultHandler {
 
     ArrayList<Program> programs = new ArrayList<Program>();
     Program program;
