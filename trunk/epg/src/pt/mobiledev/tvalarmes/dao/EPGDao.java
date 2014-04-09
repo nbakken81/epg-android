@@ -89,9 +89,9 @@ public class EPGDao {
             }
             String tagName = parser.getName();
             if (tagName.equals("Name")) {
-                name = readTextElement(parser, "Name");
+                name = readTextElement(parser);
             } else if (tagName.equals("Sigla")) {
-                sigla = readTextElement(parser, "Sigla");
+                sigla = readTextElement(parser);
             } else {
                 skipTag(parser);
             }
