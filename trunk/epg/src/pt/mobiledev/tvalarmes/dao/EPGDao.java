@@ -1,7 +1,5 @@
 package pt.mobiledev.tvalarmes.dao;
 
-import pt.mobiledev.tvalarmes.domain.Program;
-import pt.mobiledev.tvalarmes.util.Dates;
 import android.util.Log;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -15,11 +13,12 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
+import pt.mobiledev.tvalarmes.domain.Program;
 import static pt.mobiledev.tvalarmes.util.API.formatDate;
+import pt.mobiledev.tvalarmes.util.Dates;
 
 public class EPGDao {
 
-    final static String TAG = "TVAlarmes";
     final static String BASE_URL = "http://services.sapo.pt/EPG/";
     final static String GET_CHANNEL_FUNCTION = "GetChannelByDateInterval";
     final static int daysInterval = 1;
@@ -39,7 +38,7 @@ public class EPGDao {
             SAXParser saxP = saxPF.newSAXParser();
             XMLReader xmlR = saxP.getXMLReader();
             URL url = new URL(getProgramsURL(siglas[0])); // TODO várias
-            Log.v(TAG, url.toString());
+            Log.v(EPGDao.class.getPackage().toString(), url.toString());
 
             // Create the Handler to handle each of the XML tags
             XMLHandler myXMLHandler = new XMLHandler();
