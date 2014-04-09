@@ -22,7 +22,7 @@ public class XmlParser {
         return parser;
     }
 
-    public static void skipElement(XmlPullParser parser) throws XmlPullParserException, IOException {
+    public static void skipCurrentBlock(XmlPullParser parser) throws XmlPullParserException, IOException {
         if (parser.getEventType() != START_TAG) {
             throw new IllegalStateException();
         }
