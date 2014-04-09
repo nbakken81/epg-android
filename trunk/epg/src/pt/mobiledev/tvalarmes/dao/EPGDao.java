@@ -15,11 +15,11 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xmlpull.v1.XmlPullParser;
-import static org.xmlpull.v1.XmlPullParser.END_DOCUMENT;
 import static org.xmlpull.v1.XmlPullParser.END_TAG;
 import static org.xmlpull.v1.XmlPullParser.START_TAG;
 import org.xmlpull.v1.XmlPullParserException;
 import static pt.mobiledev.tvalarmes.dao.XmlParser.readTextElement;
+import static pt.mobiledev.tvalarmes.dao.XmlParser.skipTag;
 import pt.mobiledev.tvalarmes.domain.Channel;
 import pt.mobiledev.tvalarmes.domain.Program;
 import static pt.mobiledev.tvalarmes.util.API.formatDate;
@@ -43,7 +43,6 @@ public class EPGDao {
                     + "&startDate=" + formatDate(Dates.subtractDays(daysInterval))
                     + "&endDate=" + formatDate(Dates.addDays(daysInterval))); // TODO vários canais
             Log.v(EPGDao.class.getPackage().toString(), url.toString());
-
             // Create the Handler to handle each of the XML tags
             XMLProgramsHandler myXMLHandler = new XMLProgramsHandler();
             xmlR.setContentHandler(myXMLHandler);
@@ -65,9 +64,8 @@ public class EPGDao {
     public static List<Channel> getChannels() {
         List<Channel> entries = new ArrayList<Channel>();
         try {
-            XmlPullParser parser = XmlParser.getParser(BASE_URL + GET_CHANNELS_FUNCTION, "GetChannelListResponse");
-            parser.require(START_TAG, null, "GetChannelListResponse");
-            while (parser.next() != END_DOCUMENT) {
+            XmlPullParser parser = XmlParser.getParser(BASE_URL + GET_CHANNELS_FUNCTION);
+            while (parser.next() != END_TAG) {
                 if (parser.getEventType() != START_TAG) {
                     continue;
                 }
@@ -84,7 +82,7 @@ public class EPGDao {
     }
 
     static Channel readChannel(XmlPullParser parser) throws XmlPullParserException, IOException {
-        parser.require(START_TAG, null, "Channel");
+        parser.require(START_TAG, null, "Channel");  // isto é um assert
         String name = null, sigla = null;
         while (parser.next() != END_TAG) {
             if (parser.getEventType() != START_TAG) {
@@ -95,9 +93,10 @@ public class EPGDao {
                 name = readTextElement(parser, "Name");
             } else if (tagName.equals("Sigla")) {
                 sigla = readTextElement(parser, "Sigla");
+            } else {
+                skipTag(parser);
             }
         }
-//        skipCurrentBlock(parser);
         return new Channel(name, sigla);
     }
 }

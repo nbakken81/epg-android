@@ -12,27 +12,34 @@ import org.xmlpull.v1.XmlPullParserException;
 
 public class XmlParser {
 
-    public static XmlPullParser getParser(String url, String startTag) throws IOException, XmlPullParserException {
+    public static XmlPullParser getParser(String url) throws IOException, XmlPullParserException {
         InputStream in = new URL(url).openStream();
         XmlPullParser parser = Xml.newPullParser();
         parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
         parser.setInput(in, null);
         parser.nextTag();
-        parser.require(XmlPullParser.START_TAG, null, startTag);
         return parser;
     }
+//
+//    public static void skipToTag(XmlPullParser parser, String tag) throws XmlPullParserException, IOException {
+//        while (parser.next() != END_TAG) {
+//            if (parser.getEventType() != START_TAG) {
+//                continue;
+//            }
+//        }
+//    }
 
-    public static void skipCurrentBlock(XmlPullParser parser) throws XmlPullParserException, IOException {
-        if (parser.getEventType() != START_TAG) {
+    public static void skipTag(XmlPullParser parser) throws XmlPullParserException, IOException {
+        if (parser.getEventType() != XmlPullParser.START_TAG) {
             throw new IllegalStateException();
         }
         int depth = 1;
         while (depth != 0) {
             switch (parser.next()) {
-                case END_TAG:
+                case XmlPullParser.END_TAG:
                     depth--;
                     break;
-                case START_TAG:
+                case XmlPullParser.START_TAG:
                     depth++;
                     break;
             }
