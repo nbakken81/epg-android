@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Program {
 
-    Integer id;
+    Integer id, season, episode;
     String title, description;
     Date startDate, endDate;
     Channel channel;
@@ -69,5 +69,21 @@ public class Program {
 
     public void setChannel(Channel channel) {
         this.channel = channel;
+    }
+
+    public Integer getSeason() {
+        return season;
+    }
+
+    public void setSeason(Integer season) {
+        this.season = season;
+    }
+
+    public Integer getEpisode() {
+        return episode;
+    }
+
+    public void setEpisode(Integer episode) {
+        this.episode = episode;
     }
 }
