@@ -43,7 +43,6 @@ public class EPGDao {
                     + "&startDate=" + formatDate(Dates.subtractDays(daysInterval))
                     + "&endDate=" + formatDate(Dates.addDays(daysInterval))); // TODO vários canais
             Log.v(EPGDao.class.getPackage().toString(), url.toString());
-            // Create the Handler to handle each of the XML tags
             XMLProgramsHandler myXMLHandler = new XMLProgramsHandler();
             xmlR.setContentHandler(myXMLHandler);
             xmlR.parse(new InputSource(url.openStream()));
