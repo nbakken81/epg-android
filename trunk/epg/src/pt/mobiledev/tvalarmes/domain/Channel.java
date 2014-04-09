@@ -2,7 +2,7 @@ package pt.mobiledev.tvalarmes.domain;
 
 public class Channel {
 
-    String name, id, url;
+    String name, id, logoUrl;
 
     public Channel(String id) {
         this.id = id;
@@ -24,11 +24,11 @@ public class Channel {
         this.id = id;
     }
 
-    public String getUrl() {
-        return url;
+    public String getLogoUrl() {
+        return logoUrl;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setLogoUrl(String logoUrl) {
+        this.logoUrl = logoUrl;
     }
 }
