@@ -39,11 +39,11 @@ public class ChannelsBaseAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = inflater.inflate(R.layout.layout_list_channel, null);
-        detail(convertView, R.id.tvTitle, channels.get(position).getName());
+        prepareDetail(convertView, R.id.tvTitle, channels.get(position).getName());
         return convertView;
     }
 
-    private TextView detail(View v, int resId, String text) {
+    private TextView prepareDetail(View v, int resId, String text) {
         TextView tv = (TextView) v.findViewById(resId);
         tv.setText(text);
         return tv;

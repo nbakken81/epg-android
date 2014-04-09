@@ -16,7 +16,6 @@ public class AlarmsActivity extends Activity {
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitAll().build());
         }
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarms);
     }

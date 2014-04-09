@@ -16,9 +16,11 @@ public class ProgramsActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        String sigla = getIntent().getExtras().getString("sigla");
+        
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_programs);
-        ArrayList<Program> programs = EPGDao.getPrograms("RTP2");
+        ArrayList<Program> programs = EPGDao.getPrograms(sigla);
 
         lvPrograms = (ListView) findViewById(R.id.lvPrograms);
         lvPrograms.setAdapter(new ProgramsBaseAdapter(context, programs));
