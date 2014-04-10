@@ -4,89 +4,83 @@ import java.util.Date;
 
 public class Program {
 
-    Integer id, season, episode;
-    String title, description;
-    Date startDate, endDate;
-    Channel channel;
+	int season, episode;
+    String id, title;
+    Date startDate;
+    String channelSigla;
 
     public Program() {
     }
 
-    public Program(Integer id, String title, String description, Date startDate, Date endDate, Channel channel) {
+    public Program(String id, String title, Date startDate, String channelSigla) {
         this.id = id;
         this.title = title;
-        this.description = description;
         this.startDate = startDate;
-        this.endDate = endDate;
-        this.channel = channel;
+        this.channelSigla = channelSigla;
     }
 
-    public Integer getId() {
-        return id;
-    }
+    public int getSeason() {
+		return season;
+	}
 
-    public void setId(Integer currentValue) {
-        this.id = currentValue;
-    }
+	public void setSeason(int season) {
+		this.season = season;
+	}
 
-    public String getTitle() {
-        return title;
-    }
+	public int getEpisode() {
+		return episode;
+	}
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+	public void setEpisode(int episode) {
+		this.episode = episode;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public Date getStartDate() {
-        return startDate;
-    }
+	public String getTitle() {
+		return title;
+	}
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-    public Date getEndDate() {
-        return endDate;
-    }
+	public Date getStartDate() {
+		return startDate;
+	}
 
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
 
-    public Channel getChannel() {
-        return channel;
-    }
+	public String getChannelSigla() {
+		return channelSigla;
+	}
 
-    public void setChannel(Channel channel) {
-        this.channel = channel;
-    }
+	public void setChannelSigla(String channelSigla) {
+		this.channelSigla = channelSigla;
+	}
 
-    public Integer getSeason() {
-        return season;
-    }
-
-    public void setSeason(Integer season) {
-        this.season = season;
-    }
-
-    public Integer getEpisode() {
-        return episode;
-    }
-
-    public void setEpisode(Integer episode) {
-        this.episode = episode;
-    }
-
-    @Override
+	@Override
     public String toString() {
-        return getTitle() + "(" + getChannel() + ")";
+        return getTitle() + "(" + getChannelSigla() + ")";
     }
+	
+	public int compareTo(Program other) {
+		return title.compareTo(other.getTitle());
+	}
+
+	public int hashCode() {
+	    return title.hashCode();
+	}
+	
+	public boolean equals(Program other){
+	    return title.equals(other.getTitle());
+	}
 }

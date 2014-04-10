@@ -1,13 +1,14 @@
 package pt.mobiledev.tvalarmes;
 
+import java.util.SortedSet;
+
+import pt.mobiledev.tvalarmes.dao.EPGDao;
+import pt.mobiledev.tvalarmes.domain.Program;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
-import java.util.ArrayList;
-import pt.mobiledev.tvalarmes.dao.EPGDao;
-import pt.mobiledev.tvalarmes.domain.Program;
 
 public class ProgramsActivity extends Activity {
 
@@ -16,17 +17,18 @@ public class ProgramsActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        String sigla = getIntent().getExtras().getString("sigla");
-        
-        super.onCreate(savedInstanceState);
+    	super.onCreate(savedInstanceState);
         setContentView(R.layout.program_list);
-        ArrayList<Program> programs = EPGDao.getPrograms(sigla);
-
+        
+        String sigla = getIntent().getExtras().getString("sigla");
+        SortedSet<Program> programs = EPGDao.getPrograms(sigla);
+        
         lvPrograms = (ListView) findViewById(R.id.lvPrograms);
         lvPrograms.setAdapter(new ProgramsBaseAdapter(context, programs));
 
         for (Program program : programs) {
             Log.v(this.getCallingPackage(), (program.getTitle()));
         }
+
     }
 }
