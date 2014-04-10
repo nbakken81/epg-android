@@ -1,4 +1,4 @@
-C:\Users\user\Documents\NetBeansProjects\EPGAndroid\epg\bin\AndroidApplication1-debug-unaligned.apk : \
-C:\Users\user\Documents\NetBeansProjects\EPGAndroid\epg\bin\AndroidApplication1.ap_ \
-C:\Users\user\Documents\NetBeansProjects\EPGAndroid\epg\bin\classes.dex \
-C:\Users\user\Documents\NetBeansProjects\EPGAndroid\epg\libs\android-support-v4.jar \
+C:\Users\laptop\Documents\NetBeansProjects\epg\trunk\epg\bin\AndroidApplication1-debug-unaligned.apk : \
+C:\Users\laptop\Documents\NetBeansProjects\epg\trunk\epg\bin\AndroidApplication1.ap_ \
+C:\Users\laptop\Documents\NetBeansProjects\epg\trunk\epg\bin\classes.dex \
+C:\Users\laptop\Documents\NetBeansProjects\epg\trunk\epg\libs\android-support-v4.jar \
