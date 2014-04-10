@@ -44,7 +44,7 @@ public class ProgramsBaseAdapter extends BaseAdapter {
 //		} else {
 //			
 //		}
-        convertView = inflater.inflate(R.layout.layout_list_program, null);
+        convertView = inflater.inflate(R.layout.program_detail, null);
         detail(convertView, R.id.tvTitle, programs.get(position).getTitle());
         return convertView;
     }
