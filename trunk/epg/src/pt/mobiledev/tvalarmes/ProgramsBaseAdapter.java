@@ -1,13 +1,15 @@
 package pt.mobiledev.tvalarmes;
 
+import java.util.ArrayList;
+import java.util.SortedSet;
+
+import pt.mobiledev.tvalarmes.domain.Program;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import java.util.ArrayList;
-import pt.mobiledev.tvalarmes.domain.Program;
 
 public class ProgramsBaseAdapter extends BaseAdapter {
 
@@ -15,8 +17,8 @@ public class ProgramsBaseAdapter extends BaseAdapter {
     LayoutInflater inflater;
     Context context;
 
-    public ProgramsBaseAdapter(Context context, ArrayList<Program> programs) {
-        this.programs = programs;
+    public ProgramsBaseAdapter(Context context, SortedSet<Program> programs) {
+        this.programs.addAll(programs);
         this.context = context;
         inflater = LayoutInflater.from(this.context);
     }
