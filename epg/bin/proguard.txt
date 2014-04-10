@@ -7,6 +7,6 @@
 # view AndroidManifest.xml #generated:22
 -keep class pt.mobiledev.tvalarmes.ProgramsActivity { <init>(...); }
 
-# onClick res/layout/activity_alarms.xml #generated:10
+# onClick res/layout/alarm_list.xml #generated:10
 -keepclassmembers class * { *** goToChannels(...); }
 

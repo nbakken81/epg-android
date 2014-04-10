@@ -24,20 +24,22 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
         public static final int rtp1=0x7f020001;
         public static final int sic=0x7f020002;
+        public static final int tv=0x7f020003;
     }
     public static final class id {
-        public static final int action_settings=0x7f080003;
-        public static final int gvChannels=0x7f080000;
-        public static final int lvPrograms=0x7f080001;
-        public static final int tvTitle=0x7f080002;
+        public static final int action_settings=0x7f080004;
+        public static final int gvChannels=0x7f080002;
+        public static final int lvPrograms=0x7f080003;
+        public static final int tvImage=0x7f080001;
+        public static final int tvTitle=0x7f080000;
     }
     public static final class layout {
-        public static final int activity_alarms=0x7f030000;
-        public static final int activity_channels=0x7f030001;
-        public static final int activity_programs=0x7f030002;
-        public static final int layout_list_alarm=0x7f030003;
-        public static final int layout_list_channel=0x7f030004;
-        public static final int layout_list_program=0x7f030005;
+        public static final int alarm_detail=0x7f030000;
+        public static final int alarm_list=0x7f030001;
+        public static final int channel_detail=0x7f030002;
+        public static final int channel_list=0x7f030003;
+        public static final int program_detail=0x7f030004;
+        public static final int program_list=0x7f030005;
     }
     public static final class menu {
         public static final int main=0x7f070000;
