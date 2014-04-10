@@ -17,7 +17,7 @@ public class AlarmsActivity extends Activity {
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitAll().build());
         }
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_alarms);
+        setContentView(R.layout.alarm_list);
     }
 
     public void goToChannels(View view) {

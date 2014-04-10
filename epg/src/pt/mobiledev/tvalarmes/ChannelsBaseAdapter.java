@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.List;
 import pt.mobiledev.tvalarmes.domain.Channel;
@@ -38,14 +39,15 @@ public class ChannelsBaseAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        convertView = inflater.inflate(R.layout.layout_list_channel, null);
-        prepareDetail(convertView, R.id.tvTitle, channels.get(position).getName());
+        Channel ch = channels.get(position);
+        convertView = inflater.inflate(R.layout.channel_detail, null);
+        // nome canal
+        TextView tv = (TextView) convertView.findViewById(R.id.tvTitle);
+        tv.setText(ch.getName());
+        ImageView iv = (ImageView) convertView.findViewById(R.id.tvImage);
+        if (ch.getLogoResourceId() > 0) {
+            iv.setImageResource(ch.getLogoResourceId());
+        }
         return convertView;
-    }
-
-    private TextView prepareDetail(View v, int resId, String text) {
-        TextView tv = (TextView) v.findViewById(resId);
-        tv.setText(text);
-        return tv;
     }
 }

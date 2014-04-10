@@ -45,7 +45,7 @@ public class AlarmsBaseAdapater extends BaseAdapter {
 //		} else {
 //			
 //		}
-        convertView = inflater.inflate(R.layout.layout_list_alarm, null);
+        convertView = inflater.inflate(R.layout.alarm_detail, null);
         detail(convertView, R.id.tvTitle, alarms.get(position).getTitle());
         return convertView;
     }

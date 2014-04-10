@@ -20,7 +20,7 @@ public class ChannelsActivity extends Activity {
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-        setContentView(R.layout.activity_channels);
+        setContentView(R.layout.channel_list);
         // busca canais
         final List<Channel> channels = EPGDao.getChannels();
         // preenche-lhes imagens
