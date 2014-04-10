@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Program {
 
-	int season, episode;
+    int season, episode;
     String id, title;
     Date startDate;
     String channelSigla;
@@ -20,67 +20,63 @@ public class Program {
     }
 
     public int getSeason() {
-		return season;
-	}
+        return season;
+    }
 
-	public void setSeason(int season) {
-		this.season = season;
-	}
+    public void setSeason(int season) {
+        this.season = season;
+    }
 
-	public int getEpisode() {
-		return episode;
-	}
+    public int getEpisode() {
+        return episode;
+    }
 
-	public void setEpisode(int episode) {
-		this.episode = episode;
-	}
+    public void setEpisode(int episode) {
+        this.episode = episode;
+    }
 
-	public String getId() {
-		return id;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public String getTitle() {
-		return title;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public Date getStartDate() {
-		return startDate;
-	}
+    public Date getStartDate() {
+        return startDate;
+    }
 
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
 
-	public String getChannelSigla() {
-		return channelSigla;
-	}
+    public String getChannelSigla() {
+        return channelSigla;
+    }
 
-	public void setChannelSigla(String channelSigla) {
-		this.channelSigla = channelSigla;
-	}
+    public void setChannelSigla(String channelSigla) {
+        this.channelSigla = channelSigla;
+    }
 
-	@Override
+    @Override
     public String toString() {
         return getTitle() + "(" + getChannelSigla() + ")";
     }
-	
-	public int compareTo(Program other) {
-		return title.compareTo(other.getTitle());
-	}
 
-	public int hashCode() {
-	    return title.hashCode();
-	}
-	
-	public boolean equals(Program other){
-	    return title.equals(other.getTitle());
-	}
+    public int compareTo(Program other) {
+        return title.compareTo(other.getTitle());
+    }
+
+    public boolean equals(Program other) {
+        return title.equals(other.getTitle());
+    }
 }

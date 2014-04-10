@@ -8,26 +8,23 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
-import android.widget.Toast;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import pt.mobiledev.tvalarmes.dao.EPGDao;
 import pt.mobiledev.tvalarmes.domain.Channel;
-import pt.mobiledev.tvalarmes.util.Util;
 
 public class ChannelsActivity extends Activity {
 
-	Context context = ChannelsActivity.this;
-	
+    Context context = ChannelsActivity.this;
+
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         setContentView(R.layout.channel_list);
         // busca canais
         final List<Channel> channels = EPGDao.getChannels();
-
-        // os mais importantes 1º
+        // os mais importantes 1º: são os que têm logos
         Collections.sort(channels, new Comparator<Channel>() {
 
             public int compare(Channel ch0, Channel ch1) {
@@ -41,7 +38,6 @@ public class ChannelsActivity extends Activity {
         gridview.setAdapter(new ChannelsBaseAdapter(this, channels));
         gridview.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                Toast.makeText(ChannelsActivity.this, "Clicked: " + position, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(ChannelsActivity.this, ProgramsActivity.class);
                 intent.putExtra("sigla", channels.get(position).getId());
                 startActivity(intent);

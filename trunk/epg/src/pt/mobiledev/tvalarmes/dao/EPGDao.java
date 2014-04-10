@@ -1,29 +1,26 @@
 package pt.mobiledev.tvalarmes.dao;
 
-import static org.xmlpull.v1.XmlPullParser.END_TAG;
-import static org.xmlpull.v1.XmlPullParser.START_TAG;
-import static pt.mobiledev.tvalarmes.dao.XmlParser.getParser;
-import static pt.mobiledev.tvalarmes.dao.XmlParser.readValuesAsMap;
-
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.xmlpull.v1.XmlPullParser;
+import static org.xmlpull.v1.XmlPullParser.END_DOCUMENT;
+import static org.xmlpull.v1.XmlPullParser.END_TAG;
+import static org.xmlpull.v1.XmlPullParser.START_TAG;
 import org.xmlpull.v1.XmlPullParserException;
-
+import static pt.mobiledev.tvalarmes.dao.XmlParser.getParser;
+import static pt.mobiledev.tvalarmes.dao.XmlParser.readValuesAsMap;
 import pt.mobiledev.tvalarmes.domain.Channel;
 import pt.mobiledev.tvalarmes.domain.Program;
 import pt.mobiledev.tvalarmes.util.Util;
-import android.util.Log;
 
 public class EPGDao {
 
@@ -32,43 +29,13 @@ public class EPGDao {
     final static String GET_CHANNELS_FUNCTION = "GetChannelList";
     final static int daysInterval = 1;
 
-//    public static ArrayList<Program> getPrograms(String... siglas) {
-//        try {
-//            // Create a new instance of the SAX parser
-//            SAXParserFactory saxPF = SAXParserFactory.newInstance();
-//            SAXParser saxP = saxPF.newSAXParser();
-//            XMLReader xmlR = saxP.getXMLReader();
-//            URL url = new URL(BASE_URL + GET_CHANNEL_FUNCTION
-//                    + "?channelSigla=" + siglas[0]
-//                    + "&startDate=" + formatDate(Util.subtractDays(daysInterval))
-//                    + "&endDate=" + formatDate(Util.addDays(daysInterval))); // TODO vários canais
-//            Log.v(EPGDao.class.getPackage().toString(), url.toString());
-//            XMLProgramsHandler myXMLHandler = new XMLProgramsHandler();
-//            xmlR.setContentHandler(myXMLHandler);
-//            xmlR.parse(new InputSource(url.openStream()));
-//            return myXMLHandler.getPrograms();
-//
-//        } catch (MalformedURLException ex) {
-//            Logger.getLogger(EPGDao.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (ParserConfigurationException ex) {
-//            Logger.getLogger(EPGDao.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (SAXException ex) {
-//            Logger.getLogger(EPGDao.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (IOException ex) {
-//            Logger.getLogger(EPGDao.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return null;
-//    }
-
     public static List<Channel> getChannels() {
         List<Channel> entries = new ArrayList<Channel>();
         try {
             XmlPullParser parser = getParser(BASE_URL + GET_CHANNELS_FUNCTION);
             while (parser.next() != END_TAG) {
-                if (parser.getEventType() != START_TAG) {
-                    continue;
-                }
-                if (parser.getName().equals("Channel")) {
+                if (parser.getEventType() == START_TAG
+                        && parser.getName().equals("Channel")) {
                     // OK encontrou tag; controi canal!
                     Map<String, String> channelAsMap = readValuesAsMap(parser, "Name", "Sigla");
                     entries.add(new Channel(channelAsMap.get("Name"), channelAsMap.get("Sigla")));
@@ -81,36 +48,25 @@ public class EPGDao {
         }
         return entries;
     }
-    
-    public static SortedSet<Program> getPrograms(String... siglas) {
-    	SortedSet<Program> entries = new TreeSet<Program>();
+
+    public static List<Program> getPrograms(String... siglas) {
+        Set<Program> entries = new HashSet<Program>();
         try {
-        	
-          URL url = new URL(BASE_URL + GET_CHANNEL_FUNCTION
-          + "?channelSigla=" + siglas[0]
-          + "&startDate=" + formatDate(Util.subtractDays(daysInterval))
-          + "&endDate=" + formatDate(Util.addDays(daysInterval))); // TODO v�rios canais
-        	          
+            URL url = new URL(BASE_URL + GET_CHANNEL_FUNCTION
+                    + "?channelSigla=" + siglas[0]
+                    + "&startDate=" + formatDate(Util.subtractDays(daysInterval))
+                    + "&endDate=" + formatDate(Util.addDays(daysInterval)));
+            // TODO suporte a vários canais de uma só vez: útil para o scheduler
             XmlPullParser parser = getParser(url.toString());
-            while (parser.next() != END_TAG) {
-            	            	
-                if (parser.getEventType() != START_TAG) {
-                    continue;
-                }
-                                
-                if (parser.getName().equals("Program")) {
-                    // Constr�i programa
+            while (parser.next() != END_DOCUMENT) {
+                if (parser.getEventType() == START_TAG && parser.getName().equals("Program")) {
+                    // Constrói programa
                     Map<String, String> channelAsMap = readValuesAsMap(parser, "Id", "Title", "ChannelSigla");
-                                        
-                    Program program = new Program ();
-                    program.setId(channelAsMap.get("Id"));
-                    
-                    String title = channelAsMap.get("Title");
-                    
-                    program.setTitle(title);
-                    program.setChannelSigla(channelAsMap.get("ChannelSigla"));
-                    /* Falta data */
-                    
+                    Program program = new Program();
+                    program.setId(channelAsMap.get("Id")); // TODO: porque não é um int?
+                    program.setTitle(channelAsMap.get("Title"));
+                    program.setChannelSigla(channelAsMap.get("ChannelSigla"));  // TODO buscar objeto canal?
+                    // TODO  parse do resto?
                     entries.add(program);
                 }
             }
@@ -119,8 +75,7 @@ public class EPGDao {
         } catch (XmlPullParserException ex) {
             Logger.getLogger(EPGDao.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        return entries;
+        return new ArrayList<Program>(entries);
     }
 
     public static String formatDate(Date date) {
