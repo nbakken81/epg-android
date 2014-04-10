@@ -15,7 +15,7 @@ public class ChannelsBaseAdapter extends BaseAdapter {
     LayoutInflater inflater;
     Context context;
 
-    public ChannelsBaseAdapter(Context context, List<Channel> channels) {
+    public ChannelsBaseAdapter(final Context context, List<Channel> channels) {
         this.channels = channels;
         this.context = context;
         inflater = LayoutInflater.from(this.context);

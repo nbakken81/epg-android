@@ -2,7 +2,8 @@ package pt.mobiledev.tvalarmes.domain;
 
 public class Channel {
 
-    String name, id, logoUrl;
+    String name, id;
+    int logoResourceId;
 
     public Channel(String sigla) {
         this.id = sigla;
@@ -29,12 +30,12 @@ public class Channel {
         this.id = id;
     }
 
-    public String getLogoUrl() {
-        return logoUrl;
+    public int getLogoResourceId() {
+        return logoResourceId;
     }
 
-    public void setLogoUrl(String logoUrl) {
-        this.logoUrl = logoUrl;
+    public void setLogoResourceId(int logoResourceId) {
+        this.logoResourceId = logoResourceId;
     }
 
     @Override

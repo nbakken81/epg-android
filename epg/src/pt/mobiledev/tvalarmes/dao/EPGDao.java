@@ -25,7 +25,7 @@ import static pt.mobiledev.tvalarmes.dao.XmlParser.getParser;
 import static pt.mobiledev.tvalarmes.dao.XmlParser.readValuesAsMap;
 import pt.mobiledev.tvalarmes.domain.Channel;
 import pt.mobiledev.tvalarmes.domain.Program;
-import pt.mobiledev.tvalarmes.util.Dates;
+import pt.mobiledev.tvalarmes.util.Util;
 
 public class EPGDao {
 
@@ -42,8 +42,8 @@ public class EPGDao {
             XMLReader xmlR = saxP.getXMLReader();
             URL url = new URL(BASE_URL + GET_CHANNEL_FUNCTION
                     + "?channelSigla=" + siglas[0]
-                    + "&startDate=" + formatDate(Dates.subtractDays(daysInterval))
-                    + "&endDate=" + formatDate(Dates.addDays(daysInterval))); // TODO vários canais
+                    + "&startDate=" + formatDate(Util.subtractDays(daysInterval))
+                    + "&endDate=" + formatDate(Util.addDays(daysInterval))); // TODO vários canais
             Log.v(EPGDao.class.getPackage().toString(), url.toString());
             XMLProgramsHandler myXMLHandler = new XMLProgramsHandler();
             xmlR.setContentHandler(myXMLHandler);

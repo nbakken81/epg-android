@@ -1,2 +1,2 @@
-C:\Users\user\Documents\NetBeansProjects\EPGAndroid\epg\bin\AndroidManifest.xml : \
-C:\Users\user\Documents\NetBeansProjects\EPGAndroid\epg\AndroidManifest.xml \
+C:\Users\laptop\Documents\NetBeansProjects\epg\trunk\epg\bin\AndroidManifest.xml : \
+C:\Users\laptop\Documents\NetBeansProjects\epg\trunk\epg\AndroidManifest.xml \
