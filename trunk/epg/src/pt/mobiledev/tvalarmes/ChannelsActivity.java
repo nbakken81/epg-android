@@ -1,6 +1,7 @@
 package pt.mobiledev.tvalarmes;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -17,22 +18,21 @@ import pt.mobiledev.tvalarmes.util.Util;
 
 public class ChannelsActivity extends Activity {
 
+	Context context = ChannelsActivity.this;
+	
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         setContentView(R.layout.channel_list);
         // busca canais
         final List<Channel> channels = EPGDao.getChannels();
-        // preenche-lhes imagens
-        for (Channel ch : channels) {
-            ch.setLogoResourceId(Util.getResourceId(this, "drawable", ch.getId().toLowerCase()));
-        }
+
         // os mais importantes 1º
         Collections.sort(channels, new Comparator<Channel>() {
 
             public int compare(Channel ch0, Channel ch1) {
-                Boolean existsLogo0 = ch0.getLogoResourceId() > 0;
-                Boolean existsLogo1 = ch1.getLogoResourceId() > 0;
+                Boolean existsLogo0 = ch0.getLogoResourceId(context) > 0;
+                Boolean existsLogo1 = ch1.getLogoResourceId(context) > 0;
                 return existsLogo1.compareTo(existsLogo0);
             }
         });

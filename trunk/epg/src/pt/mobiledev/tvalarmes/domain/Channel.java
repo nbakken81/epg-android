@@ -1,5 +1,8 @@
 package pt.mobiledev.tvalarmes.domain;
 
+import pt.mobiledev.tvalarmes.util.Util;
+import android.content.Context;
+
 public class Channel {
 
     String name, id;
@@ -30,8 +33,8 @@ public class Channel {
         this.id = id;
     }
 
-    public int getLogoResourceId() {
-        return logoResourceId;
+    public int getLogoResourceId(Context context) {
+        return (Util.getResourceId(context, "drawable", getId().toLowerCase()));
     }
 
     public void setLogoResourceId(int logoResourceId) {

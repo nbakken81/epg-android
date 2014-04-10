@@ -101,12 +101,13 @@ public class EPGDao {
                 if (parser.getName().equals("Program")) {
                     // Constr—i programa
                     Map<String, String> channelAsMap = readValuesAsMap(parser, "Id", "Title", "ChannelSigla");
-                    
-                    Log.v("TVAlarmes", (channelAsMap.get("Title")));
-                    
+                                        
                     Program program = new Program ();
                     program.setId(channelAsMap.get("Id"));
-                    program.setTitle(channelAsMap.get("Title"));
+                    
+                    String title = channelAsMap.get("Title");
+                    
+                    program.setTitle(title);
                     program.setChannelSigla(channelAsMap.get("ChannelSigla"));
                     /* Falta data */
                     
