@@ -1,16 +1,17 @@
 C:\Users\laptop\Documents\NetBeansProjects\epg\trunk\epg\gen\pt\mobiledev\tvalarmes\R.java \
  : C:\Users\laptop\Documents\NetBeansProjects\epg\trunk\epg\res\drawable\rtp1.gif \
 C:\Users\laptop\Documents\NetBeansProjects\epg\trunk\epg\res\drawable\sic.gif \
+C:\Users\laptop\Documents\NetBeansProjects\epg\trunk\epg\res\drawable\tv.png \
 C:\Users\laptop\Documents\NetBeansProjects\epg\trunk\epg\res\drawable-hdpi\ic_launcher.png \
 C:\Users\laptop\Documents\NetBeansProjects\epg\trunk\epg\res\drawable-mdpi\ic_launcher.png \
 C:\Users\laptop\Documents\NetBeansProjects\epg\trunk\epg\res\drawable-xhdpi\ic_launcher.png \
 C:\Users\laptop\Documents\NetBeansProjects\epg\trunk\epg\res\drawable-xxhdpi\ic_launcher.png \
-C:\Users\laptop\Documents\NetBeansProjects\epg\trunk\epg\res\layout\activity_alarms.xml \
-C:\Users\laptop\Documents\NetBeansProjects\epg\trunk\epg\res\layout\activity_channels.xml \
-C:\Users\laptop\Documents\NetBeansProjects\epg\trunk\epg\res\layout\activity_programs.xml \
-C:\Users\laptop\Documents\NetBeansProjects\epg\trunk\epg\res\layout\layout_list_alarm.xml \
-C:\Users\laptop\Documents\NetBeansProjects\epg\trunk\epg\res\layout\layout_list_channel.xml \
-C:\Users\laptop\Documents\NetBeansProjects\epg\trunk\epg\res\layout\layout_list_program.xml \
+C:\Users\laptop\Documents\NetBeansProjects\epg\trunk\epg\res\layout\alarm_detail.xml \
+C:\Users\laptop\Documents\NetBeansProjects\epg\trunk\epg\res\layout\alarm_list.xml \
+C:\Users\laptop\Documents\NetBeansProjects\epg\trunk\epg\res\layout\channel_detail.xml \
+C:\Users\laptop\Documents\NetBeansProjects\epg\trunk\epg\res\layout\channel_list.xml \
+C:\Users\laptop\Documents\NetBeansProjects\epg\trunk\epg\res\layout\program_detail.xml \
+C:\Users\laptop\Documents\NetBeansProjects\epg\trunk\epg\res\layout\program_list.xml \
 C:\Users\laptop\Documents\NetBeansProjects\epg\trunk\epg\res\menu\main.xml \
 C:\Users\laptop\Documents\NetBeansProjects\epg\trunk\epg\res\values\dimens.xml \
 C:\Users\laptop\Documents\NetBeansProjects\epg\trunk\epg\res\values\strings.xml \
@@ -19,6 +20,7 @@ C:\Users\laptop\Documents\NetBeansProjects\epg\trunk\epg\res\values-sw600dp\dime
 C:\Users\laptop\Documents\NetBeansProjects\epg\trunk\epg\res\values-sw720dp-land\dimens.xml \
 C:\Users\laptop\Documents\NetBeansProjects\epg\trunk\epg\res\values-v11\styles.xml \
 C:\Users\laptop\Documents\NetBeansProjects\epg\trunk\epg\res\values-v14\styles.xml \
+C:\Users\laptop\Documents\NetBeansProjects\epg\trunk\epg\bin\res\drawable\tv.png \
 C:\Users\laptop\Documents\NetBeansProjects\epg\trunk\epg\bin\res\drawable-hdpi\ic_launcher.png \
 C:\Users\laptop\Documents\NetBeansProjects\epg\trunk\epg\bin\res\drawable-mdpi\ic_launcher.png \
 C:\Users\laptop\Documents\NetBeansProjects\epg\trunk\epg\bin\res\drawable-xhdpi\ic_launcher.png \
