@@ -40,17 +40,16 @@ public class ChannelsBaseAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Channel ch = channels.get(position);
-        
         if (ch.getLogoResourceId(context) > 0) {
-        	/* Tem imagem */
-        	convertView = inflater.inflate(R.layout.channel_detail, null);
-        	ImageView iv = (ImageView) convertView.findViewById(R.id.tvImage);
+            /* Tem imagem */
+            convertView = inflater.inflate(R.layout.channel_detail, null);
+            ImageView iv = (ImageView) convertView.findViewById(R.id.tvImage);
             iv.setImageResource(ch.getLogoResourceId(context));
         } else {
-        	/* Mostra título */
-        	convertView = inflater.inflate(R.layout.channel_detail_text, null);
-        	TextView tv = (TextView) convertView.findViewById(R.id.tvTitle);
-        	tv.setText(ch.getName());
+            /* Mostra t√≠tulo */
+            convertView = inflater.inflate(R.layout.channel_detail_text, null);
+            TextView tv = (TextView) convertView.findViewById(R.id.tvTitle);
+            tv.setText(ch.getName());
         }
         return convertView;
     }
