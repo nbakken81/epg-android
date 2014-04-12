@@ -89,6 +89,7 @@ public class XmlParser {
             if (cacheDays == 0) { // se não há cache.... devolve já sem escrever nada
                 return inputStream;
             }
+            // guarda em disco... para cache
             FileOutputStream outputStream = context.openFileOutput(filename, Context.MODE_PRIVATE);
             int read;
             byte[] bytes = new byte[1024];
@@ -97,6 +98,7 @@ public class XmlParser {
             }
             outputStream.close();
         }
+        // retorna o ficheiro do disco
         return context.openFileInput(filename);
     }
 }
