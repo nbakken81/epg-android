@@ -20,7 +20,7 @@ public class ProgramsActivity extends Activity {
         setContentView(R.layout.program_list);
 
         String sigla = getIntent().getExtras().getString("sigla");
-        List<Program> programs = EPGDao.getPrograms(sigla);
+        List<Program> programs = EPGDao.getPrograms(context, sigla);
 
         lvPrograms = (ListView) findViewById(R.id.lvPrograms);
         lvPrograms.setAdapter(new ProgramsBaseAdapter(context, programs));

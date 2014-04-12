@@ -4,10 +4,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.TextView;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -22,25 +26,49 @@ public class ChannelsActivity extends Activity {
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         setContentView(R.layout.channel_list);
-        // busca canais
+        // busca canais e ordena-os
         final List<Channel> channels = EPGDao.getChannels(this);
-        // os mais importantes 1º: são os que têm logos
         Collections.sort(channels, new Comparator<Channel>() {
 
-            public int compare(Channel ch0, Channel ch1) {
-                Boolean existsLogo0 = ch0.getLogoResourceId(context) > 0;
-                Boolean existsLogo1 = ch1.getLogoResourceId(context) > 0;
-                return existsLogo1.compareTo(existsLogo0);
+            public int compare(Channel ch1, Channel ch2) {
+                Boolean hasLogo1 = ch1.getLogoResourceId(context) > 0;
+                Boolean hasLogo2 = ch2.getLogoResourceId(context) > 0;
+                return hasLogo2.compareTo(hasLogo1);
             }
         });
-        // prepara vista
-        GridView gridview = (GridView) findViewById(R.id.gvChannels);
-        gridview.setAdapter(new ChannelsBaseAdapter(this, channels));
-        gridview.setOnItemClickListener(new OnItemClickListener() {
+        // prepara grelha de canais
+        final GridView channelsGrid = (GridView) findViewById(R.id.gvChannels);
+        final ChannelsBaseAdapter channelsAdapter = new ChannelsBaseAdapter(this, channels);
+        channelsGrid.setAdapter(channelsAdapter);
+        channelsGrid.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 Intent intent = new Intent(ChannelsActivity.this, ProgramsActivity.class);
-                intent.putExtra("sigla", channels.get(position).getId());
+                intent.putExtra("sigla", channelsAdapter.getItem(position).getId());
                 startActivity(intent);
+            }
+        });
+        // prepara pesquisa rapida
+        TextView channelSearch = (TextView) findViewById(R.id.inputSearch);
+        channelSearch.addTextChangedListener(new TextWatcher() {
+
+            public void beforeTextChanged(CharSequence cs, int i, int i1, int i2) {
+            }
+
+            public void onTextChanged(CharSequence cs, int i, int i1, int i2) {
+                if (cs.toString().trim().isEmpty()) {
+                    channelsAdapter.setChannels(new ArrayList<Channel>(channels));
+                } else {
+                    channelsAdapter.setChannels(new ArrayList<Channel>());
+                    for (Channel channel : channels) {
+                        if (channel.getName().toLowerCase().startsWith(cs.toString())) {
+                            channelsAdapter.getChannels().add(channel);
+                        }
+                    }
+                }
+                channelsGrid.invalidateViews();
+            }
+
+            public void afterTextChanged(Editable edtbl) {
             }
         });
     }

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import java.util.ArrayList;
 import java.util.List;
 import pt.mobiledev.tvalarmes.domain.Channel;
 
@@ -17,7 +18,7 @@ public class ChannelsBaseAdapter extends BaseAdapter {
     Context context;
 
     public ChannelsBaseAdapter(final Context context, List<Channel> channels) {
-        this.channels = channels;
+        this.channels = new ArrayList<Channel>(channels);
         this.context = context;
         inflater = LayoutInflater.from(this.context);
     }
@@ -52,5 +53,13 @@ public class ChannelsBaseAdapter extends BaseAdapter {
             tv.setText(ch.getName());
         }
         return convertView;
+    }
+
+    public List<Channel> getChannels() {
+        return channels;
+    }
+
+    public void setChannels(List<Channel> channels) {
+        this.channels = channels;
     }
 }

@@ -52,7 +52,7 @@ public class EPGDao {
         return entries;
     }
 
-    public static List<Program> getPrograms(String... siglas) {
+    public static List<Program> getPrograms(Context context, String... siglas) {
         Set<Program> entries = new HashSet<Program>();
         try {
             URL url = new URL(BASE_URL + GET_CHANNEL_FUNCTION
