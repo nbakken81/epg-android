@@ -1,17 +1,25 @@
 package pt.mobiledev.tvalarmes;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import pt.mobiledev.tvalarmes.dao.EPGDao;
+import pt.mobiledev.tvalarmes.domain.Program;
+import pt.mobiledev.tvalarmes.util.Util;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import java.util.ArrayList;
-import java.util.List;
-import pt.mobiledev.tvalarmes.dao.EPGDao;
-import pt.mobiledev.tvalarmes.domain.Program;
-import pt.mobiledev.tvalarmes.util.Util;
 
 public class ProgramsActivity extends Activity {
 
@@ -55,6 +63,42 @@ public class ProgramsActivity extends Activity {
             }
 
             public void afterTextChanged(Editable edtbl) {
+            }
+        });
+        
+        // On Item Click Listener
+        lvPrograms.setOnItemClickListener(new OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+            	// Mostra popup de criação de alarme
+            	showPopup(programs.get(position));
+            }
+        });
+    }
+    
+    public void showPopup(final Program program) {
+    	// Criação do popup
+    	final Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.popup_setalarm);
+        dialog.setTitle("Criação de Alarme");
+        TextView text = (TextView) dialog.findViewById(R.id.tvAlarmPopup);
+        text.setText("Tem a certeza que deseja criar um alarme para " + program.getTitle() + "?");
+        dialog.show();
+        // Number Picker
+        final EditText et = (EditText) findViewById(R.id.editTextMinutesBefore);
+        // Botão criar
+        Button createAlarm = (Button) dialog.findViewById(R.id.btnCreateAlarm);
+        createAlarm.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            	Util.createAlarm(context, program, Integer.parseInt(et.getText().toString()));	
+            }
+        });
+        // Botão cancelar
+        Button cancelAlarm = (Button) dialog.findViewById(R.id.btnCancelAlarm);
+        cancelAlarm.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
             }
         });
     }
