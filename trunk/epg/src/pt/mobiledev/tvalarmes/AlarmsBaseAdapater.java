@@ -28,7 +28,7 @@ public class AlarmsBaseAdapater extends BaseAdapter {
     }
 
     @Override
-    public Program getItem(int position) {
+    public Alarm getItem(int position) {
         return alarms.get(position);
     }
 
@@ -46,7 +46,7 @@ public class AlarmsBaseAdapater extends BaseAdapter {
 //			
 //		}
         convertView = inflater.inflate(R.layout.alarm_detail, null);
-        detail(convertView, R.id.tvTitle, alarms.get(position).getTitle());
+        detail(convertView, R.id.tvTitle, alarms.get(position).getProgram().getTitle());
         return convertView;
     }
 

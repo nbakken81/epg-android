@@ -90,7 +90,7 @@ public class ProgramsActivity extends Activity {
         createAlarm.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-            	Util.createAlarm(context, program, Integer.parseInt(et.getText().toString()));	
+            	Util.createAlarm(context, program, Integer.parseInt(et.getText().toString()), false);	
             }
         });
         // Bot‹o cancelar
