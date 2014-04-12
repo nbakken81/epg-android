@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import org.xmlpull.v1.XmlPullParser;
 import static org.xmlpull.v1.XmlPullParser.END_TAG;
 import static org.xmlpull.v1.XmlPullParser.START_TAG;
@@ -80,16 +81,15 @@ public class XmlParser {
     }
 
     static InputStream getFileInputStream(Context context, String url, int cacheDays) throws IOException {
+        if (context == null || cacheDays <= 0) {
+            return new URL(url).openStream(); // se não há cache.... devolve já sem escrever nada
+        }
         String filename = url.substring(url.lastIndexOf("/") + 1);
         File file = new File(context.getFilesDir(), filename);
-        // vamos buscar o original e guardamos
+        // vamos buscar o original e guardamos para cache
         if (!file.exists()
-                || new Date().getTime() - file.lastModified() > TimeUnit.MILLISECONDS.convert(cacheDays, TimeUnit.DAYS)) {
+                || new Date().getTime() - file.lastModified() > MILLISECONDS.convert(cacheDays, TimeUnit.DAYS)) {
             InputStream inputStream = new URL(url).openStream();
-            if (cacheDays == 0) { // se não há cache.... devolve já sem escrever nada
-                return inputStream;
-            }
-            // guarda em disco... para cache
             FileOutputStream outputStream = context.openFileOutput(filename, Context.MODE_PRIVATE);
             int read;
             byte[] bytes = new byte[1024];
@@ -98,7 +98,6 @@ public class XmlParser {
             }
             outputStream.close();
         }
-        // retorna o ficheiro do disco
-        return context.openFileInput(filename);
+        return context.openFileInput(filename);  // retorna o ficheiro do disco
     }
 }
