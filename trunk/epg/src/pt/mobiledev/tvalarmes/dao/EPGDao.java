@@ -37,8 +37,7 @@ public class EPGDao {
         try {
             XmlPullParser parser = getParser(context, BASE_URL + GET_CHANNELS_FUNCTION, 30);
             while (parser.next() != END_TAG) {
-                if (parser.getEventType() == START_TAG
-                        && parser.getName().equals("Channel")) {
+                if (parser.getEventType() == START_TAG && parser.getName().equals("Channel")) {
                     // OK encontrou tag; controi canal!
                     Map<String, String> channelAsMap = readValuesAsMap(parser, "Name", "Sigla");
                     entries.add(new Channel(channelAsMap.get("Name"), channelAsMap.get("Sigla")));
