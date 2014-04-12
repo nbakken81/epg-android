@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -76,7 +78,16 @@ public class EPGDao {
         } catch (XmlPullParserException ex) {
             Logger.getLogger(EPGDao.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return new ArrayList<Program>(entries);
+
+        // ordenar programas alfabeticamente
+        List listEntries = new ArrayList<Program>(entries);
+        Collections.sort(listEntries, new Comparator<Program>() {
+
+            public int compare(Program p1, Program p2) {
+                return p1.getTitle().compareTo(p2.getTitle());
+            }
+        });
+        return listEntries;
     }
 
     public static String formatDate(Date date) {
