@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import pt.mobiledev.tvalarmes.dao.EPGDao;
 import pt.mobiledev.tvalarmes.domain.Program;
+import pt.mobiledev.tvalarmes.util.Util;
 
 public class ProgramsActivity extends Activity {
 
@@ -42,9 +43,10 @@ public class ProgramsActivity extends Activity {
                 } else {
                     programsAdapter.getPrograms().clear();
                     for (Program program : programs) {
-                        if (program.getTitle().toLowerCase().startsWith(cs.toString())) {
+                        String progName = Util.removeDiacriticalMarks(program.getTitle().toLowerCase());
+                        if (progName.startsWith(cs.toString())) {
                             programsAdapter.getPrograms().add(0, program);
-                        } else if (program.getTitle().toLowerCase().contains(cs.toString())) {
+                        } else if (progName.contains(cs.toString())) {
                             programsAdapter.getPrograms().add(program);
                         }
                     }

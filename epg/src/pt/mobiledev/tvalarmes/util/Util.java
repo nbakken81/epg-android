@@ -1,6 +1,8 @@
 package pt.mobiledev.tvalarmes.util;
 
 import android.content.Context;
+import java.text.Normalizer;
+import java.text.Normalizer.Form;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -21,5 +23,10 @@ public class Util {
         int checkExistence = context.getResources()
                 .getIdentifier(resourceName, packageName, context.getPackageName());
         return checkExistence;
+    }
+
+    public static String removeDiacriticalMarks(String string) {
+        return Normalizer.normalize(string, Form.NFD)
+                .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
     }
 }
