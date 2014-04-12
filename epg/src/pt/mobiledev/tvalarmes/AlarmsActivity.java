@@ -3,6 +3,7 @@ package pt.mobiledev.tvalarmes;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.view.View;
 import android.widget.ListView;
 
@@ -12,9 +13,9 @@ public class AlarmsActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        if (android.os.Build.VERSION.SDK_INT > 9) {
-//            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitAll().build());
-//        }
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitAll().build());
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alarm_list);
     }

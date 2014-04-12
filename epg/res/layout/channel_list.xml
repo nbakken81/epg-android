@@ -5,12 +5,12 @@
               android:orientation="vertical" 
               android:focusable="true" android:focusableInTouchMode="true">
     
-    <EditText android:id="@+id/inputSearch"
+    <EditText android:id="@+id/channelSearch"
               android:layout_width="fill_parent"
               android:layout_height="wrap_content"
               android:hint="Pesquisar canal.."
               android:inputType="textVisiblePassword"
-              android:nextFocusUp="@id/inputSearch" android:nextFocusLeft="@id/inputSearch" />
+              android:nextFocusUp="@id/channelSearch" android:nextFocusLeft="@id/channelSearch" />
     
     <GridView xmlns:android="http://schemas.android.com/apk/res/android" 
               android:id="@+id/gvChannels"

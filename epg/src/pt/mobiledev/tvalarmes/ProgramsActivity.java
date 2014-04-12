@@ -3,8 +3,11 @@ package pt.mobiledev.tvalarmes;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.ListView;
+import android.widget.TextView;
+import java.util.ArrayList;
 import java.util.List;
 import pt.mobiledev.tvalarmes.dao.EPGDao;
 import pt.mobiledev.tvalarmes.domain.Program;
@@ -20,13 +23,37 @@ public class ProgramsActivity extends Activity {
         setContentView(R.layout.program_list);
 
         String sigla = getIntent().getExtras().getString("sigla");
-        List<Program> programs = EPGDao.getPrograms(context, sigla);
+        final List<Program> programs = EPGDao.getPrograms(context, sigla);
 
         lvPrograms = (ListView) findViewById(R.id.lvPrograms);
-        lvPrograms.setAdapter(new ProgramsBaseAdapter(context, programs));
+        final ProgramsBaseAdapter programsAdapter = new ProgramsBaseAdapter(context, programs);
+        lvPrograms.setAdapter(programsAdapter);
 
-        for (Program program : programs) {
-            Log.v(this.getCallingPackage(), (program.getTitle()));
-        }
+        // prepara pesquisa rapida
+        TextView programsSearch = (TextView) findViewById(R.id.programSearch);
+        programsSearch.addTextChangedListener(new TextWatcher() {
+
+            public void beforeTextChanged(CharSequence cs, int i, int i1, int i2) {
+            }
+
+            public void onTextChanged(CharSequence cs, int i, int i1, int i2) {
+                if (cs.toString().trim().isEmpty()) {
+                    programsAdapter.setPrograms(new ArrayList<Program>(programs));
+                } else {
+                    programsAdapter.getPrograms().clear();
+                    for (Program program : programs) {
+                        if (program.getTitle().toLowerCase().startsWith(cs.toString())) {
+                            programsAdapter.getPrograms().add(0, program);
+                        } else if (program.getTitle().toLowerCase().contains(cs.toString())) {
+                            programsAdapter.getPrograms().add(program);
+                        }
+                    }
+                }
+                lvPrograms.invalidateViews();
+            }
+
+            public void afterTextChanged(Editable edtbl) {
+            }
+        });
     }
 }
