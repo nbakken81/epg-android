@@ -1,10 +1,22 @@
 package pt.mobiledev.tvalarmes.domain;
 
-public class Alarm extends Program {
+import java.io.Serializable;
 
+@SuppressWarnings("serial")
+public class Alarm extends Program implements Serializable {
+	
     int minutesBefore;
+    boolean repeats;
 
-    public int getMinutesBefore() {
+    public boolean isRepeats() {
+		return repeats;
+	}
+
+	public void setRepeats(boolean repeats) {
+		this.repeats = repeats;
+	}
+
+	public int getMinutesBefore() {
         return minutesBefore;
     }
 

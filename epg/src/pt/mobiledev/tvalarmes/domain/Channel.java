@@ -1,7 +1,7 @@
 package pt.mobiledev.tvalarmes.domain;
 
-import android.content.Context;
 import pt.mobiledev.tvalarmes.util.Util;
+import android.content.Context;
 
 public class Channel {
 

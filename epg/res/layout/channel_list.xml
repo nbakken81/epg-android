@@ -12,7 +12,7 @@
               android:inputType="textVisiblePassword"
               android:nextFocusUp="@id/channelSearch" android:nextFocusLeft="@id/channelSearch" />
     
-    <GridView xmlns:android="http://schemas.android.com/apk/res/android" 
+    <GridView
               android:id="@+id/gvChannels"
               android:layout_width="fill_parent" 
               android:layout_height="fill_parent"
