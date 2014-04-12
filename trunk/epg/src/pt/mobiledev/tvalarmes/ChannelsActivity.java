@@ -48,7 +48,7 @@ public class ChannelsActivity extends Activity {
             }
         });
         // prepara pesquisa rapida
-        TextView channelSearch = (TextView) findViewById(R.id.inputSearch);
+        TextView channelSearch = (TextView) findViewById(R.id.channelSearch);
         channelSearch.addTextChangedListener(new TextWatcher() {
 
             public void beforeTextChanged(CharSequence cs, int i, int i1, int i2) {
@@ -58,7 +58,7 @@ public class ChannelsActivity extends Activity {
                 if (cs.toString().trim().isEmpty()) {
                     channelsAdapter.setChannels(new ArrayList<Channel>(channels));
                 } else {
-                    channelsAdapter.setChannels(new ArrayList<Channel>());
+                    channelsAdapter.getChannels().clear();
                     for (Channel channel : channels) {
                         if (channel.getName().toLowerCase().startsWith(cs.toString())) {
                             channelsAdapter.getChannels().add(channel);

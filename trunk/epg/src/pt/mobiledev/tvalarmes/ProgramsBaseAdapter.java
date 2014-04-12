@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import java.util.ArrayList;
 import java.util.List;
 import pt.mobiledev.tvalarmes.domain.Program;
 
@@ -16,7 +17,7 @@ public class ProgramsBaseAdapter extends BaseAdapter {
     Context context;
 
     public ProgramsBaseAdapter(Context context, List<Program> programs) {
-        this.programs = programs;
+        this.programs = new ArrayList<Program>(programs);
         this.context = context;
         inflater = LayoutInflater.from(this.context);
     }
@@ -53,5 +54,13 @@ public class ProgramsBaseAdapter extends BaseAdapter {
         TextView tv = (TextView) v.findViewById(resId);
         tv.setText(text);
         return tv;
+    }
+
+    public List<Program> getPrograms() {
+        return programs;
+    }
+
+    public void setPrograms(List<Program> programs) {
+        this.programs = programs;
     }
 }
