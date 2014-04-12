@@ -1,7 +1,6 @@
 package pt.mobiledev.tvalarmes;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -21,8 +20,6 @@ import pt.mobiledev.tvalarmes.util.Util;
 
 public class ChannelsActivity extends Activity {
 
-    Context context = ChannelsActivity.this;
-
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -32,8 +29,8 @@ public class ChannelsActivity extends Activity {
         Collections.sort(channels, new Comparator<Channel>() {
 
             public int compare(Channel ch1, Channel ch2) {
-                Boolean hasLogo1 = ch1.getLogoResourceId(context) > 0;
-                Boolean hasLogo2 = ch2.getLogoResourceId(context) > 0;
+                Boolean hasLogo1 = ch1.getLogoResourceId(ChannelsActivity.this) > 0;
+                Boolean hasLogo2 = ch2.getLogoResourceId(ChannelsActivity.this) > 0;
                 return hasLogo2.compareTo(hasLogo1);
             }
         });
