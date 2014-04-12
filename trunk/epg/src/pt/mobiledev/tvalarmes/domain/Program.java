@@ -72,11 +72,15 @@ public class Program {
         return getTitle() + "(" + getChannelSigla() + ")";
     }
 
-    public int compareTo(Program other) {
-        return title.compareTo(other.getTitle());
+    @Override
+    public boolean equals(Object o) {
+        return getClass().isInstance(o) && ((Program) o).getTitle().equals(getTitle());
     }
 
-    public boolean equals(Program other) {
-        return title.equals(other.getTitle());
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 71 * hash + (this.title != null ? this.title.hashCode() : 0);
+        return hash;
     }
 }
