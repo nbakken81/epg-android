@@ -14,7 +14,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.xmlpull.v1.XmlPullParser;
 import static org.xmlpull.v1.XmlPullParser.END_DOCUMENT;
@@ -70,12 +69,12 @@ public class EPGDao {
                     Program program = new Program();
                     program.setId(channelAsMap.get("Id")); // TODO: porque não é um int?
                     program.setTitle(channelAsMap.get("Title"));
-                    Matcher matcher = programPattern.matcher(channelAsMap.get("Title"));
-                    if (matcher.matches()) {
-                        program.setTitle(matcher.group(1));
-                        program.setSeason(Integer.parseInt(matcher.group(4)));
-                        program.setEpisode(Integer.parseInt(matcher.group(6)));
-                    }
+//                    Matcher matcher = programPattern.matcher(channelAsMap.get("Title"));
+//                    if (matcher.matches()) {
+//                        program.setTitle(matcher.group(1));
+//                        program.setSeason(Integer.parseInt(matcher.group(4)));
+//                        program.setEpisode(Integer.parseInt(matcher.group(6)));
+//                    }
                     program.setChannelSigla(channelAsMap.get("ChannelSigla"));  // TODO buscar objeto canal?
                     // TODO  parse do resto?
                     entries.add(program);
