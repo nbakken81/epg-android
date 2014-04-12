@@ -9,6 +9,8 @@ import pt.mobiledev.tvalarmes.util.Util;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -83,14 +85,16 @@ public class ProgramsActivity extends Activity {
         TextView text = (TextView) dialog.findViewById(R.id.tvAlarmPopup);
         text.setText("Tem a certeza que deseja criar um alarme para " + program.getTitle() + "?");
         dialog.show();
-        // Number Picker
+        // Textbox para escolher os minutos de antecedência
         final EditText et = (EditText) findViewById(R.id.editTextMinutesBefore);
         // Botão criar
         Button createAlarm = (Button) dialog.findViewById(R.id.btnCreateAlarm);
         createAlarm.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(View v) {
-            	Util.createAlarm(context, program, Integer.parseInt(et.getText().toString()), false);	
+            public void onClick(View v) {                
+            	// Criar alarme
+            	Util.createAlarm(context, program, 0, false);
+            	dialog.dismiss();
             }
         });
         // Botão cancelar
