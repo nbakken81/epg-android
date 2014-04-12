@@ -1,12 +1,17 @@
 package pt.mobiledev.tvalarmes.dao;
 
+import android.content.Context;
 import android.util.Xml;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import org.xmlpull.v1.XmlPullParser;
 import static org.xmlpull.v1.XmlPullParser.END_TAG;
 import static org.xmlpull.v1.XmlPullParser.START_TAG;
@@ -15,13 +20,21 @@ import org.xmlpull.v1.XmlPullParserException;
 
 public class XmlParser {
 
-    public static XmlPullParser getParser(String url) throws IOException, XmlPullParserException {
-        InputStream in = new URL(url).openStream();
+    public static XmlPullParser getParser(Context context, String url, int cacheDays) throws IOException, XmlPullParserException {
+        InputStream inputStream = getFileInputStream(context, url, cacheDays);
         XmlPullParser parser = Xml.newPullParser();
         parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
-        parser.setInput(in, null);
+        parser.setInput(inputStream, null);
         parser.nextTag();
         return parser;
+    }
+
+    public static XmlPullParser getParser(Context context, String url) throws IOException, XmlPullParserException {
+        return getParser(context, url, 0);
+    }
+
+    public static XmlPullParser getParser(String url) throws IOException, XmlPullParserException {
+        return getParser(null, url, 0);
     }
 
     public static void skipTag(XmlPullParser parser) throws XmlPullParserException, IOException {
@@ -66,4 +79,24 @@ public class XmlParser {
         return result;
     }
 
+    static InputStream getFileInputStream(Context context, String url, int cacheDays) throws IOException {
+        String filename = url.substring(url.lastIndexOf("/") + 1);
+        File file = new File(context.getFilesDir(), filename);
+        // vamos buscar o original e guardamos
+        if (!file.exists()
+                || new Date().getTime() - file.lastModified() > TimeUnit.MILLISECONDS.convert(cacheDays, TimeUnit.DAYS)) {
+            InputStream inputStream = new URL(url).openStream();
+            if (cacheDays == 0) { // se não há cache.... devolve já sem escrever nada
+                return inputStream;
+            }
+            FileOutputStream outputStream = context.openFileOutput(filename, Context.MODE_PRIVATE);
+            int read;
+            byte[] bytes = new byte[1024];
+            while ((read = inputStream.read(bytes)) != -1) {
+                outputStream.write(bytes, 0, read);
+            }
+            outputStream.close();
+        }
+        return context.openFileInput(filename);
+    }
 }
