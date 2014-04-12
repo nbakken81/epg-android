@@ -1,8 +1,10 @@
 package pt.mobiledev.tvalarmes.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Program {
+@SuppressWarnings("serial")
+public class Program implements Serializable {
 
     int season, episode;
     String id, title;
