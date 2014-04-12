@@ -1,5 +1,6 @@
 package pt.mobiledev.tvalarmes.dao;
 
+import android.content.Context;
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -29,10 +30,10 @@ public class EPGDao {
     final static String GET_CHANNELS_FUNCTION = "GetChannelList";
     final static int daysInterval = 1;
 
-    public static List<Channel> getChannels() {
+    public static List<Channel> getChannels(Context context) {
         List<Channel> entries = new ArrayList<Channel>();
         try {
-            XmlPullParser parser = getParser(BASE_URL + GET_CHANNELS_FUNCTION);
+            XmlPullParser parser = getParser(context, BASE_URL + GET_CHANNELS_FUNCTION, 30);
             while (parser.next() != END_TAG) {
                 if (parser.getEventType() == START_TAG
                         && parser.getName().equals("Channel")) {

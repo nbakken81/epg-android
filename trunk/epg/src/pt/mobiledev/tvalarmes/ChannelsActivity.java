@@ -23,7 +23,7 @@ public class ChannelsActivity extends Activity {
         super.onCreate(icicle);
         setContentView(R.layout.channel_list);
         // busca canais
-        final List<Channel> channels = EPGDao.getChannels();
+        final List<Channel> channels = EPGDao.getChannels(this);
         // os mais importantes 1º: são os que têm logos
         Collections.sort(channels, new Comparator<Channel>() {
 
