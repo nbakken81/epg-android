@@ -17,6 +17,7 @@ import java.util.Comparator;
 import java.util.List;
 import pt.mobiledev.tvalarmes.dao.EPGDao;
 import pt.mobiledev.tvalarmes.domain.Channel;
+import pt.mobiledev.tvalarmes.util.Util;
 
 public class ChannelsActivity extends Activity {
 
@@ -60,7 +61,10 @@ public class ChannelsActivity extends Activity {
                 } else {
                     channelsAdapter.getChannels().clear();
                     for (Channel channel : channels) {
-                        if (channel.getName().toLowerCase().startsWith(cs.toString())) {
+                        String channelName = Util.removeDiacriticalMarks(channel.getName().toLowerCase());
+                        if (channelName.startsWith(cs.toString())) {
+                            channelsAdapter.getChannels().add(0, channel);
+                        } else if (channelName.contains(cs.toString())) {
                             channelsAdapter.getChannels().add(channel);
                         }
                     }

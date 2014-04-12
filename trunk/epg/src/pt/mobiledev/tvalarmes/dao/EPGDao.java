@@ -14,6 +14,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.xmlpull.v1.XmlPullParser;
 import static org.xmlpull.v1.XmlPullParser.END_DOCUMENT;
 import static org.xmlpull.v1.XmlPullParser.END_TAG;
@@ -30,7 +32,8 @@ public class EPGDao {
     final static String BASE_URL = "http://services.sapo.pt/EPG/";
     final static String GET_CHANNEL_FUNCTION = "GetChannelByDateInterval";
     final static String GET_CHANNELS_FUNCTION = "GetChannelList";
-    final static int daysInterval = 1;
+    final static Pattern programPattern = Pattern.compile("^(.*)( - )?(T([0-9]{1,2}) )?(- Ep. ([0-9]{1,3}))$");
+    final static int DAYS_INTERVAL = 1;
 
     public static List<Channel> getChannels(Context context) {
         List<Channel> entries = new ArrayList<Channel>();
@@ -56,8 +59,8 @@ public class EPGDao {
         try {
             URL url = new URL(BASE_URL + GET_CHANNEL_FUNCTION
                     + "?channelSigla=" + siglas[0]
-                    + "&startDate=" + formatDate(Util.subtractDays(daysInterval))
-                    + "&endDate=" + formatDate(Util.addDays(daysInterval)));
+                    + "&startDate=" + formatDate(Util.subtractDays(DAYS_INTERVAL))
+                    + "&endDate=" + formatDate(Util.addDays(DAYS_INTERVAL)));
             // TODO suporte a vários canais de uma só vez: útil para o scheduler
             XmlPullParser parser = getParser(url.toString());
             while (parser.next() != END_DOCUMENT) {
@@ -67,6 +70,12 @@ public class EPGDao {
                     Program program = new Program();
                     program.setId(channelAsMap.get("Id")); // TODO: porque não é um int?
                     program.setTitle(channelAsMap.get("Title"));
+                    Matcher matcher = programPattern.matcher(channelAsMap.get("Title"));
+                    if (matcher.matches()) {
+                        program.setTitle(matcher.group(1));
+                        program.setSeason(Integer.parseInt(matcher.group(4)));
+                        program.setEpisode(Integer.parseInt(matcher.group(6)));
+                    }
                     program.setChannelSigla(channelAsMap.get("ChannelSigla"));  // TODO buscar objeto canal?
                     // TODO  parse do resto?
                     entries.add(program);
