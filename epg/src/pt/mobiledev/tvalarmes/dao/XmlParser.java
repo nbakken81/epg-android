@@ -7,7 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Arrays;
+import static java.util.Arrays.asList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -58,14 +58,13 @@ public class XmlParser {
     public static Map<String, String> readValuesAsMap(XmlPullParser parser, String... tags) throws IOException, XmlPullParserException {
         Map<String, String> values = new HashMap<String, String>();
         while (parser.next() != END_TAG) {
-            if (parser.getEventType() != START_TAG) {
-                continue;
-            }
-            String tagName = parser.getName();
-            if (Arrays.asList(tags).contains(tagName)) {
-                values.put(tagName, readTextElement(parser));
-            } else {
-                skipTag(parser);
+            if (parser.getEventType() == START_TAG) {
+                String tagName = parser.getName();
+                if (asList(tags).contains(tagName)) {
+                    values.put(tagName, readTextElement(parser));
+                } else {
+                    skipTag(parser);
+                }
             }
         }
         return values;
