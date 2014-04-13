@@ -70,7 +70,7 @@ public class EPGDao {
                     // Constrói programa
                     Map<String, String> channelAsMap = readValuesAsMap(parser, "Id", "Title", "ChannelSigla");
                     Program program = new Program();
-                    program.setId(channelAsMap.get("Id")); // TODO: porque não é um int?
+                    program.setId(Integer.parseInt(channelAsMap.get("Id")));
                     program.setTitle(channelAsMap.get("Title"));
                     Matcher matcher = PROG_EP_SE_PATTERN.matcher(channelAsMap.get("Title"));
                     if (matcher.matches()) {
