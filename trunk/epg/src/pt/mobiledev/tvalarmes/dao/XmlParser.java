@@ -61,7 +61,7 @@ public class XmlParser {
             if (parser.getEventType() == START_TAG) {
                 String tagName = parser.getName();
                 if (asList(tags).contains(tagName)) {
-                    values.put(tagName, readTextElement(parser));
+                    values.put(tagName, readTextElement(parser).trim());
                 } else {
                     skipTag(parser);
                 }

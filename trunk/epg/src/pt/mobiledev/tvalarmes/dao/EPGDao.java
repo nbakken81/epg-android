@@ -2,6 +2,7 @@ package pt.mobiledev.tvalarmes.dao;
 
 import android.content.Context;
 import java.io.IOException;
+import static java.lang.Integer.parseInt;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.xmlpull.v1.XmlPullParser;
 import static org.xmlpull.v1.XmlPullParser.END_DOCUMENT;
@@ -31,7 +33,8 @@ public class EPGDao {
     final static String BASE_URL = "http://services.sapo.pt/EPG/";
     final static String GET_CHANNEL_FUNCTION = "GetChannelByDateInterval";
     final static String GET_CHANNELS_FUNCTION = "GetChannelList";
-    final static Pattern programPattern = Pattern.compile("^(.*)( - )?(T([0-9]{1,2}) )?(- Ep. ([0-9]{1,3}))$");
+    final static Pattern PROG_EP_PATTERN = Pattern.compile("^(.*) - Ep. ([0-9]{1,3})$");
+    final static Pattern PROG_EP_SE_PATTERN = Pattern.compile("^(.*) T([0-9]{1,2}) - Ep. ([0-9]{1,3})$");
     final static int DAYS_INTERVAL = 1;
 
     public static List<Channel> getChannels(Context context) {
@@ -69,12 +72,18 @@ public class EPGDao {
                     Program program = new Program();
                     program.setId(channelAsMap.get("Id")); // TODO: porque não é um int?
                     program.setTitle(channelAsMap.get("Title"));
-//                    Matcher matcher = programPattern.matcher(channelAsMap.get("Title"));
-//                    if (matcher.matches()) {
-//                        program.setTitle(matcher.group(1));
-//                        program.setSeason(Integer.parseInt(matcher.group(4)));
-//                        program.setEpisode(Integer.parseInt(matcher.group(6)));
-//                    }
+                    Matcher matcher = PROG_EP_SE_PATTERN.matcher(channelAsMap.get("Title"));
+                    if (matcher.matches()) {
+                        program.setTitle(matcher.group(1));
+                        program.setEpisode(matcher.group(2) == null ? 0 : parseInt(matcher.group(2)));
+                        program.setEpisode(matcher.group(3) == null ? 0 : parseInt(matcher.group(3)));
+                    } else {
+                        matcher = PROG_EP_PATTERN.matcher(channelAsMap.get("Title"));
+                        if (matcher.matches()) {
+                            program.setTitle(matcher.group(1));
+                            program.setSeason(matcher.group(2) == null ? 0 : parseInt(matcher.group(2)));
+                        }
+                    }
                     program.setChannelSigla(channelAsMap.get("ChannelSigla"));  // TODO buscar objeto canal?
                     // TODO  parse do resto?
                     entries.add(program);
