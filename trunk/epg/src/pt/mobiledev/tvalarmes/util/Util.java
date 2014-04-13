@@ -41,11 +41,9 @@ public class Util {
                 .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
     }
 
-    public static void createAlarm(Context context, Program program, int minutesBefore, boolean repeats) {
+    public static void createAlarm(Context context, Alarm alarm) {
         AlarmManager alarmManager;
         PendingIntent alarmIntent;
-        // Criar alarme
-        Alarm alarm = new Alarm(program, minutesBefore, repeats);
         // Iniciar Alarm Manager
         alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         //Criar Intent
