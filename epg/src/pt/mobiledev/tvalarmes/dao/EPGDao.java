@@ -22,8 +22,8 @@ import static org.xmlpull.v1.XmlPullParser.END_DOCUMENT;
 import static org.xmlpull.v1.XmlPullParser.END_TAG;
 import static org.xmlpull.v1.XmlPullParser.START_TAG;
 import org.xmlpull.v1.XmlPullParserException;
-import static pt.mobiledev.tvalarmes.dao.XmlParser.getParser;
-import static pt.mobiledev.tvalarmes.dao.XmlParser.readValuesAsMap;
+import static pt.mobiledev.tvalarmes.dao.XmlCachedParser.getParser;
+import static pt.mobiledev.tvalarmes.dao.XmlCachedParser.readValuesAsMap;
 import pt.mobiledev.tvalarmes.domain.Channel;
 import pt.mobiledev.tvalarmes.domain.Program;
 import pt.mobiledev.tvalarmes.util.Util;
@@ -73,19 +73,20 @@ public class EPGDao {
                     program.setId(Integer.parseInt(channelAsMap.get("Id")));
                     program.setTitle(channelAsMap.get("Title"));
                     Matcher matcher = PROG_EP_SE_PATTERN.matcher(channelAsMap.get("Title"));
+                    // nome programa Txy - Ep. kzy
                     if (matcher.matches()) {
                         program.setTitle(matcher.group(1));
                         program.setEpisode(matcher.group(2) == null ? 0 : parseInt(matcher.group(2)));
                         program.setEpisode(matcher.group(3) == null ? 0 : parseInt(matcher.group(3)));
                     } else {
+                        // nome programa Ep. kzy
                         matcher = PROG_EP_PATTERN.matcher(channelAsMap.get("Title"));
                         if (matcher.matches()) {
                             program.setTitle(matcher.group(1));
                             program.setSeason(matcher.group(2) == null ? 0 : parseInt(matcher.group(2)));
                         }
                     }
-                    program.setChannelSigla(channelAsMap.get("ChannelSigla"));  // TODO buscar objeto canal?
-                    // TODO  parse do resto?
+                    program.setChannelId(channelAsMap.get("ChannelSigla"));  // TODO buscar objeto canal?
                     entries.add(program);
                 }
             }

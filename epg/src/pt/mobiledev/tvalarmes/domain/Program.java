@@ -6,19 +6,18 @@ import java.util.Date;
 @SuppressWarnings("serial")
 public class Program implements Serializable {
 
-    int season, episode;
-    int id;
+    int id, season, episode;
+    String title, description, channelId;
     Date startDate;
-    String title, channelSigla;
 
     public Program() {
     }
 
-    public Program(int id, String title, Date startDate, String channelSigla) {
+    public Program(int id, String title, Date startDate, String channelId) {
         this.id = id;
         this.title = title;
         this.startDate = startDate;
-        this.channelSigla = channelSigla;
+        this.channelId = channelId;
     }
 
     public int getSeason() {
@@ -61,17 +60,17 @@ public class Program implements Serializable {
         this.startDate = startDate;
     }
 
-    public String getChannelSigla() {
-        return channelSigla;
+    public String getChannelId() {
+        return channelId;
     }
 
-    public void setChannelSigla(String channelSigla) {
-        this.channelSigla = channelSigla;
+    public void setChannelId(String channelId) {
+        this.channelId = channelId;
     }
 
     @Override
     public String toString() {
-        return getTitle() + "(" + getChannelSigla() + ")";
+        return getTitle() + "(" + getChannelId() + ")";
     }
 
     @Override

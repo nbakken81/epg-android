@@ -58,10 +58,9 @@ public class ChannelsActivity extends Activity {
                 } else {
                     channelsAdapter.getChannels().clear();
                     for (Channel channel : channels) {
-                        String channelName = Util.removeDiacriticalMarks(channel.getName().toLowerCase());
-                        if (channelName.startsWith(cs.toString())) {
+                        if (Util.relaxedStartsWith(channel.getName(), cs.toString())) {
                             channelsAdapter.getChannels().add(0, channel);
-                        } else if (channelName.contains(cs.toString())) {
+                        } else if (Util.relaxedContains(channel.getName(), cs.toString())) {
                             channelsAdapter.getChannels().add(channel);
                         }
                     }

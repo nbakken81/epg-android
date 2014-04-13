@@ -16,7 +16,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
-
 import pt.mobiledev.tvalarmes.dao.DatabaseHandler;
 import pt.mobiledev.tvalarmes.dao.EPGDao;
 import pt.mobiledev.tvalarmes.domain.Alarm;
@@ -53,10 +52,9 @@ public class ProgramsActivity extends Activity {
                 } else {
                     programsAdapter.getPrograms().clear();
                     for (Program program : programs) {
-                        String progName = Util.removeDiacriticalMarks(program.getTitle().toLowerCase());
-                        if (progName.startsWith(cs.toString())) {
+                        if (Util.relaxedStartsWith(program.getTitle(), cs.toString())) {
                             programsAdapter.getPrograms().add(0, program);
-                        } else if (progName.contains(cs.toString())) {
+                        } else if (Util.relaxedContains(program.getTitle(), cs.toString())) {
                             programsAdapter.getPrograms().add(program);
                         }
                     }
@@ -76,12 +74,14 @@ public class ProgramsActivity extends Activity {
             }
         });
     }
+
     /**
      * Criação do popup
-     * @param program 
+     *
+     * @param program
      */
     public void showPopup(final Program program) {
-        
+
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.popup_setalarm);
         dialog.setTitle("Criação de alarme");
@@ -98,7 +98,7 @@ public class ProgramsActivity extends Activity {
             	Alarm alarm = new Alarm(program, 0, false);
             	// Agenda alarme
                 Util.createAlarm(context, alarm);
-                // Adicionar � base de dados
+                // Adicionar à base de dados
                 DatabaseHandler db = new DatabaseHandler(context);
                 db.addAlarm(alarm);
                 dialog.dismiss();
