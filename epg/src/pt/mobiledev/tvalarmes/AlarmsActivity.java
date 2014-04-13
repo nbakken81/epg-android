@@ -1,5 +1,9 @@
 package pt.mobiledev.tvalarmes;
 
+import java.util.List;
+
+import pt.mobiledev.tvalarmes.dao.DatabaseHandler;
+import pt.mobiledev.tvalarmes.domain.Alarm;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -17,7 +21,9 @@ public class AlarmsActivity extends Activity {
 
 	ListView lvAlarms;
 	Context context;
-
+	List<Alarm> alarms;
+	DatabaseHandler db;
+	
 	@TargetApi(Build.VERSION_CODES.GINGERBREAD)
 	@SuppressLint("NewApi")
 	@Override
@@ -28,10 +34,26 @@ public class AlarmsActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.alarm_list);
 		context = getApplicationContext();
+		// Sacar a base de dados
+		db = new DatabaseHandler(this);
+
+        
+	}
+	
+	@Override
+	public void onResume() {
+	    super.onResume();
+        List<Alarm> alarms = db.getAllAlarms();  
+        // Listview de alarmes
+        if (alarms.size() > 0) {
+        	lvAlarms = (ListView) findViewById(R.id.lvAlarms);
+            AlarmsBaseAdapater alarmsAdapter = new AlarmsBaseAdapater(context, alarms);
+            lvAlarms.setAdapter(alarmsAdapter);
+        }
+
 	}
 
 	public void goToChannels(View view) {
-
 		Intent intent = new Intent(this, ChannelsActivity.class);
 		startActivity(intent);
 	}

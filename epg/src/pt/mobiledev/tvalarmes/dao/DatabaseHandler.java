@@ -16,7 +16,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final int DATABASE_VERSION = 1;
 	private static final String DATABASE_NAME = "TVAlarmes";
 	private static final String TABLE_ALARMS = "alarmes";
-
 	// Colunas
 	private static final String KEY_ID = "id";
 	private static final String KEY_TITLE = "title";
@@ -35,9 +34,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		String CREATE_ALARMS_TABLE = "CREATE TABLE " + TABLE_ALARMS + "(" + 
 				KEY_ID + " INTEGER PRIMARY KEY," + 
 				KEY_TITLE + " TEXT," + 
-				KEY_START_DATE + " DATETIME" + 
-				KEY_CHANNEL_SIGLA + " TEXT" +
-				KEY_MINUTES_BEFORE + " INTEGER" + 
+				KEY_START_DATE + " DATETIME," + 
+				KEY_CHANNEL_SIGLA + " TEXT," +
+				KEY_MINUTES_BEFORE + " INTEGER," + 
 				KEY_REPEATS + " BOOLEAN" + 
 				")";
 		db.execSQL(CREATE_ALARMS_TABLE);
@@ -55,7 +54,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		Program program = alarm.getProgram();
 		values.put(KEY_ID, program.getId());
 		values.put(KEY_TITLE, program.getTitle());
-		//        values.put(KEY_START_DATE, program.getStartDate());
+		values.put(KEY_START_DATE, "");
 		values.put(KEY_CHANNEL_SIGLA, program.getChannelSigla());
 		values.put(KEY_MINUTES_BEFORE, alarm.getMinutesBefore());
 		values.put(KEY_REPEATS, alarm.isRepeats());
@@ -66,7 +65,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	public List<Alarm> getAllAlarms() {
 		List<Alarm> alarmsList = new ArrayList<Alarm>();
-		String selectQuery = "SELECT  * FROM " + TABLE_ALARMS;
+		String selectQuery = "SELECT * FROM " + TABLE_ALARMS;
 		SQLiteDatabase db = this.getWritableDatabase();
 		Cursor cursor = db.rawQuery(selectQuery, null);
 
@@ -86,7 +85,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				alarmsList.add(alarm);
 			} while (cursor.moveToNext());
 		}
-
 		return alarmsList;
 	}
 }

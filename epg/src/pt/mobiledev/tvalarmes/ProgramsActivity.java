@@ -16,7 +16,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
+
+import pt.mobiledev.tvalarmes.dao.DatabaseHandler;
 import pt.mobiledev.tvalarmes.dao.EPGDao;
+import pt.mobiledev.tvalarmes.domain.Alarm;
 import pt.mobiledev.tvalarmes.domain.Program;
 import pt.mobiledev.tvalarmes.util.Util;
 
@@ -92,7 +95,12 @@ public class ProgramsActivity extends Activity {
         createAlarm.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {  // Criar alarme
-                Util.createAlarm(context, program, 0, false);
+            	Alarm alarm = new Alarm(program, 0, false);
+            	// Agenda alarme
+                Util.createAlarm(context, alarm);
+                // Adicionar ˆ base de dados
+                DatabaseHandler db = new DatabaseHandler(context);
+                db.addAlarm(alarm);
                 dialog.dismiss();
             }
         });

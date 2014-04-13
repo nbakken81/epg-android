@@ -7,14 +7,14 @@ import java.util.Date;
 public class Program implements Serializable {
 
     int season, episode;
-    String id, title;
+    int id;
     Date startDate;
-    String channelSigla;
+    String title, channelSigla;
 
     public Program() {
     }
 
-    public Program(String id, String title, Date startDate, String channelSigla) {
+    public Program(int id, String title, Date startDate, String channelSigla) {
         this.id = id;
         this.title = title;
         this.startDate = startDate;
@@ -37,11 +37,11 @@ public class Program implements Serializable {
         this.episode = episode;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
