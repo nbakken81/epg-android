@@ -46,7 +46,7 @@ public class AlarmsActivity extends Activity {
 		List<Alarm> alarms = db.getAllAlarms();  
 		// Listview de alarmes
 		lvAlarms = (ListView) findViewById(R.id.lvAlarms);
-		AlarmsBaseAdapater alarmsAdapter = new AlarmsBaseAdapater(context, alarms);
+		AlarmsBaseAdapater alarmsAdapter = new AlarmsBaseAdapater(context, alarms, db);
 		lvAlarms.setAdapter(alarmsAdapter);
 
 	}

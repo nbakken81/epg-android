@@ -3,6 +3,7 @@ package pt.mobiledev.tvalarmes;
 import java.util.ArrayList;
 import java.util.List;
 
+import pt.mobiledev.tvalarmes.dao.DatabaseHandler;
 import pt.mobiledev.tvalarmes.domain.Alarm;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -18,10 +19,12 @@ public class AlarmsBaseAdapater extends BaseAdapter {
 	ArrayList<Alarm> alarms = new ArrayList<Alarm>();
 	LayoutInflater inflater;
 	Context context;
-
-	public AlarmsBaseAdapater(Context context, List<Alarm> alarms) {
+	DatabaseHandler db;
+	
+	public AlarmsBaseAdapater(Context context, List<Alarm> alarms, DatabaseHandler db) {
 		this.alarms = new ArrayList<Alarm>(alarms);
 		this.context = context;
+		this.db = db;
 		inflater = LayoutInflater.from(this.context);
 	}
 
@@ -51,7 +54,12 @@ public class AlarmsBaseAdapater extends BaseAdapter {
 			@Override
 			public void onClick(View v) {
 				int position = (Integer) v.getTag();
+				Alarm alarm = alarms.get(position);
+				// Apagar da base de dados
+				db.deleteAlarm(alarm);
+				// Apagar da lista
 				alarms.remove(position);
+				// Actualizar lista
 				notifyDataSetChanged();
 			}
 		});
