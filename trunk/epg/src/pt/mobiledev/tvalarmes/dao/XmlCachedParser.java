@@ -19,7 +19,7 @@ import static org.xmlpull.v1.XmlPullParser.START_TAG;
 import static org.xmlpull.v1.XmlPullParser.TEXT;
 import org.xmlpull.v1.XmlPullParserException;
 
-public class XmlParser {
+public class XmlCachedParser {
 
     public static XmlPullParser getParser(Context context, String url, int cacheDays) throws IOException, XmlPullParserException {
         InputStream inputStream = getFileInputStream(context, url, cacheDays);

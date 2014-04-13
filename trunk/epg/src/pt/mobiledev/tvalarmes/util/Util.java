@@ -15,7 +15,6 @@ import java.util.Date;
 import pt.mobiledev.tvalarmes.AlarmsActivity;
 import pt.mobiledev.tvalarmes.R;
 import pt.mobiledev.tvalarmes.domain.Alarm;
-import pt.mobiledev.tvalarmes.domain.Program;
 
 public class Util {
 
@@ -39,6 +38,14 @@ public class Util {
     public static String removeDiacriticalMarks(String string) {
         return Normalizer.normalize(string, Form.NFD)
                 .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+    }
+
+    public static boolean relaxedStartsWith(String s1, String s2) {
+        return removeDiacriticalMarks(s1.trim().toLowerCase()).startsWith(removeDiacriticalMarks(s2.trim().toLowerCase()));
+    }
+
+    public static boolean relaxedContains(String s1, String s2) {
+        return removeDiacriticalMarks(s1.trim().toLowerCase()).contains(removeDiacriticalMarks(s2.trim().toLowerCase()));
     }
 
     public static void createAlarm(Context context, Alarm alarm) {
