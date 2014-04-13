@@ -23,7 +23,7 @@ public class AlarmsActivity extends Activity {
 	Context context;
 	List<Alarm> alarms;
 	DatabaseHandler db;
-	
+
 	@TargetApi(Build.VERSION_CODES.GINGERBREAD)
 	@SuppressLint("NewApi")
 	@Override
@@ -37,19 +37,17 @@ public class AlarmsActivity extends Activity {
 		// Sacar a base de dados
 		db = new DatabaseHandler(this);
 
-        
+
 	}
-	
+
 	@Override
 	public void onResume() {
-	    super.onResume();
-        List<Alarm> alarms = db.getAllAlarms();  
-        // Listview de alarmes
-        if (alarms.size() > 0) {
-        	lvAlarms = (ListView) findViewById(R.id.lvAlarms);
-            AlarmsBaseAdapater alarmsAdapter = new AlarmsBaseAdapater(context, alarms);
-            lvAlarms.setAdapter(alarmsAdapter);
-        }
+		super.onResume();
+		List<Alarm> alarms = db.getAllAlarms();  
+		// Listview de alarmes
+		lvAlarms = (ListView) findViewById(R.id.lvAlarms);
+		AlarmsBaseAdapater alarmsAdapter = new AlarmsBaseAdapater(context, alarms);
+		lvAlarms.setAdapter(alarmsAdapter);
 
 	}
 

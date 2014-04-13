@@ -87,4 +87,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		}
 		return alarmsList;
 	}
+	
+	public void deleteAlarm(Alarm alarm) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Program program = alarm.getProgram();
+        db.delete(TABLE_ALARMS, KEY_ID + " = ?",
+                new String[] { String.valueOf(program.getId()) });
+        db.close();
+    }
 }
