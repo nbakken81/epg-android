@@ -56,11 +56,11 @@ public class EPGDao {
         return entries;
     }
 
-    public static List<Program> getPrograms(Context context, String... siglas) {
+    public static List<Program> getPrograms(Context context, Channel... channels) {
         Set<Program> entries = new HashSet<Program>();
         try {
             URL url = new URL(BASE_URL + GET_CHANNEL_FUNCTION
-                    + "?channelSigla=" + siglas[0]
+                    + "?channelSigla=" + channels[0].getId()
                     + "&startDate=" + formatDate(Util.subtractDays(DAYS_INTERVAL))
                     + "&endDate=" + formatDate(Util.addDays(DAYS_INTERVAL)));
             // TODO suporte a vários canais de uma só vez: útil para o scheduler
