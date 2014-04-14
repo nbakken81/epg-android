@@ -41,7 +41,7 @@ public class ChannelsActivity extends Activity {
         channelsGrid.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 Intent intent = new Intent(ChannelsActivity.this, ProgramsActivity.class);
-                intent.putExtra("sigla", channelsAdapter.getItem(position).getId());
+                intent.putExtra("channel", channelsAdapter.getItem(position));
                 startActivity(intent);
             }
         });

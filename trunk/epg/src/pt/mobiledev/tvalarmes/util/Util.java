@@ -3,6 +3,7 @@ package pt.mobiledev.tvalarmes.util;
 import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.SystemClock;
@@ -57,12 +58,21 @@ public class Util {
         Intent intent = new Intent(context, AlarmReceiver.class);
         // Adicionar alarme ao intent
         intent.putExtra("alarm", alarm);
-
         alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
         // Tocar o alarme dois segundos depois de ser criado
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                 SystemClock.elapsedRealtime()
                 + 2 * 1000, alarmIntent);
+    }
+
+    public static class AlarmReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Corre uma notifição com o alarme sacado do intent
+            Alarm alarm = (Alarm) intent.getSerializableExtra("alarm");
+            Util.runNotification(context, alarm);
+        }
     }
 
     public static void runNotification(Context context, Alarm alarm) {
@@ -73,6 +83,7 @@ public class Util {
                 break;
             case 1:
                 alarmText = "Começa dentro de 1 minuto.";
+                break;
             default:
                 alarmText = "Começa dentro de " + alarm.getMinutesBefore() + " minutos.";
                 break;

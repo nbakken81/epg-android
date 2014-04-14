@@ -19,6 +19,7 @@ import java.util.List;
 import pt.mobiledev.tvalarmes.dao.DatabaseHandler;
 import pt.mobiledev.tvalarmes.dao.EPGDao;
 import pt.mobiledev.tvalarmes.domain.Alarm;
+import pt.mobiledev.tvalarmes.domain.Channel;
 import pt.mobiledev.tvalarmes.domain.Program;
 import pt.mobiledev.tvalarmes.util.Util;
 
@@ -31,10 +32,8 @@ public class ProgramsActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.program_list);
-
-        String sigla = getIntent().getExtras().getString("sigla");
-        final List<Program> programs = EPGDao.getPrograms(context, sigla);
-
+        Channel selectedChannel = (Channel) getIntent().getExtras().get("channel");
+        final List<Program> programs = EPGDao.getPrograms(context, selectedChannel);
         lvPrograms = (ListView) findViewById(R.id.lvPrograms);
         final ProgramsBaseAdapter programsAdapter = new ProgramsBaseAdapter(context, programs);
         lvPrograms.setAdapter(programsAdapter);
@@ -95,8 +94,8 @@ public class ProgramsActivity extends Activity {
         createAlarm.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {  // Criar alarme
-            	Alarm alarm = new Alarm(program, 0, false);
-            	// Agenda alarme
+                Alarm alarm = new Alarm(program, 0, false);
+                // Agenda alarme
                 Util.createAlarm(context, alarm);
                 // Adicionar à base de dados
                 DatabaseHandler db = new DatabaseHandler(context);

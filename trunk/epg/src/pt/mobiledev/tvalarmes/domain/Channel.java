@@ -1,9 +1,10 @@
 package pt.mobiledev.tvalarmes.domain;
 
-import pt.mobiledev.tvalarmes.util.Util;
 import android.content.Context;
+import java.io.Serializable;
+import pt.mobiledev.tvalarmes.util.Util;
 
-public class Channel {
+public class Channel implements Serializable {
 
     String name, id;
 
