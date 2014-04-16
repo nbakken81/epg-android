@@ -49,16 +49,11 @@ public class Util {
         return removeDiacriticalMarks(s1.trim().toLowerCase()).contains(removeDiacriticalMarks(s2.trim().toLowerCase()));
     }
 
-    public static void createAlarm(Context context, Alarm alarm) {
-        AlarmManager alarmManager;
-        PendingIntent alarmIntent;
-        // Iniciar Alarm Manager
-        alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        //Criar Intent
-        Intent intent = new Intent(context, AlarmReceiver.class);
-        // Adicionar alarme ao intent
-        intent.putExtra("alarm", alarm);
-        alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+    public static void scheduleAlarm(Context context, Alarm alarm) {
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE); // iniciar alarm Manager
+        Intent intent = new Intent(context, AlarmReceiver.class); // criar Intent
+        intent.putExtra("alarm", alarm); // Adicionar alarme ao intent
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
         // Tocar o alarme dois segundos depois de ser criado
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                 SystemClock.elapsedRealtime()

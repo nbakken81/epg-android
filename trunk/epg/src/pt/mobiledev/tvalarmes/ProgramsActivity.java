@@ -11,7 +11,6 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import java.util.ArrayList;
@@ -88,7 +87,7 @@ public class ProgramsActivity extends Activity {
         text.setText("Tem a certeza que deseja criar um alarme para " + program.getTitle() + "?");
         dialog.show();
         // Textbox para escolher os minutos de antecedência
-        final EditText et = (EditText) findViewById(R.id.editTextMinutesBefore);
+        // final EditText et = (EditText) findViewById(R.id.editTextMinutesBefore);
         // Botão criar
         Button createAlarm = (Button) dialog.findViewById(R.id.btnCreateAlarm);
         createAlarm.setOnClickListener(new OnClickListener() {
@@ -96,7 +95,7 @@ public class ProgramsActivity extends Activity {
             public void onClick(View v) {  // Criar alarme
                 Alarm alarm = new Alarm(program, 0, false);
                 // Agenda alarme
-                Util.createAlarm(context, alarm);
+                Util.scheduleAlarm(context, alarm);
                 // Adicionar à base de dados
                 DatabaseHandler db = new DatabaseHandler(context);
                 db.addAlarm(alarm);
