@@ -31,7 +31,7 @@ import pt.mobiledev.tvalarmes.util.Util;
 public class EPGDao {
 
     final static String BASE_URL = "http://services.sapo.pt/EPG/";
-    final static String GET_CHANNEL_FUNCTION = "GetChannelByDateInterval";
+    final static String GET_CHANNEL_FUNCTION = "GetChannelListByDateInterval";
     final static String GET_CHANNELS_FUNCTION = "GetChannelList";
     final static Pattern PROG_EP_PATTERN = Pattern.compile("^(.*) - Ep. ([0-9]{1,3})$");
     final static Pattern PROG_EP_SE_PATTERN = Pattern.compile("^(.*) T([0-9]{1,2}) - Ep. ([0-9]{1,3})$");
@@ -60,7 +60,7 @@ public class EPGDao {
         Set<Program> entries = new HashSet<Program>();
         try {
             URL url = new URL(BASE_URL + GET_CHANNEL_FUNCTION
-                    + "?channelSigla=" + channels[0].getId()
+                    + "?channelSiglas=" + formatSiglas(channels)
                     + "&startDate=" + formatDate(Util.subtractDays(DAYS_INTERVAL))
                     + "&endDate=" + formatDate(Util.addDays(DAYS_INTERVAL)));
             // TODO suporte a vários canais de uma só vez: útil para o scheduler
@@ -73,13 +73,13 @@ public class EPGDao {
                     program.setId(Integer.parseInt(channelAsMap.get("Id")));
                     program.setTitle(channelAsMap.get("Title"));
                     Matcher matcher = PROG_EP_SE_PATTERN.matcher(channelAsMap.get("Title"));
-                    // nome programa Txy - Ep. kzy
+                    // "nome programa Txy - Ep. kzy"
                     if (matcher.matches()) {
                         program.setTitle(matcher.group(1));
                         program.setEpisode(matcher.group(2) == null ? 0 : parseInt(matcher.group(2)));
                         program.setEpisode(matcher.group(3) == null ? 0 : parseInt(matcher.group(3)));
                     } else {
-                        // nome programa Ep. kzy
+                        // "nome programa Ep. kzy"
                         matcher = PROG_EP_PATTERN.matcher(channelAsMap.get("Title"));
                         if (matcher.matches()) {
                             program.setTitle(matcher.group(1));
@@ -101,6 +101,9 @@ public class EPGDao {
         Collections.sort(listEntries, new Comparator<Program>() {
 
             public int compare(Program p1, Program p2) {
+                if (!p1.getChannelId().equals(p2.getChannelId())) {
+                    return p1.getChannelId().compareTo(p2.getChannelId());
+                }
                 return p1.getTitle().compareTo(p2.getTitle());
             }
         });
@@ -111,5 +114,13 @@ public class EPGDao {
         SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault());
         String encondedDate = dateFormatter.format(date);
         return encondedDate.replace(" ", "+").replace(":", "%3A");
+    }
+
+    public static String formatSiglas(Channel[] channels) {
+        StringBuilder siglasBuilder = new StringBuilder();
+        for (Channel ch : channels) {
+            siglasBuilder.append(ch.getId()).append(",");
+        }
+        return siglasBuilder.toString();
     }
 }
