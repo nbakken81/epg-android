@@ -2,8 +2,10 @@ package pt.mobiledev.tvalarmes.dao;
 
 import android.content.Context;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import static java.lang.Integer.parseInt;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,12 +13,14 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.apache.http.protocol.HTTP;
 import org.xmlpull.v1.XmlPullParser;
 import static org.xmlpull.v1.XmlPullParser.END_DOCUMENT;
 import static org.xmlpull.v1.XmlPullParser.END_TAG;
@@ -33,6 +37,7 @@ public class EPGDao {
     final static String BASE_URL = "http://services.sapo.pt/EPG/";
     final static String GET_CHANNEL_FUNCTION = "GetChannelListByDateInterval";
     final static String GET_CHANNELS_FUNCTION = "GetChannelList";
+    final static SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
     final static Pattern PROG_EP_PATTERN = Pattern.compile("^(.*) - Ep. ([0-9]{1,3})$");
     final static Pattern PROG_EP_SE_PATTERN = Pattern.compile("^(.*) T([0-9]{1,2}) - Ep. ([0-9]{1,3})$");
     final static int DAYS_INTERVAL = 1;
@@ -111,9 +116,11 @@ public class EPGDao {
     }
 
     public static String formatDate(Date date) {
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault());
-        String encondedDate = dateFormatter.format(date);
-        return encondedDate.replace(" ", "+").replace(":", "%3A");
+        try {
+            return URLEncoder.encode(dateFormatter.format(date), HTTP.UTF_8);
+        } catch (UnsupportedEncodingException ex) {
+            return null;
+        }
     }
 
     public static String formatSiglas(Channel[] channels) {
