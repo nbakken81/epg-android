@@ -54,10 +54,9 @@ public class Util {
         Intent intent = new Intent(context, AlarmReceiver.class); // criar Intent
         intent.putExtra("alarm", alarm); // Adicionar alarme ao intent
         PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
-        // Tocar o alarme dois segundos depois de ser criado
-        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                SystemClock.elapsedRealtime()
-                + 2 * 1000, alarmIntent);
+        // Agendar alarme
+        long milliseconds = alarm.getProgram().getStartDate().getTime();
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, milliseconds, alarmIntent);
     }
 
     public static class AlarmReceiver extends BroadcastReceiver {
