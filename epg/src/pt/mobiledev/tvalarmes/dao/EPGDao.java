@@ -35,7 +35,7 @@ import pt.mobiledev.tvalarmes.util.Util;
 public class EPGDao {
 
     final static String BASE_URL = "http://services.sapo.pt/EPG/";
-    final static String GET_CHANNEL_FUNCTION = "GetChannelListByDateInterval";
+    final static String GET_PROGRAMS_FUNCTION = "GetChannelListByDateInterval";
     final static String GET_CHANNELS_FUNCTION = "GetChannelList";
     final static SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
     final static Pattern PROG_EP_PATTERN = Pattern.compile("^(.*) - Ep. ([0-9]{1,3})$");
@@ -64,7 +64,7 @@ public class EPGDao {
     public static List<Program> getPrograms(Context context, Channel... channels) {
         Set<Program> entries = new HashSet<Program>();
         try {
-            URL url = new URL(BASE_URL + GET_CHANNEL_FUNCTION
+            URL url = new URL(BASE_URL + GET_PROGRAMS_FUNCTION
                     + "?channelSiglas=" + formatSiglas(channels)
                     + "&startDate=" + formatDate(Util.subtractDays(DAYS_INTERVAL))
                     + "&endDate=" + formatDate(Util.addDays(DAYS_INTERVAL)));
