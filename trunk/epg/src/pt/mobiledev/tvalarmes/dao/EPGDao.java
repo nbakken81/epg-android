@@ -73,7 +73,7 @@ public class EPGDao {
             while (parser.next() != END_DOCUMENT) {
                 if (parser.getEventType() == START_TAG && parser.getName().equals("Program")) {
                     // Constrói programa
-                    Map<String, String> channelAsMap = readValuesAsMap(parser, "Id", "Title", "ChannelSigla");
+                    Map<String, String> channelAsMap = readValuesAsMap(parser, "Id", "Title", "ChannelSigla", "Date");
                     Program program = new Program();
                     program.setId(Integer.parseInt(channelAsMap.get("Id")));
                     program.setTitle(channelAsMap.get("Title"));
