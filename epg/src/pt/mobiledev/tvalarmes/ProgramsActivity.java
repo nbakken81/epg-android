@@ -24,10 +24,10 @@ import pt.mobiledev.tvalarmes.domain.Program;
 import pt.mobiledev.tvalarmes.util.Util;
 
 public class ProgramsActivity extends Activity {
-
+    
     ListView lvPrograms;
     Context context = ProgramsActivity.this;
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,10 +41,10 @@ public class ProgramsActivity extends Activity {
         // prepara pesquisa rápida
         TextView programsSearch = (TextView) findViewById(R.id.programSearch);
         programsSearch.addTextChangedListener(new TextWatcher() {
-
+            
             public void beforeTextChanged(CharSequence cs, int i, int i1, int i2) {
             }
-
+            
             public void onTextChanged(CharSequence cs, int i, int i1, int i2) {
                 if (cs.toString().trim().isEmpty()) {
                     programsAdapter.setPrograms(new ArrayList<Program>(programs));
@@ -60,7 +60,7 @@ public class ProgramsActivity extends Activity {
                 }
                 lvPrograms.invalidateViews();
             }
-
+            
             public void afterTextChanged(Editable edtbl) {
             }
         });
@@ -80,7 +80,7 @@ public class ProgramsActivity extends Activity {
      * @param program
      */
     public void showPopup(final Program program) {
-
+        
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.popup_setalarm);
         dialog.setTitle("Criação de alarme");
