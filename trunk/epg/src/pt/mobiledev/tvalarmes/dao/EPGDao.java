@@ -92,6 +92,7 @@ public class EPGDao {
                         }
                     }
                     program.setChannelId(channelAsMap.get("ChannelSigla"));  // TODO buscar objeto canal?
+                    
                     entries.add(program);
                 }
             }
