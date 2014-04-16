@@ -69,6 +69,18 @@ public class Util {
             Util.runNotification(context, alarm);
         }
     }
+    
+    public static class BackgroundTaskReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Sacar a lista de todos os alarmes
+        	// Sacar a programação dos canais com alarmes
+        	// Confirmar se existe algum alarme a adicionar
+        	// Para correr cenas em background na app usa-se o asynctask, mas acho neste caso não é necessário.
+        }
+    }
+
 
     public static void runNotification(Context context, Alarm alarm) {
         String alarmText;
