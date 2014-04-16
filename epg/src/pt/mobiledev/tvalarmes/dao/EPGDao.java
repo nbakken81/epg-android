@@ -1,11 +1,17 @@
 package pt.mobiledev.tvalarmes.dao;
 
-import android.content.Context;
+import static java.lang.Integer.parseInt;
+import static org.xmlpull.v1.XmlPullParser.END_DOCUMENT;
+import static org.xmlpull.v1.XmlPullParser.END_TAG;
+import static org.xmlpull.v1.XmlPullParser.START_TAG;
+import static pt.mobiledev.tvalarmes.dao.XmlCachedParser.getParser;
+import static pt.mobiledev.tvalarmes.dao.XmlCachedParser.readValuesAsMap;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import static java.lang.Integer.parseInt;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,17 +26,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import org.apache.http.protocol.HTTP;
 import org.xmlpull.v1.XmlPullParser;
-import static org.xmlpull.v1.XmlPullParser.END_DOCUMENT;
-import static org.xmlpull.v1.XmlPullParser.END_TAG;
-import static org.xmlpull.v1.XmlPullParser.START_TAG;
 import org.xmlpull.v1.XmlPullParserException;
-import static pt.mobiledev.tvalarmes.dao.XmlCachedParser.getParser;
-import static pt.mobiledev.tvalarmes.dao.XmlCachedParser.readValuesAsMap;
+
 import pt.mobiledev.tvalarmes.domain.Channel;
 import pt.mobiledev.tvalarmes.domain.Program;
 import pt.mobiledev.tvalarmes.util.Util;
+import android.content.Context;
 
 public class EPGDao {
 
@@ -42,7 +46,7 @@ public class EPGDao {
     final static Pattern PROG_EP_SE_PATTERN = Pattern.compile("^(.*) T([0-9]{1,2}) - Ep. ([0-9]{1,3})$");
     final static int DAYS_INTERVAL = 1;
 
-    public static List<Channel> getChannels(Context context) {
+    public static List<Channel> getChannels(Context context) {    	
         List<Channel> entries = new ArrayList<Channel>();
         try {
             XmlPullParser parser = getParser(context, BASE_URL + GET_CHANNELS_FUNCTION, 30);
@@ -73,7 +77,7 @@ public class EPGDao {
             while (parser.next() != END_DOCUMENT) {
                 if (parser.getEventType() == START_TAG && parser.getName().equals("Program")) {
                     // Constrói programa
-                    Map<String, String> channelAsMap = readValuesAsMap(parser, "Id", "Title", "ChannelSigla", "Date");
+                    Map<String, String> channelAsMap = readValuesAsMap(parser, "Id", "Title", "ChannelSigla", "StartTime");
                     Program program = new Program();
                     program.setId(Integer.parseInt(channelAsMap.get("Id")));
                     program.setTitle(channelAsMap.get("Title"));
@@ -92,7 +96,8 @@ public class EPGDao {
                         }
                     }
                     program.setChannelId(channelAsMap.get("ChannelSigla"));  // TODO buscar objeto canal?
-                    
+                    Date startDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).parse(channelAsMap.get("StartTime"));
+                    program.setStartDate(startDate);
                     entries.add(program);
                 }
             }
@@ -100,7 +105,9 @@ public class EPGDao {
             Logger.getLogger(EPGDao.class.getName()).log(Level.SEVERE, null, ex);
         } catch (XmlPullParserException ex) {
             Logger.getLogger(EPGDao.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } catch (ParseException ex) {
+        	Logger.getLogger(EPGDao.class.getName()).log(Level.SEVERE, null, ex);
+		}
 
         // ordenar programas alfabeticamente
         List listEntries = new ArrayList<Program>(entries);
