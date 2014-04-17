@@ -15,7 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
-import pt.mobiledev.tvalarmes.dao.DatabaseHandler;
+import pt.mobiledev.tvalarmes.dao.AlarmDao;
 import pt.mobiledev.tvalarmes.dao.EPGDao;
 import pt.mobiledev.tvalarmes.domain.Alarm;
 import pt.mobiledev.tvalarmes.domain.Channel;
@@ -96,8 +96,8 @@ public class ProgramsActivity extends Activity {
             public void onClick(View v) {  // Criar alarme
                 Alarm alarm = new Alarm(program, 0, false);
                 AlarmNotifier.schedule(context, alarm); // agenda alarme
-                DatabaseHandler db = new DatabaseHandler(context); // adiciona à base de dados
-                db.addAlarm(alarm);
+                AlarmDao db = new AlarmDao(context); // adiciona à base de dados
+                db.add(alarm);
                 dialog.dismiss();
             }
         });
