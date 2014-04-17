@@ -1,14 +1,9 @@
 package pt.mobiledev.tvalarmes.dao;
 
-import static java.lang.Integer.parseInt;
-import static org.xmlpull.v1.XmlPullParser.END_DOCUMENT;
-import static org.xmlpull.v1.XmlPullParser.END_TAG;
-import static org.xmlpull.v1.XmlPullParser.START_TAG;
-import static pt.mobiledev.tvalarmes.dao.XmlCachedParser.getParser;
-import static pt.mobiledev.tvalarmes.dao.XmlCachedParser.readValuesAsMap;
-
+import android.content.Context;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import static java.lang.Integer.parseInt;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.ParseException;
@@ -26,27 +21,29 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.apache.http.protocol.HTTP;
 import org.xmlpull.v1.XmlPullParser;
+import static org.xmlpull.v1.XmlPullParser.END_DOCUMENT;
+import static org.xmlpull.v1.XmlPullParser.END_TAG;
+import static org.xmlpull.v1.XmlPullParser.START_TAG;
 import org.xmlpull.v1.XmlPullParserException;
-
+import static pt.mobiledev.tvalarmes.dao.XmlCachedParser.getParser;
+import static pt.mobiledev.tvalarmes.dao.XmlCachedParser.readValuesAsMap;
 import pt.mobiledev.tvalarmes.domain.Channel;
 import pt.mobiledev.tvalarmes.domain.Program;
 import pt.mobiledev.tvalarmes.util.Util;
-import android.content.Context;
 
 public class EPGDao {
 
     final static String BASE_URL = "http://services.sapo.pt/EPG/";
     final static String GET_PROGRAMS_FUNCTION = "GetChannelListByDateInterval";
     final static String GET_CHANNELS_FUNCTION = "GetChannelList";
-    final static SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+    final static SimpleDateFormat MEO_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
     final static Pattern PROG_EP_PATTERN = Pattern.compile("^(.*) - Ep. ([0-9]{1,3})$");
     final static Pattern PROG_EP_SE_PATTERN = Pattern.compile("^(.*) T([0-9]{1,2}) - Ep. ([0-9]{1,3})$");
     final static int DAYS_INTERVAL = 1;
 
-    public static List<Channel> getChannels(Context context) {    	
+    public static List<Channel> getChannels(Context context) {
         List<Channel> entries = new ArrayList<Channel>();
         try {
             XmlPullParser parser = getParser(context, BASE_URL + GET_CHANNELS_FUNCTION, 30);
@@ -96,8 +93,7 @@ public class EPGDao {
                         }
                     }
                     program.setChannelId(channelAsMap.get("ChannelSigla"));  // TODO buscar objeto canal?
-                    Date startDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).parse(channelAsMap.get("StartTime"));
-                    program.setStartDate(startDate);
+                    program.setStartDate(MEO_DATE_FORMAT.parse(channelAsMap.get("StartTime")));
                     entries.add(program);
                 }
             }
@@ -106,8 +102,8 @@ public class EPGDao {
         } catch (XmlPullParserException ex) {
             Logger.getLogger(EPGDao.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ParseException ex) {
-        	Logger.getLogger(EPGDao.class.getName()).log(Level.SEVERE, null, ex);
-		}
+            Logger.getLogger(EPGDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         // ordenar programas alfabeticamente
         List listEntries = new ArrayList<Program>(entries);
@@ -125,7 +121,7 @@ public class EPGDao {
 
     public static String formatDate(Date date) {
         try {
-            return URLEncoder.encode(dateFormatter.format(date), HTTP.UTF_8);
+            return URLEncoder.encode(MEO_DATE_FORMAT.format(date), HTTP.UTF_8);
         } catch (UnsupportedEncodingException ex) {
             return null;
         }
