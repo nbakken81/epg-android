@@ -10,7 +10,7 @@ import java.util.List;
 import pt.mobiledev.tvalarmes.domain.Alarm;
 import pt.mobiledev.tvalarmes.domain.Program;
 
-public class DatabaseHandler extends SQLiteOpenHelper {
+public class AlarmDao extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "TVAlarmes";
@@ -23,7 +23,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_MINUTES_BEFORE = "minutesBefore";
     private static final String KEY_REPEATS = "repeats";
 
-    public DatabaseHandler(Context context) {
+    public AlarmDao(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
