@@ -34,7 +34,11 @@ public class Channel implements Serializable {
     }
 
     public int getLogoResourceId(Context context) {
-        return (Util.getResourceId(context, "drawable", getId().toLowerCase()));
+        return getLogoResourceId(context, this);
+    }
+
+    public static int getLogoResourceId(Context context, Channel ch) {
+        return (Util.getResourceId(context, "drawable", ch.getId().toLowerCase()));
     }
 
     @Override
