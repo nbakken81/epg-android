@@ -95,10 +95,8 @@ public class ProgramsActivity extends Activity {
             @Override
             public void onClick(View v) {  // Criar alarme
                 Alarm alarm = new Alarm(program, 0, false);
-                // Agenda alarme
-                AlarmNotifier.schedule(context, alarm);
-                // Adicionar à base de dados
-                DatabaseHandler db = new DatabaseHandler(context);
+                AlarmNotifier.schedule(context, alarm); // agenda alarme
+                DatabaseHandler db = new DatabaseHandler(context); // adiciona à base de dados
                 db.addAlarm(alarm);
                 dialog.dismiss();
             }

@@ -7,12 +7,12 @@ public class Alarm implements Serializable {
 
     Program program;
     int minutesBefore;
-    boolean repeats;
+    boolean once;
 
-    public Alarm(Program program, int minutesBefore, boolean repeats) {
+    public Alarm(Program program, int minutesBefore, boolean once) {
         this.program = program;
         this.minutesBefore = minutesBefore;
-        this.repeats = repeats;
+        this.once = once;
     }
 
     public Program getProgram() {
@@ -23,12 +23,12 @@ public class Alarm implements Serializable {
         this.program = program;
     }
 
-    public boolean isRepeats() {
-        return repeats;
+    public boolean isOnce() {
+        return once;
     }
 
-    public void setRepeats(boolean repeats) {
-        this.repeats = repeats;
+    public void setOnce(boolean once) {
+        this.once = once;
     }
 
     public int getMinutesBefore() {

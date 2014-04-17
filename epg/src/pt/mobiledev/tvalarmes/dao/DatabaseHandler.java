@@ -56,7 +56,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_START_DATE, "");
         values.put(KEY_CHANNEL_SIGLA, program.getChannelId());
         values.put(KEY_MINUTES_BEFORE, alarm.getMinutesBefore());
-        values.put(KEY_REPEATS, alarm.isRepeats());
+        values.put(KEY_REPEATS, !alarm.isOnce());
         // Inserir linha
         db.insert(TABLE_ALARMS, null, values);
         db.close();
