@@ -48,6 +48,8 @@ public class AlarmNotifier {
     public static void runNotification(Context context, Alarm alarm) {
         String alarmText;
         switch (alarm.getMinutesBefore()) {
+            // interpretaste isto do getMinutesBefore mal... era para simbolizar quanto tempo ele te avisa antes
+            // não é quanto tempo falta...
             case 0:
                 alarmText = "Está a começar.";
                 break;
