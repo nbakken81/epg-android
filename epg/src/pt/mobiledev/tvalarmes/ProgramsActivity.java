@@ -20,13 +20,14 @@ import pt.mobiledev.tvalarmes.dao.EPGDao;
 import pt.mobiledev.tvalarmes.domain.Alarm;
 import pt.mobiledev.tvalarmes.domain.Channel;
 import pt.mobiledev.tvalarmes.domain.Program;
+import pt.mobiledev.tvalarmes.util.AlarmNotifier;
 import pt.mobiledev.tvalarmes.util.Util;
 
 public class ProgramsActivity extends Activity {
-    
+
     ListView lvPrograms;
     Context context = ProgramsActivity.this;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,10 +41,10 @@ public class ProgramsActivity extends Activity {
         // prepara pesquisa rápida
         TextView programsSearch = (TextView) findViewById(R.id.programSearch);
         programsSearch.addTextChangedListener(new TextWatcher() {
-            
+
             public void beforeTextChanged(CharSequence cs, int i, int i1, int i2) {
             }
-            
+
             public void onTextChanged(CharSequence cs, int i, int i1, int i2) {
                 if (cs.toString().trim().isEmpty()) {
                     programsAdapter.setPrograms(new ArrayList<Program>(programs));
@@ -59,7 +60,7 @@ public class ProgramsActivity extends Activity {
                 }
                 lvPrograms.invalidateViews();
             }
-            
+
             public void afterTextChanged(Editable edtbl) {
             }
         });
@@ -79,7 +80,7 @@ public class ProgramsActivity extends Activity {
      * @param program
      */
     public void showPopup(final Program program) {
-        
+
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.popup_setalarm);
         dialog.setTitle("Criação de alarme");
@@ -95,7 +96,7 @@ public class ProgramsActivity extends Activity {
             public void onClick(View v) {  // Criar alarme
                 Alarm alarm = new Alarm(program, 0, false);
                 // Agenda alarme
-                Util.scheduleAlarm(context, alarm);
+                AlarmNotifier.schedule(context, alarm);
                 // Adicionar à base de dados
                 DatabaseHandler db = new DatabaseHandler(context);
                 db.addAlarm(alarm);
