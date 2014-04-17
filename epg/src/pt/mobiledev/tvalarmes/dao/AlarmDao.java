@@ -47,7 +47,7 @@ public class AlarmDao extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addAlarm(Alarm alarm) {
+    public void add(Alarm alarm) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         Program program = alarm.getProgram();
@@ -62,7 +62,7 @@ public class AlarmDao extends SQLiteOpenHelper {
         db.close();
     }
 
-    public List<Alarm> getAllAlarms() {
+    public List<Alarm> findAll() {
         List<Alarm> alarmsList = new ArrayList<Alarm>();
         String selectQuery = "SELECT * FROM " + TABLE_ALARMS;
         SQLiteDatabase db = this.getWritableDatabase();
@@ -85,7 +85,7 @@ public class AlarmDao extends SQLiteOpenHelper {
         return alarmsList;
     }
 
-    public void deleteAlarm(Alarm alarm) {
+    public void delete(Alarm alarm) {
         SQLiteDatabase db = this.getWritableDatabase();
         Program program = alarm.getProgram();
         db.delete(TABLE_ALARMS, KEY_ID + " = ?",
