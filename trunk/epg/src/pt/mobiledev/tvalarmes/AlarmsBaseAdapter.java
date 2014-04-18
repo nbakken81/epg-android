@@ -13,14 +13,14 @@ import java.util.List;
 import pt.mobiledev.tvalarmes.dao.AlarmDao;
 import pt.mobiledev.tvalarmes.domain.Alarm;
 
-public class AlarmsBaseAdapater extends BaseAdapter {
+public class AlarmsBaseAdapter extends BaseAdapter {
 
     ArrayList<Alarm> alarms = new ArrayList<Alarm>();
     LayoutInflater inflater;
     Context context;
     AlarmDao db;
 
-    public AlarmsBaseAdapater(Context context, List<Alarm> alarms, AlarmDao db) {
+    public AlarmsBaseAdapter(Context context, List<Alarm> alarms, AlarmDao db) {
         this.alarms = new ArrayList<Alarm>(alarms);
         this.context = context;
         this.db = db;
