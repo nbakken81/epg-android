@@ -46,7 +46,6 @@ public class AlarmsBaseAdapater extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = inflater.inflate(R.layout.alarm_detail, null);
         detail(convertView, R.id.tvTitle, alarms.get(position).getProgram().getTitle());
-
         Button btnDelete = (Button) convertView.findViewById(R.id.btnDeleteAlarm);
         btnDelete.setTag(position);
         btnDelete.setOnClickListener(new OnClickListener() {

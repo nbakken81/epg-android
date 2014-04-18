@@ -87,8 +87,6 @@ public class ProgramsActivity extends Activity {
         TextView text = (TextView) dialog.findViewById(R.id.tvAlarmPopup);
         text.setText("Tem a certeza que deseja criar um alarme para " + program.getTitle() + "?");
         dialog.show();
-        // Textbox para escolher os minutos de antecedência
-        // final EditText et = (EditText) findViewById(R.id.editTextMinutesBefore);
         // Botão criar
         Button createAlarm = (Button) dialog.findViewById(R.id.btnCreateAlarm);
         createAlarm.setOnClickListener(new OnClickListener() {
