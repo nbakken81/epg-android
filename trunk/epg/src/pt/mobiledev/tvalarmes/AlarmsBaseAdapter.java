@@ -7,11 +7,13 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 import pt.mobiledev.tvalarmes.dao.AlarmDao;
 import pt.mobiledev.tvalarmes.domain.Alarm;
+import pt.mobiledev.tvalarmes.domain.Channel;
 
 public class AlarmsBaseAdapter extends BaseAdapter {
 
@@ -45,7 +47,7 @@ public class AlarmsBaseAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = inflater.inflate(R.layout.alarm_detail, null);
-        detail(convertView, R.id.tvTitle, alarms.get(position).getProgram().getTitle());
+        detail(convertView, alarms.get(position));
         Button btnDelete = (Button) convertView.findViewById(R.id.btnDeleteAlarm);
         btnDelete.setTag(position);
         btnDelete.setOnClickListener(new OnClickListener() {
@@ -58,13 +60,13 @@ public class AlarmsBaseAdapter extends BaseAdapter {
                 notifyDataSetChanged();  // Actualizar lista
             }
         });
-
         return convertView;
     }
 
-    private TextView detail(View v, int resId, String text) {
-        TextView tv = (TextView) v.findViewById(resId);
-        tv.setText(text);
-        return tv;
+    private void detail(View v, Alarm alarm) {
+        TextView tv = (TextView) v.findViewById(R.id.tvTitle);
+        tv.setText(alarm.getProgram().getTitle());
+        ImageView pic = (ImageView) v.findViewById(R.id.tvImageAlarm);
+        pic.setImageResource(new Channel(alarm.getProgram().getChannelId()).getLogoResourceId(context));
     }
 }

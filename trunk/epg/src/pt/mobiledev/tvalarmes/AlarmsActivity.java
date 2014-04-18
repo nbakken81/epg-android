@@ -33,18 +33,16 @@ public class AlarmsActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alarm_list);
         context = getApplicationContext();
-        // Sacar a base de dados
-        db = new AlarmDao(this);
-
+        
+        db = new AlarmDao(this); // Sacar a base de dados
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        List<Alarm> alarms = db.findAll();
         // Listview de alarmes
         lvAlarms = (ListView) findViewById(R.id.lvAlarms);
-        AlarmsBaseAdapter alarmsAdapter = new AlarmsBaseAdapter(context, alarms, db);
+        AlarmsBaseAdapter alarmsAdapter = new AlarmsBaseAdapter(context, db.findAll(), db);
         lvAlarms.setAdapter(alarmsAdapter);
     }
 
