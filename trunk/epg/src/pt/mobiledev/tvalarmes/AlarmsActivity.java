@@ -32,8 +32,7 @@ public class AlarmsActivity extends Activity {
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alarm_list);
-        context = getApplicationContext();
-        
+        context = getApplicationContext();        
         db = new AlarmDao(this); // Sacar a base de dados
     }
 
