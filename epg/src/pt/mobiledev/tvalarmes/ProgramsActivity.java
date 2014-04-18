@@ -3,6 +3,7 @@ package pt.mobiledev.tvalarmes;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -27,6 +28,7 @@ public class ProgramsActivity extends Activity {
 
     ListView lvPrograms;
     Context context = ProgramsActivity.this;
+    final AlarmDao alarmsDB = new AlarmDao(context); // adiciona à base de dados
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,9 +94,9 @@ public class ProgramsActivity extends Activity {
             public void onClick(View v) {  // Criar alarme
                 Alarm alarm = new Alarm(program, 0, false);
                 AlarmNotifier.schedule(context, alarm); // agenda alarme
-                AlarmDao db = new AlarmDao(context); // adiciona à base de dados
-                db.add(alarm);
+                alarmsDB.add(alarm);
                 dialog.dismiss();
+                startActivity(new Intent(ProgramsActivity.this, AlarmsActivity.class));
             }
         });
         // Botão cancelar
