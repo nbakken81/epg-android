@@ -8,7 +8,6 @@
         android:id="@+id/tvImage"
         android:layout_width="60px"
         android:layout_height="45px"
-        android:layout_marginRight="3dp" >
-    </ImageView>
+        android:layout_marginRight="3dp" />
 
 </LinearLayout>
