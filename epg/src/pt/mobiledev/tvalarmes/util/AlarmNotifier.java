@@ -25,9 +25,11 @@ public class AlarmNotifier {
 
     public static class AlarmReceiver extends BroadcastReceiver {
 
+        /**
+         * Corre uma notifição com o alarme sacado do intent
+         */
         @Override
         public void onReceive(Context context, Intent intent) {
-            // Corre uma notifição com o alarme sacado do intent
             Alarm alarm = (Alarm) intent.getSerializableExtra("alarm");
             AlarmNotifier.runNotification(context, alarm);
         }
