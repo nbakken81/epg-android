@@ -95,7 +95,7 @@ public class XmlCachedParser {
         }
         return context.openFileInput(filename);  // retorna o ficheiro do disco
     }
-
+    
     static InputStream tryServerFile(Context context, String url, String filename) throws IOException {
         try {
             return new URL(url).openStream(); // se não há cache.... devolve já sem escrever nada

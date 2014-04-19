@@ -86,5 +86,4 @@ public class Program implements Serializable {
         hash = 83 * hash + (this.channelId != null ? this.channelId.hashCode() : 0);
         return hash;
     }
-
 }
