@@ -64,7 +64,8 @@ public class AlarmDao extends SQLiteOpenHelper {
 
     public List<Alarm> findAll() {
         List<Alarm> alarmsList = new ArrayList<Alarm>();
-        String selectQuery = "SELECT * FROM " + TABLE_ALARMS + " ORDER BY " + KEY_CHANNEL_SIGLA + ", " + KEY_TITLE;
+        String selectQuery = "SELECT * FROM " + TABLE_ALARMS
+                + " ORDER BY " + KEY_CHANNEL_SIGLA + ", " + KEY_TITLE;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
