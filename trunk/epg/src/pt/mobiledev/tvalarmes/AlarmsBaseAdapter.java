@@ -20,12 +20,12 @@ public class AlarmsBaseAdapter extends BaseAdapter {
     ArrayList<Alarm> alarms = new ArrayList<Alarm>();
     LayoutInflater inflater;
     Context context;
-    AlarmDao db;
+    AlarmDao alarmDao;
 
-    public AlarmsBaseAdapter(Context context, List<Alarm> alarms, AlarmDao db) {
+    public AlarmsBaseAdapter(Context context, List<Alarm> alarms, AlarmDao alarmDao) {
         this.alarms = new ArrayList<Alarm>(alarms);
         this.context = context;
-        this.db = db;
+        this.alarmDao = alarmDao;
         inflater = LayoutInflater.from(this.context);
     }
 
@@ -55,7 +55,7 @@ public class AlarmsBaseAdapter extends BaseAdapter {
             public void onClick(View v) {
                 int position = (Integer) v.getTag();
                 Alarm alarm = alarms.get(position);
-                db.delete(alarm);  // Apagar da base de dados
+                alarmDao.delete(alarm);  // Apagar da base de dados
                 alarms.remove(position);  // Apagar da lista
                 notifyDataSetChanged();  // Actualizar lista
             }
