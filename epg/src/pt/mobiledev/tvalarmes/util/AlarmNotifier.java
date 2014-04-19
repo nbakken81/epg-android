@@ -20,6 +20,7 @@ public class AlarmNotifier {
         intent.putExtra("alarm", alarm); // Adicionar alarme ao intent
         PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
         long milliseconds = alarm.getProgram().getStartDate().getTime();  // Agendar alarme
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, 2000, alarmIntent); // teste
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, milliseconds, alarmIntent);
     }
 
