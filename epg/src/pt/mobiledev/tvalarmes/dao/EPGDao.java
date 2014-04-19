@@ -41,7 +41,6 @@ public class EPGDao {
     final static SimpleDateFormat MEO_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
     final static Pattern PROG_EP_PATTERN = Pattern.compile("^(.*) - Ep. ([0-9]{1,3})$");
     final static Pattern PROG_EP_SE_PATTERN = Pattern.compile("^(.*) T([0-9]{1,2}) - Ep. ([0-9]{1,3})$");
-    final static int DAYS_INTERVAL = 1;
 
     public static List<Channel> getChannels(Context context) {
         List<Channel> entries = new ArrayList<Channel>();
@@ -67,8 +66,8 @@ public class EPGDao {
         try {
             URL url = new URL(BASE_URL + GET_PROGRAMS_FUNCTION
                     + "?channelSiglas=" + formatSiglas(channels)
-                    + "&startDate=" + formatDate(Util.subtractDays(DAYS_INTERVAL))
-                    + "&endDate=" + formatDate(Util.addDays(DAYS_INTERVAL)));
+                    + "&startDate=" + formatDate(Util.subtractDays(0))
+                    + "&endDate=" + formatDate(Util.addDays(1)));
             // TODO suporte a vários canais de uma só vez: útil para o scheduler
             XmlPullParser parser = getParser(context, url.toString());
             while (parser.next() != END_DOCUMENT) {
