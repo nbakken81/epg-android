@@ -35,7 +35,6 @@ public class AlarmDao extends SQLiteOpenHelper {
                 + KEY_TITLE + " TEXT,"
                 + KEY_START_DATE + " DATETIME,"
                 + KEY_CHANNEL_SIGLA + " TEXT,"
-                + KEY_MINUTES_BEFORE + " INTEGER,"
                 + KEY_REPEATS + " BOOLEAN"
                 + ")";
         db.execSQL(CREATE_ALARMS_TABLE);
@@ -55,7 +54,6 @@ public class AlarmDao extends SQLiteOpenHelper {
         values.put(KEY_TITLE, program.getTitle());
         values.put(KEY_START_DATE, "");
         values.put(KEY_CHANNEL_SIGLA, program.getChannelId());
-        values.put(KEY_MINUTES_BEFORE, alarm.getMinutesBefore());
         values.put(KEY_REPEATS, !alarm.isOnce());
         // Inserir linha
         db.insert(TABLE_ALARMS, null, values);
@@ -68,18 +66,15 @@ public class AlarmDao extends SQLiteOpenHelper {
                 + " ORDER BY " + KEY_CHANNEL_SIGLA + ", " + KEY_TITLE;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
-
         if (cursor.moveToFirst()) {
-            do {
-                // Criar Alarme
+            do {   // Criar Alarme
                 int id = Integer.parseInt(cursor.getString(0));
                 String title = cursor.getString(1);
                 String startDate = cursor.getString(2);
                 String channelSigla = cursor.getString(3);
-                int minutesBefore = Integer.parseInt(cursor.getString(4));
                 boolean repeats = Boolean.parseBoolean(cursor.getString(5));
                 Program program = new Program(id, title, null, channelSigla);
-                Alarm alarm = new Alarm(program, minutesBefore, repeats);
+                Alarm alarm = new Alarm(program, repeats);
                 alarmsList.add(alarm);
             } while (cursor.moveToNext());
         }

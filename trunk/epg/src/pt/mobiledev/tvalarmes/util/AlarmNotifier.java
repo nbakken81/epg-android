@@ -19,8 +19,7 @@ public class AlarmNotifier {
         Intent intent = new Intent(context, AlarmReceiver.class); // criar Intent
         intent.putExtra("alarm", alarm); // Adicionar alarme ao intent
         PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
-        // Agendar alarme
-        long milliseconds = alarm.getProgram().getStartDate().getTime();
+        long milliseconds = alarm.getProgram().getStartDate().getTime();  // Agendar alarme
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, milliseconds, alarmIntent);
     }
 
@@ -46,24 +45,10 @@ public class AlarmNotifier {
     }
 
     public static void runNotification(Context context, Alarm alarm) {
-        String alarmText;
-        switch (alarm.getMinutesBefore()) {
-            // interpretaste isto do getMinutesBefore mal... era para simbolizar quanto tempo ele te avisa antes
-            // não é quanto tempo falta...
-            case 0:
-                alarmText = "Está a começar.";
-                break;
-            case 1:
-                alarmText = "Começa dentro de 1 minuto.";
-                break;
-            default:
-                alarmText = "Começa dentro de " + alarm.getMinutesBefore() + " minutos.";
-                break;
-        }
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
                 .setSmallIcon(Channel.getLogoResourceId(context, new Channel(alarm.getProgram().getChannelId())))
                 .setContentTitle(alarm.getProgram().getTitle())
-                .setContentText(alarmText);
+                .setContentText(alarm.getProgram().getTitle());
         Intent resultIntent = new Intent(context, AlarmsActivity.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
         stackBuilder.addParentStack(AlarmsActivity.class);

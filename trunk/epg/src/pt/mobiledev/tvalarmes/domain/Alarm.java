@@ -6,12 +6,10 @@ import java.io.Serializable;
 public class Alarm implements Serializable {
 
     Program program;
-    int minutesBefore;
     boolean once;
 
-    public Alarm(Program program, int minutesBefore, boolean once) {
+    public Alarm(Program program, boolean once) {
         this.program = program;
-        this.minutesBefore = minutesBefore;
         this.once = once;
     }
 
@@ -29,13 +27,5 @@ public class Alarm implements Serializable {
 
     public void setOnce(boolean once) {
         this.once = once;
-    }
-
-    public int getMinutesBefore() {
-        return minutesBefore;
-    }
-
-    public void setMinutesBefore(int minutesBefore) {
-        this.minutesBefore = minutesBefore;
     }
 }
