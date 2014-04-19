@@ -82,9 +82,8 @@ public class XmlCachedParser {
             return tryServerFile(context, url, filename);
         }
         File file = new File(context.getFilesDir(), filename);
-        // vamos buscar o original e guardamos para cache
-        if (!file.exists()
-                || new Date().getTime() - file.lastModified() > MILLISECONDS.convert(cacheDays, TimeUnit.DAYS)) {
+        boolean isFileOld = !file.exists() || new Date().getTime() - file.lastModified() > MILLISECONDS.convert(cacheDays, TimeUnit.DAYS);
+        if (isFileOld) { // vamos buscar o original e guardamos para cache
             InputStream inputStream = new URL(url).openStream();
             FileOutputStream outputStream = context.openFileOutput(filename, Context.MODE_PRIVATE);
             int read;
