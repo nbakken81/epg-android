@@ -39,8 +39,7 @@ public class AlarmsActivity extends Activity {
     @Override
     public void onResume() {
         super.onResume();
-        // Listview de alarmes
-        lvAlarms = (ListView) findViewById(R.id.lvAlarms);
+        lvAlarms = (ListView) findViewById(R.id.lvAlarms); // Listview de alarmes
         AlarmsBaseAdapter alarmsAdapter = new AlarmsBaseAdapter(context, db.findAll(), db);
         lvAlarms.setAdapter(alarmsAdapter);
     }
