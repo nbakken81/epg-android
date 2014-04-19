@@ -75,13 +75,16 @@ public class Program implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        return getClass().isInstance(o) && ((Program) o).getTitle().equals(getTitle());
+        Program p = ((Program) o);
+        return p.getChannelId().equals(getChannelId()) && p.getTitle().equalsIgnoreCase(getTitle());
     }
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 71 * hash + (this.title != null ? this.title.hashCode() : 0);
+        int hash = 7;
+        hash = 83 * hash + (this.title != null ? this.title.toLowerCase().hashCode() : 0);
+        hash = 83 * hash + (this.channelId != null ? this.channelId.hashCode() : 0);
         return hash;
     }
+
 }

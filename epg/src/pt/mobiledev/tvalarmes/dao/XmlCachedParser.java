@@ -3,6 +3,7 @@ package pt.mobiledev.tvalarmes.dao;
 import android.content.Context;
 import android.util.Xml;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,10 +33,6 @@ public class XmlCachedParser {
 
     public static XmlPullParser getParser(Context context, String url) throws IOException, XmlPullParserException {
         return getParser(context, url, 0);
-    }
-
-    public static XmlPullParser getParser(String url) throws IOException, XmlPullParserException {
-        return getParser(null, url, 0);
     }
 
     public static void skipTag(XmlPullParser parser) throws XmlPullParserException, IOException {
@@ -80,10 +77,10 @@ public class XmlCachedParser {
     }
 
     static InputStream getFileInputStream(Context context, String url, int cacheDays) throws IOException {
-        if (context == null || cacheDays <= 0) {
-            return new URL(url).openStream(); // se não há cache.... devolve já sem escrever nada
-        }
         String filename = url.substring(url.lastIndexOf("/") + 1);
+        if (cacheDays <= 0) {
+            return tryServerFile(context, url, filename);
+        }
         File file = new File(context.getFilesDir(), filename);
         // vamos buscar o original e guardamos para cache
         if (!file.exists()
@@ -98,5 +95,13 @@ public class XmlCachedParser {
             outputStream.close();
         }
         return context.openFileInput(filename);  // retorna o ficheiro do disco
+    }
+
+    static InputStream tryServerFile(Context context, String url, String filename) throws IOException {
+        try {
+            return new URL(url).openStream(); // se não há cache.... devolve já sem escrever nada
+        } catch (FileNotFoundException notFound) {
+            return context.openFileInput(filename);  // vamos prosseguir com a versão em disco
+        }
     }
 }

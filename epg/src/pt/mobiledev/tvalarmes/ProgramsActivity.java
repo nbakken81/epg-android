@@ -35,7 +35,8 @@ public class ProgramsActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.program_list);
         Channel selectedChannel = (Channel) getIntent().getExtras().get("channel");
-        final List<Program> programs = EPGDao.getPrograms(context, selectedChannel);
+        final List<Program> programs = EPGDao.getAvailablePrograms(context, selectedChannel);
+
         lvPrograms = (ListView) findViewById(R.id.lvPrograms);
         final ProgramsBaseAdapter programsAdapter = new ProgramsBaseAdapter(context, programs);
         lvPrograms.setAdapter(programsAdapter);
@@ -92,11 +93,11 @@ public class ProgramsActivity extends Activity {
         createAlarm.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {  // Criar alarme
-                Alarm alarm = new Alarm(program, 0, false);
+                Alarm alarm = new Alarm(program, false);
                 AlarmNotifier.schedule(context, alarm); // agenda alarme
                 alarmsDB.add(alarm);
                 dialog.dismiss();
-                startActivity(new Intent(ProgramsActivity.this, AlarmsActivity.class));
+                startActivity(new Intent(ProgramsActivity.this, AlarmsActivity.class)); // volta ao home screen
             }
         });
         // Botão cancelar

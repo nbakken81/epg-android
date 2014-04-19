@@ -62,15 +62,15 @@ public class EPGDao {
         return entries;
     }
 
-    public static List<Program> getPrograms(Context context, Channel... channels) {
-        Set<Program> entries = new HashSet<Program>();
+    public static List<Program> getAllPrograms(Context context, Channel... channels) {
+        List<Program> entries = new ArrayList<Program>();
         try {
             URL url = new URL(BASE_URL + GET_PROGRAMS_FUNCTION
                     + "?channelSiglas=" + formatSiglas(channels)
                     + "&startDate=" + formatDate(Util.subtractDays(DAYS_INTERVAL))
                     + "&endDate=" + formatDate(Util.addDays(DAYS_INTERVAL)));
             // TODO suporte a vários canais de uma só vez: útil para o scheduler
-            XmlPullParser parser = getParser(url.toString());
+            XmlPullParser parser = getParser(context, url.toString());
             while (parser.next() != END_DOCUMENT) {
                 if (parser.getEventType() == START_TAG && parser.getName().equals("Program")) {
                     // Constrói programa
@@ -81,14 +81,14 @@ public class EPGDao {
                     Matcher matcher = PROG_EP_SE_PATTERN.matcher(channelAsMap.get("Title"));
                     // "nome programa Txy - Ep. kzy"
                     if (matcher.matches()) {
-                        program.setTitle(matcher.group(1));
+                        program.setTitle(matcher.group(1).trim());
                         program.setEpisode(matcher.group(2) == null ? 0 : parseInt(matcher.group(2)));
                         program.setEpisode(matcher.group(3) == null ? 0 : parseInt(matcher.group(3)));
                     } else {
                         // "nome programa Ep. kzy"
                         matcher = PROG_EP_PATTERN.matcher(channelAsMap.get("Title"));
                         if (matcher.matches()) {
-                            program.setTitle(matcher.group(1));
+                            program.setTitle(matcher.group(1).trim());
                             program.setSeason(matcher.group(2) == null ? 0 : parseInt(matcher.group(2)));
                         }
                     }
@@ -104,9 +104,21 @@ public class EPGDao {
         } catch (ParseException ex) {
             Logger.getLogger(EPGDao.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return entries;
+    }
 
-        // ordenar programas alfabeticamente
-        List listEntries = new ArrayList<Program>(entries);
+    public static List<Program> getAvailablePrograms(Context context, Channel... channels) {
+        List<Program> progs = getAllPrograms(context, channels);
+        removeRepeated(progs);
+        sort(progs);
+        return progs;
+    }
+
+    /**
+     * Ordena programas por canal e depois alfabeticamente.
+     */
+    static void sort(List<Program> listEntries) {
+
         Collections.sort(listEntries, new Comparator<Program>() {
 
             public int compare(Program p1, Program p2) {
@@ -116,7 +128,15 @@ public class EPGDao {
                 return p1.getTitle().compareTo(p2.getTitle());
             }
         });
-        return listEntries;
+    }
+
+    /**
+     * Ordena programas por canal e depois alfabeticamente.
+     */
+    static void removeRepeated(List<Program> listEntries) {
+        Set<Program> programs = new HashSet<Program>(listEntries);
+        listEntries.clear();
+        listEntries.addAll(programs);
     }
 
     public static String formatDate(Date date) {
