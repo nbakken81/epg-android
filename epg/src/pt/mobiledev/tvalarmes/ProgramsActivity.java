@@ -12,6 +12,7 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import java.util.ArrayList;
@@ -40,6 +41,12 @@ public class ProgramsActivity extends Activity {
         lvPrograms = (ListView) findViewById(R.id.lvPrograms);
         final ProgramsBaseAdapter programsAdapter = new ProgramsBaseAdapter(context, programs);
         lvPrograms.setAdapter(programsAdapter);
+
+        // info canal
+        ImageView logoChannel = (ImageView) findViewById(R.id.programsLogo);
+        logoChannel.setImageResource(selectedChannel.getLogoResourceId(context));
+        TextView textLogo = (TextView) findViewById(R.id.channelName);
+        textLogo.setText(selectedChannel.getName());
 
         // prepara pesquisa rápida
         TextView programsSearch = (TextView) findViewById(R.id.programSearch);
