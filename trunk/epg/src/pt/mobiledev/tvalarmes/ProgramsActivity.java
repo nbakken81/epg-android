@@ -29,7 +29,7 @@ public class ProgramsActivity extends Activity {
 
     ListView lvPrograms;
     Context context = ProgramsActivity.this;
-    final AlarmDao alarmsDB = new AlarmDao(context); // adiciona à base de dados
+    final AlarmDao alarmsDao = new AlarmDao(context); // adiciona à base de dados
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +37,13 @@ public class ProgramsActivity extends Activity {
         setContentView(R.layout.program_list);
         Channel selectedChannel = (Channel) getIntent().getExtras().get("channel");
         final List<Program> programs = EPGDao.getAvailablePrograms(context, selectedChannel);
+        // limpar já existentes; é escusado apanhar com programas já na lista...
+        List<Alarm> alarmsPerChannel = alarmsDao.findByChannel(selectedChannel);
+        List<Program> alarmsPerChannelP = new ArrayList<Program>();
+        for (Alarm alarm : alarmsPerChannel) {
+            alarmsPerChannelP.add(alarm.getProgram());
+        }
+        programs.removeAll(alarmsPerChannelP);
 
         lvPrograms = (ListView) findViewById(R.id.lvPrograms);
         final ProgramsBaseAdapter programsAdapter = new ProgramsBaseAdapter(context, programs);
@@ -100,7 +107,7 @@ public class ProgramsActivity extends Activity {
             @Override
             public void onClick(View v) {  // Criar alarme
                 Alarm alarm = new Alarm(program, false);
-                alarmsDB.add(alarm);
+                alarmsDao.add(alarm);
                 AlarmNotifier.updateNotifications(context, new Channel(alarm.getProgram().getChannelId()));
                 dialog.dismiss();
                 startActivity(new Intent(ProgramsActivity.this, AlarmsActivity.class)); // volta ao home screen
