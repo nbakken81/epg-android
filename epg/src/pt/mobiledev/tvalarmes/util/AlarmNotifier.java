@@ -53,6 +53,7 @@ public class AlarmNotifier {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
                 .setSmallIcon(Channel.getLogoResourceId(context, new Channel(alarm.getProgram().getChannelId())))
                 .setContentTitle(alarm.getProgram().getTitle())
+                .setContentText(alarm.getProgram().getId() + "")
                 .setAutoCancel(true);
         Intent resultIntent = new Intent(context, AlarmsActivity.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
@@ -61,6 +62,6 @@ public class AlarmNotifier {
         PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
         mBuilder.setContentIntent(resultPendingIntent);
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.notify(1, mBuilder.build());
+        mNotificationManager.notify(alarm.getProgram().getId(), mBuilder.build());
     }
 }
