@@ -4,6 +4,21 @@
               android:orientation="vertical" 
               android:focusable="true" android:focusableInTouchMode="true">
    
+    <LinearLayout android:orientation="horizontal"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content">
+        <ImageView android:id="@+id/programsLogo"
+                   android:layout_width="60px"
+                   android:layout_height="45px" />     
+        <TextView android:id="@+id/channelName"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:textSize="40px" 
+                  android:paddingLeft="9px" 
+                  android:textStyle="bold" />
+    </LinearLayout>
+    
+    
     <EditText android:id="@+id/programSearch"
               android:layout_width="fill_parent"
               android:layout_height="wrap_content"
