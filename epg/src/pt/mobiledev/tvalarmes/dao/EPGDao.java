@@ -45,7 +45,7 @@ public class EPGDao {
     public static List<Channel> getChannels(Context context) {
         List<Channel> entries = new ArrayList<Channel>();
         try {
-            XmlPullParser parser = getParser(context, BASE_URL + GET_CHANNELS_FUNCTION, 30);
+            XmlPullParser parser = getParser(context, "listaCanais", BASE_URL + GET_CHANNELS_FUNCTION, 30 * 24);
             while (parser.next() != END_TAG) {
                 if (parser.getEventType() == START_TAG && parser.getName().equals("Channel")) {
                     // OK encontrou tag; controi canal!
@@ -69,7 +69,7 @@ public class EPGDao {
                     + "&startDate=" + formatDate(Util.subtractDays(0))
                     + "&endDate=" + formatDate(Util.addDays(1)));
             // TODO suporte a vários canais de uma só vez: útil para o scheduler
-            XmlPullParser parser = getParser(context, url.toString());
+            XmlPullParser parser = getParser(context, formatSiglas(channels), url.toString(), 1);
             while (parser.next() != END_DOCUMENT) {
                 if (parser.getEventType() == START_TAG && parser.getName().equals("Program")) {
                     // Constrói programa

@@ -22,17 +22,13 @@ import org.xmlpull.v1.XmlPullParserException;
 
 public class XmlCachedParser {
 
-    public static XmlPullParser getParser(Context context, String url, int cacheDays) throws IOException, XmlPullParserException {
-        InputStream inputStream = getFileInputStream(context, url, cacheDays);
+    public static XmlPullParser getParser(Context context, String id, String url, int cacheHours) throws IOException, XmlPullParserException {
+        InputStream inputStream = getFileInputStream(context, id, url, cacheHours);
         XmlPullParser parser = Xml.newPullParser();
         parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
         parser.setInput(inputStream, null);
         parser.nextTag();
         return parser;
-    }
-
-    public static XmlPullParser getParser(Context context, String url) throws IOException, XmlPullParserException {
-        return getParser(context, url, 0);
     }
 
     public static void skipTag(XmlPullParser parser) throws XmlPullParserException, IOException {
@@ -76,16 +72,15 @@ public class XmlCachedParser {
         return result;
     }
 
-    static InputStream getFileInputStream(Context context, String url, int cacheDays) throws IOException {
-        String filename = url.substring(url.lastIndexOf("/") + 1);
-        if (cacheDays <= 0) {
-            return tryServerFile(context, url, filename);
+    static InputStream getFileInputStream(Context context, String id, String url, int cacheHours) throws IOException {
+        if (cacheHours <= 0) {
+            return tryServerFile(context, id, url);
         }
-        File file = new File(context.getFilesDir(), filename);
-        boolean isFileOld = !file.exists() || new Date().getTime() - file.lastModified() > MILLISECONDS.convert(cacheDays, TimeUnit.DAYS);
+        File file = new File(context.getFilesDir(), id);
+        boolean isFileOld = !file.exists() || new Date().getTime() - file.lastModified() > MILLISECONDS.convert(cacheHours, TimeUnit.HOURS);
         if (isFileOld) { // vamos buscar o original e guardamos para cache
             InputStream inputStream = new URL(url).openStream();
-            FileOutputStream outputStream = context.openFileOutput(filename, Context.MODE_PRIVATE);
+            FileOutputStream outputStream = context.openFileOutput(id, Context.MODE_PRIVATE);
             int read;
             byte[] bytes = new byte[1024];
             while ((read = inputStream.read(bytes)) != -1) {
@@ -93,10 +88,10 @@ public class XmlCachedParser {
             }
             outputStream.close();
         }
-        return context.openFileInput(filename);  // retorna o ficheiro do disco
+        return context.openFileInput(id);  // retorna o ficheiro do disco
     }
-    
-    static InputStream tryServerFile(Context context, String url, String filename) throws IOException {
+
+    static InputStream tryServerFile(Context context, String filename, String url) throws IOException {
         try {
             return new URL(url).openStream(); // se não há cache.... devolve já sem escrever nada
         } catch (FileNotFoundException notFound) {
