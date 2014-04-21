@@ -14,7 +14,7 @@ import pt.mobiledev.tvalarmes.domain.Program;
 
 public class AlarmDao extends SQLiteOpenHelper {
 
-    static final int DATABASE_VERSION = 1;
+    static final int DATABASE_VERSION = 3;
     static final String DATABASE_NAME = "TVAlarmes";
     static final String TABLE_ALARMS = "alarmes";
     // Colunas
@@ -35,7 +35,6 @@ public class AlarmDao extends SQLiteOpenHelper {
                 + " PRIMARY KEY (" + KEY_TITLE + ", " + KEY_CHANNEL_SIGLA + ") "
                 + " )";
         db.execSQL(CREATE_ALARMS_TABLE);  // Criação da tabela alarmes
-        db.close();
     }
 
     @Override
