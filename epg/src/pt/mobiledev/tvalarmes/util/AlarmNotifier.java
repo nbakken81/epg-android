@@ -53,7 +53,6 @@ public class AlarmNotifier {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
                 .setSmallIcon(Channel.getLogoResourceId(context, new Channel(alarm.getProgram().getChannelId())))
                 .setContentTitle(alarm.getProgram().getTitle())
-                .setContentText(alarm.getProgram().getTitle())
                 .setAutoCancel(true);
         Intent resultIntent = new Intent(context, AlarmsActivity.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
