@@ -101,7 +101,7 @@ public class ProgramsActivity extends Activity {
             public void onClick(View v) {  // Criar alarme
                 Alarm alarm = new Alarm(program, false);
                 alarmsDB.add(alarm);
-                AlarmNotifier.updateNotifications(context);
+                AlarmNotifier.updateNotifications(context, new Channel(alarm.getProgram().getChannelId()));
                 dialog.dismiss();
                 startActivity(new Intent(ProgramsActivity.this, AlarmsActivity.class)); // volta ao home screen
             }
