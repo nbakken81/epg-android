@@ -28,4 +28,9 @@ public class Alarm implements Serializable {
     public void setOnce(boolean once) {
         this.once = once;
     }
+
+    @Override
+    public String toString() {
+        return getProgram().toString();
+    }
 }
