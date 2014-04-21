@@ -16,7 +16,6 @@ public class AlarmDao extends SQLiteOpenHelper {
     static final String DATABASE_NAME = "TVAlarmes";
     static final String TABLE_ALARMS = "alarmes";
     // Colunas
-    static final String KEY_ID = "id";
     static final String KEY_TITLE = "title";
     static final String KEY_CHANNEL_SIGLA = "channelSigla";
     static final String KEY_REPEATS = "repeats";
@@ -27,11 +26,12 @@ public class AlarmDao extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_ALARMS_TABLE = "CREATE TABLE " + TABLE_ALARMS + "("
-                + KEY_ID + " INTEGER PRIMARY KEY,"
-                + KEY_TITLE + " TEXT,"
-                + KEY_CHANNEL_SIGLA + " TEXT,"
-                + KEY_REPEATS + " BOOLEAN )";
+        String CREATE_ALARMS_TABLE = "CREATE TABLE " + TABLE_ALARMS + "( "
+                + KEY_TITLE + " TEXT, "
+                + KEY_CHANNEL_SIGLA + " TEXT, "
+                + KEY_REPEATS + " BOOLEAN, "
+                + " PRIMARY KEY (" + KEY_TITLE + ", " + KEY_CHANNEL_SIGLA + ") "
+                + " )";
         db.execSQL(CREATE_ALARMS_TABLE);  // Criação da tabela alarmes
     }
 
@@ -45,7 +45,6 @@ public class AlarmDao extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         Program program = alarm.getProgram();
-        values.put(KEY_ID, program.getId());
         values.put(KEY_TITLE, program.getTitle());
         values.put(KEY_CHANNEL_SIGLA, program.getChannelId());
         values.put(KEY_REPEATS, !alarm.isOnce());
@@ -60,12 +59,11 @@ public class AlarmDao extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
-            do {   // Criar Alarme
-                int id = Integer.parseInt(cursor.getString(0));
-                String title = cursor.getString(1);
-                String channelSigla = cursor.getString(2);
-                boolean repeats = Boolean.parseBoolean(cursor.getString(3));
-                Program program = new Program(id, title, null, channelSigla);
+            do {
+                String title = cursor.getString(0);
+                String channelSigla = cursor.getString(1);
+                boolean repeats = Boolean.parseBoolean(cursor.getString(2));
+                Program program = new Program(title, channelSigla);
                 Alarm alarm = new Alarm(program, repeats);
                 alarmsList.add(alarm);
             } while (cursor.moveToNext());
@@ -76,8 +74,11 @@ public class AlarmDao extends SQLiteOpenHelper {
     public void delete(Alarm alarm) {
         SQLiteDatabase db = this.getWritableDatabase();
         Program program = alarm.getProgram();
-        db.delete(TABLE_ALARMS, KEY_ID + " = ?",
-                new String[]{String.valueOf(program.getId())});
+        db.delete(TABLE_ALARMS, KEY_TITLE + " = ? "
+                + " AND " + KEY_CHANNEL_SIGLA + " = ? ",
+                new String[]{
+                    program.getTitle(), program.getChannelId()
+                });
         db.close();
     }
 }

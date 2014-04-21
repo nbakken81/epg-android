@@ -13,6 +13,11 @@ public class Program implements Serializable {
     public Program() {
     }
 
+    public Program(String title, String channelId) {
+        this.title = title;
+        this.channelId = channelId;
+    }
+
     public Program(int id, String title, Date startDate, String channelId) {
         this.id = id;
         this.title = title;
