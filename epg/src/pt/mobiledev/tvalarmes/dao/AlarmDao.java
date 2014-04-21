@@ -58,9 +58,10 @@ public class AlarmDao extends SQLiteOpenHelper {
         db.close();
     }
 
-    public List<Alarm> findAll() {
+    public List<Alarm> findByChannel(Channel channel) {
         List<Alarm> alarmsList = new ArrayList<Alarm>();
         String selectQuery = "SELECT * FROM " + TABLE_ALARMS
+                + (channel == null ? " " : " WHERE " + KEY_CHANNEL_SIGLA + " = '" + channel.getId() + "'")
                 + " ORDER BY " + KEY_CHANNEL_SIGLA + ", " + KEY_TITLE;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -76,6 +77,10 @@ public class AlarmDao extends SQLiteOpenHelper {
         }
         db.close();
         return alarmsList;
+    }
+
+    public List<Alarm> findAll() {
+        return findByChannel(null);
     }
 
     public List<Channel> getAllChannels() {
