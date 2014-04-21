@@ -12,16 +12,14 @@ import pt.mobiledev.tvalarmes.domain.Program;
 
 public class AlarmDao extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 1;
-    private static final String DATABASE_NAME = "TVAlarmes";
-    private static final String TABLE_ALARMS = "alarmes";
+    static final int DATABASE_VERSION = 1;
+    static final String DATABASE_NAME = "TVAlarmes";
+    static final String TABLE_ALARMS = "alarmes";
     // Colunas
-    private static final String KEY_ID = "id";
-    private static final String KEY_TITLE = "title";
-    private static final String KEY_START_DATE = "startDate";
-    private static final String KEY_CHANNEL_SIGLA = "channelSigla";
-    private static final String KEY_MINUTES_BEFORE = "minutesBefore";
-    private static final String KEY_REPEATS = "repeats";
+    static final String KEY_ID = "id";
+    static final String KEY_TITLE = "title";
+    static final String KEY_CHANNEL_SIGLA = "channelSigla";
+    static final String KEY_REPEATS = "repeats";
 
     public AlarmDao(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -29,15 +27,12 @@ public class AlarmDao extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // Criação da tabela alarmes
         String CREATE_ALARMS_TABLE = "CREATE TABLE " + TABLE_ALARMS + "("
                 + KEY_ID + " INTEGER PRIMARY KEY,"
                 + KEY_TITLE + " TEXT,"
-                + KEY_START_DATE + " DATETIME,"
                 + KEY_CHANNEL_SIGLA + " TEXT,"
-                + KEY_REPEATS + " BOOLEAN"
-                + ")";
-        db.execSQL(CREATE_ALARMS_TABLE);
+                + KEY_REPEATS + " BOOLEAN )";
+        db.execSQL(CREATE_ALARMS_TABLE);  // Criação da tabela alarmes
     }
 
     @Override
@@ -52,11 +47,9 @@ public class AlarmDao extends SQLiteOpenHelper {
         Program program = alarm.getProgram();
         values.put(KEY_ID, program.getId());
         values.put(KEY_TITLE, program.getTitle());
-        values.put(KEY_START_DATE, "");
         values.put(KEY_CHANNEL_SIGLA, program.getChannelId());
         values.put(KEY_REPEATS, !alarm.isOnce());
-        // Inserir linha
-        db.insert(TABLE_ALARMS, null, values);
+        db.insert(TABLE_ALARMS, null, values); // Inserir linha
         db.close();
     }
 
@@ -70,9 +63,8 @@ public class AlarmDao extends SQLiteOpenHelper {
             do {   // Criar Alarme
                 int id = Integer.parseInt(cursor.getString(0));
                 String title = cursor.getString(1);
-                String startDate = cursor.getString(2);
-                String channelSigla = cursor.getString(3);
-                boolean repeats = Boolean.parseBoolean(cursor.getString(5));
+                String channelSigla = cursor.getString(2);
+                boolean repeats = Boolean.parseBoolean(cursor.getString(3));
                 Program program = new Program(id, title, null, channelSigla);
                 Alarm alarm = new Alarm(program, repeats);
                 alarmsList.add(alarm);
