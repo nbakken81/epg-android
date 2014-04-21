@@ -90,24 +90,23 @@ public class ProgramsActivity extends Activity {
      * @param program
      */
     public void showPopup(final Program program) {
-
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.popup_setalarm);
         dialog.setTitle(program.getTitle());
         dialog.show();
-        // Botão criar
+        // Botão Criar
         Button createAlarm = (Button) dialog.findViewById(R.id.btnCreateAlarm);
         createAlarm.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {  // Criar alarme
                 Alarm alarm = new Alarm(program, false);
-                AlarmNotifier.schedule(context, alarm); // agenda alarme
                 alarmsDB.add(alarm);
+                AlarmNotifier.updateNotifications(context);
                 dialog.dismiss();
                 startActivity(new Intent(ProgramsActivity.this, AlarmsActivity.class)); // volta ao home screen
             }
         });
-        // Botão cancelar
+        // Botão Cancelar
         Button cancelAlarm = (Button) dialog.findViewById(R.id.btnCancelAlarm);
         cancelAlarm.setOnClickListener(new OnClickListener() {
             @Override
