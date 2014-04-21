@@ -35,6 +35,7 @@ public class AlarmDao extends SQLiteOpenHelper {
                 + " PRIMARY KEY (" + KEY_TITLE + ", " + KEY_CHANNEL_SIGLA + ") "
                 + " )";
         db.execSQL(CREATE_ALARMS_TABLE);  // Criação da tabela alarmes
+        db.close();
     }
 
     @Override
@@ -74,6 +75,7 @@ public class AlarmDao extends SQLiteOpenHelper {
                 alarmsList.add(alarm);
             } while (cursor.moveToNext());
         }
+        db.close();
         return alarmsList;
     }
 
@@ -87,6 +89,7 @@ public class AlarmDao extends SQLiteOpenHelper {
                 channels.add(new Channel(cursor.getString(0)));
             } while (cursor.moveToNext());
         }
+        db.close();
         return channels;
     }
 
