@@ -3,6 +3,7 @@ package pt.mobiledev.tvalarmes.dao;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
@@ -48,7 +49,11 @@ public class AlarmDao extends SQLiteOpenHelper {
         values.put(KEY_TITLE, program.getTitle());
         values.put(KEY_CHANNEL_SIGLA, program.getChannelId());
         values.put(KEY_REPEATS, !alarm.isOnce());
-        db.insert(TABLE_ALARMS, null, values); // Inserir linha
+        try {
+            db.insertOrThrow(TABLE_ALARMS, null, values); // Inserir linha
+        } catch (SQLiteConstraintException e) {
+            // não faz nada... já existe
+        }
         db.close();
     }
 
