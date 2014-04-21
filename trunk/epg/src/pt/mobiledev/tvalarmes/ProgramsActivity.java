@@ -86,7 +86,7 @@ public class ProgramsActivity extends Activity {
 
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.popup_setalarm);
-        dialog.setTitle("Criação de alarme");
+        dialog.setTitle(program.getTitle());
         dialog.show();
         // Botão criar
         Button createAlarm = (Button) dialog.findViewById(R.id.btnCreateAlarm);
