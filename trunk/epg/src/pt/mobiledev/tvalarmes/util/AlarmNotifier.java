@@ -1,6 +1,5 @@
 package pt.mobiledev.tvalarmes.util;
 
-import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -8,22 +7,39 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
+import java.util.List;
 import pt.mobiledev.tvalarmes.AlarmsActivity;
+import pt.mobiledev.tvalarmes.dao.AlarmDao;
+import pt.mobiledev.tvalarmes.dao.EPGDao;
 import pt.mobiledev.tvalarmes.domain.Alarm;
 import pt.mobiledev.tvalarmes.domain.Channel;
+import pt.mobiledev.tvalarmes.domain.Program;
 
 public class AlarmNotifier {
 
-    public static void schedule(Context context, Alarm alarm) {
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE); // iniciar alarm Manager
-        Intent intent = new Intent(context, AlarmReceiver.class); // criar Intent
-        intent.putExtra("alarm", alarm); // Adicionar alarme ao intent
-        PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
-        long milliseconds = alarm.getProgram().getStartDate().getTime();  // Agendar alarme
+    public static void updateNotifications(Context context) {
+        AlarmDao alarmDao = new AlarmDao(context);
+        List<Alarm> allAlarms = alarmDao.findAll();
+        List<Program> allPrograms = EPGDao.getAllPrograms(context, alarmDao.getAllChannels());
+        findMatches(allAlarms, allPrograms);
 
-        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, 2000, alarmIntent); // teste TODO apagar
+//        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE); // iniciar alarm Manager
+//        Intent intent = new Intent(context, AlarmReceiver.class); // criar Intent
+//        intent.putExtra("alarm", alarm); // Adicionar alarme ao intent
+//        PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+//        long milliseconds = alarm.getProgram().getStartDate().getTime();  // Agendar alarme
+//        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, 2000, alarmIntent); // teste TODO apagar
+//        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, milliseconds, alarmIntent);
+    }
 
-        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, milliseconds, alarmIntent);
+    static void findMatches(List<Alarm> allAlarms, List<Program> allPrograms) {
+        for(Program program : allPrograms) {
+            for(Alarm alarm : allAlarms) {
+                if (alarm.getProgram().equals(program)) {
+                    
+                }
+            }
+        }
     }
 
     public static class AlarmReceiver extends BroadcastReceiver {

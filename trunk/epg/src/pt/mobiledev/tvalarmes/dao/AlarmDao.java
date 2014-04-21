@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 import java.util.List;
 import pt.mobiledev.tvalarmes.domain.Alarm;
+import pt.mobiledev.tvalarmes.domain.Channel;
 import pt.mobiledev.tvalarmes.domain.Program;
 
 public class AlarmDao extends SQLiteOpenHelper {
@@ -74,6 +75,19 @@ public class AlarmDao extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         return alarmsList;
+    }
+
+    public List<Channel> getAllChannels() {
+        String selectQuery = "SELECT DISTINCT " + KEY_CHANNEL_SIGLA + " FROM " + TABLE_ALARMS;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        List<Channel> channels = new ArrayList<Channel>();
+        if (cursor.moveToFirst()) {
+            do {
+                channels.add(new Channel(cursor.getString(0)));
+            } while (cursor.moveToNext());
+        }
+        return channels;
     }
 
     public void delete(Alarm alarm) {

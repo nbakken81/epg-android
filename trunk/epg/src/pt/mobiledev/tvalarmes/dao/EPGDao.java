@@ -9,6 +9,7 @@ import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -61,7 +62,7 @@ public class EPGDao {
         return entries;
     }
 
-    public static List<Program> getAllPrograms(Context context, Channel... channels) {
+    public static List<Program> getAllPrograms(Context context, List<Channel> channels) {
         List<Program> entries = new ArrayList<Program>();
         try {
             URL url = new URL(BASE_URL + GET_PROGRAMS_FUNCTION
@@ -106,8 +107,8 @@ public class EPGDao {
         return entries;
     }
 
-    public static List<Program> getAvailablePrograms(Context context, Channel... channels) {
-        List<Program> progs = getAllPrograms(context, channels);
+    public static List<Program> getAvailablePrograms(Context context, Channel channel) {
+        List<Program> progs = getAllPrograms(context, Arrays.asList(channel));
         removeRepeated(progs);
         sort(progs);
         return progs;
@@ -146,7 +147,7 @@ public class EPGDao {
         }
     }
 
-    public static String formatSiglas(Channel[] channels) {
+    public static String formatSiglas(List<Channel> channels) {
         StringBuilder siglasBuilder = new StringBuilder();
         for (Channel ch : channels) {
             siglasBuilder.append(ch.getId()).append(",");
