@@ -44,10 +44,11 @@ public class AlarmNotifier {
             for (Alarm alarm : allAlarms) {
                 if (alarm.getProgram().equals(program)) {
                     // TODO: verificar se está na tabela das notificações.. para evitar ser agendado de novo!
-                    Intent intent = new Intent(context, AlarmReceiver.class); // criar Intent
+                    Intent notificationIntent = new Intent(context, AlarmReceiver.class); // criar Intent
                     alarm.setProgram(program);
-                    intent.putExtra("notification", alarm); // Adicionar alarme ao intent
-                    PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+                    notificationIntent.putExtra("notification", alarm); // Adicionar alarme ao intent
+//                    notificationIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, notificationIntent, 0);
                     long milliseconds = program.getStartDate().getTime();  // Agendar alarme
                     alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, 2000, alarmIntent); // teste TODO apagar
                     alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, milliseconds, alarmIntent);
@@ -63,6 +64,7 @@ public class AlarmNotifier {
          */
         @Override
         public void onReceive(Context context, Intent intent) {
+            // porque crl alarm é null? fdx não entendo.. mudei o extra de nome mas o gajo tem sempre "alarm" e não "notification". wtf
             Alarm alarm = (Alarm) intent.getSerializableExtra("notification");
             AlarmNotifier.runNotification(context, alarm);
         }
@@ -85,6 +87,7 @@ public class AlarmNotifier {
                 .setContentTitle(alarm.getProgram().getTitle())
                 .setContentText(alarm.getProgram().getId() + "")
                 .setAutoCancel(true);
+        // comentei isto porque isto é útil para abrir a app automaticamente onclick.. mas não me parece útil para já
 //        Intent resultIntent = new Intent(context, AlarmsActivity.class);
 //        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
 //        stackBuilder.addParentStack(AlarmsActivity.class);
