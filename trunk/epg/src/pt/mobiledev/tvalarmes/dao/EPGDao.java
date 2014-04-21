@@ -69,7 +69,6 @@ public class EPGDao {
                     + "?channelSiglas=" + formatSiglas(channels)
                     + "&startDate=" + formatDate(Util.subtractDays(0))
                     + "&endDate=" + formatDate(Util.addDays(1)));
-            // TODO suporte a vários canais de uma só vez: útil para o scheduler
             XmlPullParser parser = getParser(context, formatSiglas(channels), url.toString(), 1);
             while (parser.next() != END_DOCUMENT) {
                 if (parser.getEventType() == START_TAG && parser.getName().equals("Program")) {
