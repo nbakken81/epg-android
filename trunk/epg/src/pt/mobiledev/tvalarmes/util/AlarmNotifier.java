@@ -66,7 +66,6 @@ public class AlarmNotifier {
          */
         @Override
         public void onReceive(Context context, Intent intent) {
-            // porque crl alarm é null? fdx não entendo.. mudei o extra de nome mas o gajo tem sempre "alarm" e não "notification". wtf
             Alarm alarm = (Alarm) intent.getSerializableExtra("notification");
             AlarmNotifier.runNotification(context, alarm);
         }
@@ -87,7 +86,7 @@ public class AlarmNotifier {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
                 .setSmallIcon(Channel.getLogoResourceId(context, new Channel(alarm.getProgram().getChannelId())))
                 .setContentTitle(alarm.getProgram().getTitle())
-                .setContentText(alarm.getProgram().getId() + "")
+                // .setContentText(alarm.getProgram().getId() + "")
                 .setAutoCancel(true);
         // comentei isto porque isto é útil para abrir a app automaticamente onclick.. mas não me parece útil para já
         Intent resultIntent = new Intent(context, AlarmsActivity.class);
