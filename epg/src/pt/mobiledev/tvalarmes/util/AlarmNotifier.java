@@ -48,7 +48,7 @@ public class AlarmNotifier {
                     alarm.setProgram(program);
                     notificationIntent.putExtra("notification", alarm); // Adicionar alarme ao intent
 //                    notificationIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, notificationIntent, 0);
+                    PendingIntent alarmIntent = PendingIntent.getBroadcast(context, program.getId(), notificationIntent, 0);
                     long milliseconds = program.getStartDate().getTime();  // Agendar alarme
                     alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, 2000, alarmIntent); // teste TODO apagar
                     alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, milliseconds, alarmIntent);
@@ -95,6 +95,6 @@ public class AlarmNotifier {
 //        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 //        mBuilder.setContentIntent(resultPendingIntent);
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.notify(alarm.getProgram().getId(), mBuilder.build());
+        mNotificationManager.notify(1, mBuilder.build());
     }
 }
