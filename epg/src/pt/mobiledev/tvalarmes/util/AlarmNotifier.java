@@ -7,8 +7,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import static java.util.Arrays.asList;
 import java.util.List;
+import pt.mobiledev.tvalarmes.AlarmsActivity;
 import pt.mobiledev.tvalarmes.dao.AlarmDao;
 import pt.mobiledev.tvalarmes.dao.EPGDao;
 import pt.mobiledev.tvalarmes.domain.Alarm;
@@ -88,12 +90,12 @@ public class AlarmNotifier {
                 .setContentText(alarm.getProgram().getId() + "")
                 .setAutoCancel(true);
         // comentei isto porque isto é útil para abrir a app automaticamente onclick.. mas não me parece útil para já
-//        Intent resultIntent = new Intent(context, AlarmsActivity.class);
-//        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-//        stackBuilder.addParentStack(AlarmsActivity.class);
-//        stackBuilder.addNextIntent(resultIntent);
-//        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-//        mBuilder.setContentIntent(resultPendingIntent);
+        Intent resultIntent = new Intent(context, AlarmsActivity.class);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+        stackBuilder.addParentStack(AlarmsActivity.class);
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        mBuilder.setContentIntent(resultPendingIntent);
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(1, mBuilder.build());
     }
