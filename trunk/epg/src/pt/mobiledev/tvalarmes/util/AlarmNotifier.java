@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import static java.util.Arrays.asList;
+import java.util.Date;
 import java.util.List;
 import pt.mobiledev.tvalarmes.AlarmsActivity;
 import pt.mobiledev.tvalarmes.dao.AlarmDao;
@@ -45,15 +46,16 @@ public class AlarmNotifier {
         for (Program program : allPrograms) {
             for (Alarm alarm : allAlarms) {
                 if (alarm.getProgram().equals(program)) {
-                    // TODO: verificar se está na tabela das notificações.. para evitar ser agendado de novo!
                     Intent notificationIntent = new Intent(context, AlarmReceiver.class); // criar Intent
                     alarm.setProgram(program);
                     notificationIntent.putExtra("notification", alarm); // Adicionar alarme ao intent
-//                    notificationIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     PendingIntent alarmIntent = PendingIntent.getBroadcast(context, program.getId(), notificationIntent, 0);
                     long milliseconds = program.getStartDate().getTime();  // Agendar alarme
-                    alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, 2000, alarmIntent); // teste TODO apagar
                     alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, milliseconds, alarmIntent);
+                    System.out.println("VOU MARCAR O ALARME: " + alarm + " para as " + program.getStartDate());
+
+                    PendingIntent alarmIntent5 = PendingIntent.getBroadcast(context, program.getId() + 5, notificationIntent, 0);
+                    alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, new Date().getTime() + 5000, alarmIntent5);
                 }
             }
         }
@@ -85,10 +87,7 @@ public class AlarmNotifier {
     public static void runNotification(Context context, Alarm alarm) {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
                 .setSmallIcon(Channel.getLogoResourceId(context, new Channel(alarm.getProgram().getChannelId())))
-                .setContentTitle(alarm.getProgram().getTitle())
-                // .setContentText(alarm.getProgram().getId() + "")
-                .setAutoCancel(true);
-        // comentei isto porque isto é útil para abrir a app automaticamente onclick.. mas não me parece útil para já
+                .setContentTitle(alarm.getProgram().getTitle());
         Intent resultIntent = new Intent(context, AlarmsActivity.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
         stackBuilder.addParentStack(AlarmsActivity.class);
