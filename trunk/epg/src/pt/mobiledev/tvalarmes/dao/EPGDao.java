@@ -13,7 +13,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -45,7 +44,7 @@ public class EPGDao {
     final static Pattern PROG_EP_SE_PATTERN = Pattern.compile("^(.*) T([0-9]{1,2}) - Ep. ([0-9]{1,3})$");
 
     public static List<Channel> getChannels(Context context) {
-        Map<String, Channel> channels = new HashMap<String, Channel>();
+        List<Channel> channels = new ArrayList<Channel>();
         try {
             XmlPullParser parser = getParser(context, "listaCanais", BASE_URL + GET_CHANNELS_FUNCTION, 30 * 24);
             while (parser.next() != END_TAG) {
@@ -53,10 +52,7 @@ public class EPGDao {
                     // OK encontrou tag; controi canal!
                     Map<String, String> channelAsMap = readValuesAsMap(parser, "Name", "Sigla");
                     Channel channel = new Channel(channelAsMap.get("Name"), channelAsMap.get("Sigla"));
-                    if (channel.getName().endsWith(" HD")) { // para evitar os HD repetidos
-                        channel.setName(channel.getName().replace(" HD", ""));
-                    }
-                    channels.put(channel.getName(), channel);
+                    channels.add(channel);
                 }
             }
         } catch (IOException ex) {
@@ -64,7 +60,7 @@ public class EPGDao {
         } catch (XmlPullParserException ex) {
             Logger.getLogger(EPGDao.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return new ArrayList<Channel>(channels.values());
+        return channels;
     }
 
     public static List<Program> getAllPrograms(Context context, List<Channel> channels) {
