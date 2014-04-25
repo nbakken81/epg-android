@@ -3,7 +3,18 @@
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
               android:orientation="vertical" 
-              android:focusable="true" android:focusableInTouchMode="true">
+              android:focusable="true" android:focusableInTouchMode="true"
+              android:background="@android:color/white">
+              
+            <TextView
+            android:id="@+id/tvAlarms"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp" 
+            android:layout_gravity="center"
+            android:gravity="center" 
+            android:text="Canais"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"/>
     
     <EditText android:id="@+id/channelSearch"
               android:layout_width="fill_parent"

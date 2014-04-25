@@ -1,5 +1,9 @@
 package pt.mobiledev.tvalarmes;
 
+import java.util.List;
+
+import pt.mobiledev.tvalarmes.dao.AlarmDao;
+import pt.mobiledev.tvalarmes.domain.Alarm;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -10,9 +14,6 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.view.View;
 import android.widget.ListView;
-import java.util.List;
-import pt.mobiledev.tvalarmes.dao.AlarmDao;
-import pt.mobiledev.tvalarmes.domain.Alarm;
 
 @TargetApi(Build.VERSION_CODES.GINGERBREAD)
 @SuppressLint("NewApi")
@@ -32,6 +33,7 @@ public class AlarmsActivity extends Activity {
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alarm_list);
+
         context = getApplicationContext();        
         db = new AlarmDao(this); // Sacar a base de dados
     }
