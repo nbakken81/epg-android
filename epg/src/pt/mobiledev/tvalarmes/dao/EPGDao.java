@@ -1,9 +1,14 @@
 package pt.mobiledev.tvalarmes.dao;
 
-import android.content.Context;
+import static java.lang.Integer.parseInt;
+import static org.xmlpull.v1.XmlPullParser.END_DOCUMENT;
+import static org.xmlpull.v1.XmlPullParser.END_TAG;
+import static org.xmlpull.v1.XmlPullParser.START_TAG;
+import static pt.mobiledev.tvalarmes.dao.XmlCachedParser.getParser;
+import static pt.mobiledev.tvalarmes.dao.XmlCachedParser.readValuesAsMap;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import static java.lang.Integer.parseInt;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.ParseException;
@@ -22,17 +27,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import org.apache.http.protocol.HTTP;
 import org.xmlpull.v1.XmlPullParser;
-import static org.xmlpull.v1.XmlPullParser.END_DOCUMENT;
-import static org.xmlpull.v1.XmlPullParser.END_TAG;
-import static org.xmlpull.v1.XmlPullParser.START_TAG;
 import org.xmlpull.v1.XmlPullParserException;
-import static pt.mobiledev.tvalarmes.dao.XmlCachedParser.getParser;
-import static pt.mobiledev.tvalarmes.dao.XmlCachedParser.readValuesAsMap;
+
 import pt.mobiledev.tvalarmes.domain.Channel;
 import pt.mobiledev.tvalarmes.domain.Program;
 import pt.mobiledev.tvalarmes.util.Util;
+import android.content.Context;
 
 public class EPGDao {
 

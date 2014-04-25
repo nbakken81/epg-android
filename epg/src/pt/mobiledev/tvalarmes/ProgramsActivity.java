@@ -2,8 +2,10 @@ package pt.mobiledev.tvalarmes;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -30,13 +32,54 @@ public class ProgramsActivity extends Activity {
     ListView lvPrograms;
     Context context = ProgramsActivity.this;
     final AlarmDao alarmsDao = new AlarmDao(context); // adiciona à base de dados
+    Channel selectedChannel;
+	ProgressDialog progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.program_list);
-        Channel selectedChannel = (Channel) getIntent().getExtras().get("channel");
-        final List<Program> programs = EPGDao.getAvailablePrograms(context, selectedChannel);
+        selectedChannel = (Channel) getIntent().getExtras().get("channel");
+        GetProgramsTask getPrograsmTask = new GetProgramsTask(context, selectedChannel);
+        getPrograsmTask.execute();
+        // Mostrar progress dialog
+    	progress = new ProgressDialog(this);
+    	progress.show();
+    }
+
+    /**
+     * Criação do popup
+     *
+     * @param program
+     */
+    public void showPopup(final Program program) {
+        final Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.popup_setalarm);
+        dialog.setTitle(program.getTitle());
+        dialog.show();
+        // Botão Criar
+        Button createAlarm = (Button) dialog.findViewById(R.id.btnCreateAlarm);
+        createAlarm.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {  // Criar alarme
+                Alarm alarm = new Alarm(program, false);
+                alarmsDao.add(alarm);
+                AlarmNotifier.updateNotifications(context, new Channel(alarm.getProgram().getChannelId()));
+                dialog.dismiss();
+                startActivity(new Intent(ProgramsActivity.this, AlarmsActivity.class)); // volta ao home screen
+            }
+        });
+        // Botão Cancelar
+        Button cancelAlarm = (Button) dialog.findViewById(R.id.btnCancelAlarm);
+        cancelAlarm.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+    }
+    
+    private void createListView(final List<Program> programs) {
         // limpar já existentes; é escusado apanhar com programas já na lista...
         List<Alarm> alarmsPerChannel = alarmsDao.findByChannel(selectedChannel);
         List<Program> alarmsPerChannelP = new ArrayList<Program>();
@@ -90,36 +133,25 @@ public class ProgramsActivity extends Activity {
             }
         });
     }
+    
+    private class GetProgramsTask extends AsyncTask<Void, Void, Integer> {
+    	List<Program> programs;
+    	Channel selectedChannel;
+    	Context context;
+    	
+    	public GetProgramsTask(Context context, Channel selectedChannel) {
+    		this.selectedChannel = selectedChannel;
+    		this.context = context;
+    	}
+    	
+        protected Integer doInBackground(Void... params) {
+        	programs = EPGDao.getAvailablePrograms(context, selectedChannel);
+    		return 1;
+        }
 
-    /**
-     * Criação do popup
-     *
-     * @param program
-     */
-    public void showPopup(final Program program) {
-        final Dialog dialog = new Dialog(context);
-        dialog.setContentView(R.layout.popup_setalarm);
-        dialog.setTitle(program.getTitle());
-        dialog.show();
-        // Botão Criar
-        Button createAlarm = (Button) dialog.findViewById(R.id.btnCreateAlarm);
-        createAlarm.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {  // Criar alarme
-                Alarm alarm = new Alarm(program, false);
-                alarmsDao.add(alarm);
-                AlarmNotifier.updateNotifications(context, new Channel(alarm.getProgram().getChannelId()));
-                dialog.dismiss();
-                startActivity(new Intent(ProgramsActivity.this, AlarmsActivity.class)); // volta ao home screen
-            }
-        });
-        // Botão Cancelar
-        Button cancelAlarm = (Button) dialog.findViewById(R.id.btnCancelAlarm);
-        cancelAlarm.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+        protected void onPostExecute(Integer result) {            
+        	createListView(programs);
+        	progress.dismiss();
+        }
     }
 }
