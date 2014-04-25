@@ -1,7 +1,18 @@
 package pt.mobiledev.tvalarmes;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+import pt.mobiledev.tvalarmes.dao.EPGDao;
+import pt.mobiledev.tvalarmes.domain.Channel;
+import pt.mobiledev.tvalarmes.util.Util;
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -10,24 +21,24 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.TextView;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import pt.mobiledev.tvalarmes.dao.EPGDao;
-import pt.mobiledev.tvalarmes.domain.Channel;
-import pt.mobiledev.tvalarmes.util.Util;
 
 public class ChannelsActivity extends Activity {
-
+	
+	ProgressDialog progress;
+	
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         setContentView(R.layout.channel_list);
-        // busca canais e ordena-os
-        final List<Channel> channels = EPGDao.getChannels(this);
+        GetChannelsTask getChannelsTask = new GetChannelsTask(this);
+        getChannelsTask.execute();
+        // Mostrar progress dialog
+    	progress = new ProgressDialog(this);
+    	progress.show();
+    }
+    
+    private void createGridView(final List<Channel> channels) {
         Collections.sort(channels, new Comparator<Channel>() {
-
             public int compare(Channel ch1, Channel ch2) {
                 Boolean hasLogo1 = ch1.getLogoResourceId(ChannelsActivity.this) > 0;
                 Boolean hasLogo2 = ch2.getLogoResourceId(ChannelsActivity.this) > 0;
@@ -48,7 +59,6 @@ public class ChannelsActivity extends Activity {
         // prepara pesquisa rapida
         TextView channelSearch = (TextView) findViewById(R.id.channelSearch);
         channelSearch.addTextChangedListener(new TextWatcher() {
-
             public void beforeTextChanged(CharSequence cs, int i, int i1, int i2) {
             }
 
@@ -72,4 +82,26 @@ public class ChannelsActivity extends Activity {
             }
         });
     }
+    
+    private class GetChannelsTask extends AsyncTask<Void, Void, Integer> {
+    	List<Channel> channels;
+    	Context context;
+    	
+    	public GetChannelsTask(Context context) {
+    		this.context = context;
+    	}
+    	
+        protected Integer doInBackground(Void... params) {
+        	// Sacar canais em background
+        	channels = EPGDao.getChannels(context);
+    		return 1;
+        }
+
+        protected void onPostExecute(Integer result) { 
+        	// Criar gridView
+        	createGridView(channels);
+        	progress.dismiss();
+        }
+    }
+   
 }

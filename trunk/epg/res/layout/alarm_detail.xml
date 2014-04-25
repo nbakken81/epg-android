@@ -4,8 +4,8 @@
                 android:layout_height="match_parent" >
     
     <ImageView android:id="@+id/tvImageAlarm"
-               android:layout_width="60dp"
-               android:layout_height="45dp" 
+               android:layout_width="50dp"
+               android:layout_height="38dp" 
                />
 
     <TextView android:id="@+id/tvTitle"
