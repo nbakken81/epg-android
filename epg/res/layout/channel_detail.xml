@@ -6,8 +6,9 @@
 
     <ImageView
         android:id="@+id/tvImage"
-        android:layout_width="60px"
-        android:layout_height="45px"
-        android:layout_marginRight="3dp" />
+        android:layout_width="65dp"
+        android:layout_height="49dp"
+        android:layout_marginRight="3dp"
+        android:layout_gravity="center" />
 
 </LinearLayout>
