@@ -1,22 +1,25 @@
 package pt.mobiledev.tvalarmes.util;
 
-import android.app.AlarmManager;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
 import static java.util.Arrays.asList;
-import java.util.Date;
+
 import java.util.List;
+import java.util.Random;
+
 import pt.mobiledev.tvalarmes.AlarmsActivity;
 import pt.mobiledev.tvalarmes.dao.AlarmDao;
 import pt.mobiledev.tvalarmes.dao.EPGDao;
 import pt.mobiledev.tvalarmes.domain.Alarm;
 import pt.mobiledev.tvalarmes.domain.Channel;
 import pt.mobiledev.tvalarmes.domain.Program;
+import android.app.AlarmManager;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.os.SystemClock;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 
 public class AlarmNotifier {
 
@@ -51,11 +54,12 @@ public class AlarmNotifier {
                     notificationIntent.putExtra("notification", alarm); // Adicionar alarme ao intent
                     PendingIntent alarmIntent = PendingIntent.getBroadcast(context, program.getId(), notificationIntent, 0);
                     long milliseconds = program.getStartDate().getTime();  // Agendar alarme
+                    // Agendamento
                     alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, milliseconds, alarmIntent);
                     System.out.println("VOU MARCAR O ALARME: " + alarm + " para as " + program.getStartDate());
-
-                    PendingIntent alarmIntent5 = PendingIntent.getBroadcast(context, program.getId() + 5, notificationIntent, 0);
-                    alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, new Date().getTime() + 5000, alarmIntent5);
+                    // Fake Alarm
+                    PendingIntent alarmIntent5 = PendingIntent.getBroadcast(context, program.getId(), notificationIntent, 0);
+                    alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 2000, alarmIntent5);
                 }
             }
         }
@@ -95,6 +99,6 @@ public class AlarmNotifier {
         PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
         mBuilder.setContentIntent(resultPendingIntent);
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.notify(1, mBuilder.build());
+        mNotificationManager.notify(alarm.getProgram().getId(), mBuilder.build());
     }
 }
