@@ -6,33 +6,29 @@
     android:focusableInTouchMode="true"
     android:orientation="vertical" >
 
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="50dp"  >
-
-        <TextView
-            android:id="@+id/tvAlarms"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="Alarmes TV"
-            android:textColor="@android:color/black"
-            android:textSize="20sp" />
-
-        <Button
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerInParent="true"
-            android:background="@drawable/add"
-            android:onClick="goToChannels" 
-            android:layout_marginRight="10dp"/>
-    </RelativeLayout>
+    <TextView
+        android:id="@+id/tvAlarms"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="Alarmes TV"
+        android:textColor="@android:color/black"
+        android:textSize="20sp" />
 
     <ListView
         android:id="@+id/lvAlarms"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="10dp" />
+
+    <Button
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:background="@drawable/add"
+        android:gravity="center"
+        android:onClick="goToChannels" />
 
 </LinearLayout>
