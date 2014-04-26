@@ -23,7 +23,13 @@ import org.xmlpull.v1.XmlPullParserException;
 public class XmlCachedParser {
 
     public static XmlPullParser getParser(Context context, String id, String url, int cacheHours) throws IOException, XmlPullParserException {
-        InputStream inputStream = getFileInputStream(context, id, url, cacheHours);
+        InputStream inputStream;
+        try {
+            inputStream = getFileInputStream(context, id, url, cacheHours);
+        } catch (FileNotFoundException e) {
+            // se houver erro de servidor, busca o que tem em disco
+            inputStream = getFileInputStream(context, id, url, 10000);
+        }
         XmlPullParser parser = Xml.newPullParser();
         parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
         parser.setInput(inputStream, null);
@@ -73,9 +79,6 @@ public class XmlCachedParser {
     }
 
     static InputStream getFileInputStream(Context context, String id, String url, int cacheHours) throws IOException {
-        if (cacheHours <= 0) {
-            return tryServerFile(context, id, url);
-        }
         File file = new File(context.getFilesDir(), id);
         boolean isFileOld = !file.exists() || new Date().getTime() - file.lastModified() > MILLISECONDS.convert(cacheHours, TimeUnit.HOURS);
         if (isFileOld) { // vamos buscar o original e guardamos para cache
@@ -89,13 +92,5 @@ public class XmlCachedParser {
             outputStream.close();
         }
         return context.openFileInput(id);  // retorna o ficheiro do disco
-    }
-
-    static InputStream tryServerFile(Context context, String filename, String url) throws IOException {
-        try {
-            return new URL(url).openStream(); // se não há cache.... devolve já sem escrever nada
-        } catch (FileNotFoundException notFound) {
-            return context.openFileInput(filename);  // vamos prosseguir com a versão em disco
-        }
     }
 }
