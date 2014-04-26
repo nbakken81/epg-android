@@ -24,11 +24,12 @@
             android:id="@+id/channelName"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
+            android:paddingLeft="4dp"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="Canal"
-            android:textColor="@android:color/black"
-            android:textSize="20sp" />
+            android:textColor="#2E2C2C"
+            android:textSize="18sp" />
     </LinearLayout>
 
     <EditText

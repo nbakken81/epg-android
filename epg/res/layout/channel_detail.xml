@@ -17,6 +17,6 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:paddingLeft="4dp"
-        android:textColor="#2E2C2C" />
+        android:textColor="@android:color/black" />
 
 </RelativeLayout>
