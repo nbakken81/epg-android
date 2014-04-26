@@ -8,15 +8,15 @@ import java.util.Date;
 
 public class Util {
 
-    public static Date addDays(int days) {
+    public static Date addHours(int hours) {
         Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, days);
+        cal.add(Calendar.HOUR, hours);
         Date endDate = cal.getTime();
         return endDate;
     }
 
-    public static Date subtractDays(int days) {
-        return addDays(-days);
+    public static Date subtractHours(int hours) {
+        return addHours(-hours);
     }
 
     public static int getResourceId(Context context, String packageName, String resourceName) {
