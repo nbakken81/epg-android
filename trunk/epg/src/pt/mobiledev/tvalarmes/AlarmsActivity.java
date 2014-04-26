@@ -25,7 +25,7 @@ public class AlarmsActivity extends Activity {
 
         context = getApplicationContext();        
         db = new AlarmDao(this); // Sacar a base de dados
-        AlarmNotifier.backgroundTaskScheduler(this);
+        AlarmNotifier.backgroundTaskScheduler(this); // Agendamento da tarefa de actualização de alarmes em background
     }
 
     @Override
