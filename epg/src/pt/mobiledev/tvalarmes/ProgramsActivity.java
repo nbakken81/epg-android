@@ -33,7 +33,7 @@ public class ProgramsActivity extends Activity {
     Context context = ProgramsActivity.this;
     final AlarmDao alarmsDao = new AlarmDao(context); // adiciona à base de dados
     Channel selectedChannel;
-	ProgressDialog progress;
+    ProgressDialog progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +43,8 @@ public class ProgramsActivity extends Activity {
         GetProgramsTask getPrograsmTask = new GetProgramsTask(context, selectedChannel);
         getPrograsmTask.execute();
         // Mostrar progress dialog
-    	progress = new ProgressDialog(this);
-    	progress.show();
+        progress = new ProgressDialog(this);
+        progress.show();
     }
 
     /**
@@ -78,7 +78,7 @@ public class ProgramsActivity extends Activity {
             }
         });
     }
-    
+
     private void createListView(final List<Program> programs) {
         // limpar já existentes; é escusado apanhar com programas já na lista...
         List<Alarm> alarmsPerChannel = alarmsDao.findByChannel(selectedChannel);
@@ -96,7 +96,7 @@ public class ProgramsActivity extends Activity {
         ImageView logoChannel = (ImageView) findViewById(R.id.programsLogo);
         logoChannel.setImageResource(selectedChannel.getLogoResourceId(context));
         TextView textLogo = (TextView) findViewById(R.id.channelName);
-        textLogo.setText(selectedChannel.getName());
+        textLogo.setText("(" + selectedChannel.getName() + ")");
 
         // prepara pesquisa rápida
         TextView programsSearch = (TextView) findViewById(R.id.programSearch);
@@ -133,25 +133,26 @@ public class ProgramsActivity extends Activity {
             }
         });
     }
-    
+
     private class GetProgramsTask extends AsyncTask<Void, Void, Integer> {
-    	List<Program> programs;
-    	Channel selectedChannel;
-    	Context context;
-    	
-    	public GetProgramsTask(Context context, Channel selectedChannel) {
-    		this.selectedChannel = selectedChannel;
-    		this.context = context;
-    	}
-    	
-        protected Integer doInBackground(Void... params) {
-        	programs = EPGDao.getAvailablePrograms(context, selectedChannel);
-    		return 1;
+
+        List<Program> programs;
+        Channel selectedChannel;
+        Context context;
+
+        public GetProgramsTask(Context context, Channel selectedChannel) {
+            this.selectedChannel = selectedChannel;
+            this.context = context;
         }
 
-        protected void onPostExecute(Integer result) {            
-        	createListView(programs);
-        	progress.dismiss();
+        protected Integer doInBackground(Void... params) {
+            programs = EPGDao.getAvailablePrograms(context, selectedChannel);
+            return 1;
+        }
+
+        protected void onPostExecute(Integer result) {
+            createListView(programs);
+            progress.dismiss();
         }
     }
 }
