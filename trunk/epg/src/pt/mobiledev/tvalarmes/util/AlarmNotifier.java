@@ -102,8 +102,8 @@ public class AlarmNotifier {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
                 .setSmallIcon(Channel.getLogoResourceId(context, new Channel(alarm.getProgram().getChannelId())))
                 .setContentTitle(alarm.getProgram().getTitle())
-                .setContentText((alarm.getProgram().getSeason() > 0 ? "T. " + alarm.getProgram().getSeason() + "  " : "")
-                        + (alarm.getProgram().getEpisode() > 0 ? "E. " + alarm.getProgram().getEpisode() : ""))
+                .setContentText((alarm.getProgram().getSeason() > 0 ? "T" + alarm.getProgram().getSeason() + "  " : "")
+                        + (alarm.getProgram().getEpisode() > 0 ? "E" + alarm.getProgram().getEpisode() : ""))
                 .setAutoCancel(true);
         Intent resultIntent = new Intent(context, AlarmsActivity.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
