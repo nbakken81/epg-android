@@ -12,6 +12,7 @@ import android.support.v4.app.TaskStackBuilder;
 import static java.util.Arrays.asList;
 import java.util.List;
 import pt.mobiledev.tvalarmes.AlarmsActivity;
+import pt.mobiledev.tvalarmes.R;
 import pt.mobiledev.tvalarmes.dao.AlarmDao;
 import pt.mobiledev.tvalarmes.dao.EPGDao;
 import pt.mobiledev.tvalarmes.domain.Alarm;
@@ -92,15 +93,6 @@ public class AlarmNotifier {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            // Sacar alarmes e lista de canais com alarme
-            AlarmDao alarmDao = new AlarmDao(context);
-            List<Channel> channels = alarmDao.getAllChannels();
-            List<Alarm> allAlarms = alarmDao.findAll();
-            // Sacar a programação dos canais com alarmes
-            List<Program> programs = EPGDao.getAllPrograms(context, channels); // tem que ser feito em async task também...?
-            // Agendar alarmes
-            findMatches(context, allAlarms, programs);
-            // Update às notificações existentes
             updateNotifications(context);
         }
     }
@@ -113,7 +105,7 @@ public class AlarmNotifier {
                 .setAutoCancel(true);
         int smallIcon = Channel.getLogoResourceId(context, new Channel(alarm.getProgram().getChannelId()));
         if (smallIcon == 0) {
-            smallIcon = (android.R.drawable.alert_light_frame);
+            smallIcon = R.drawable.tv;
         }
         mBuilder.setSmallIcon(smallIcon);
         Intent resultIntent = new Intent(context, AlarmsActivity.class);
