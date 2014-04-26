@@ -82,7 +82,7 @@ public class EPGDao {
                     // "nome programa Txy - Ep. kzy"
                     if (matcher.matches()) {
                         program.setTitle(matcher.group(1).trim());
-                        program.setEpisode(matcher.group(2) == null ? 0 : parseInt(matcher.group(2)));
+                        program.setSeason(matcher.group(2) == null ? 0 : parseInt(matcher.group(2)));
                         program.setEpisode(matcher.group(3) == null ? 0 : parseInt(matcher.group(3)));
                     } else {
                         // "nome programa Ep. kzy"
