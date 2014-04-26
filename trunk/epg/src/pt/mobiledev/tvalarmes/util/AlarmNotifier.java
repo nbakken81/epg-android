@@ -3,7 +3,6 @@ package pt.mobiledev.tvalarmes.util;
 import static java.util.Arrays.asList;
 
 import java.util.List;
-import java.util.Random;
 
 import pt.mobiledev.tvalarmes.AlarmsActivity;
 import pt.mobiledev.tvalarmes.dao.AlarmDao;
@@ -21,6 +20,10 @@ import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 
+/**
+ * @author diogomateus
+ *
+ */
 public class AlarmNotifier {
 
     /**
@@ -42,6 +45,16 @@ public class AlarmNotifier {
         List<Channel> channels = channel == null ? alarmDao.getAllChannels() : asList(channel);
         List<Program> allPrograms = EPGDao.getAllPrograms(context, channels);
         findMatches(context, allAlarms, allPrograms);
+    }
+    
+    /**
+     * Agendamento da tarefa de actualização de alarmes em background
+     */
+    public static void backgroundTaskScheduler(Context context) {
+    	AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+    	Intent backgroundIntent = new Intent(context, BackgroundTaskReceiver.class);
+        PendingIntent backgroundPendingIntent = PendingIntent.getBroadcast(context, 1, backgroundIntent, 0); // criar Intent
+        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, AlarmManager.INTERVAL_HALF_DAY, AlarmManager.INTERVAL_HALF_DAY, backgroundPendingIntent);
     }
 
     static void findMatches(Context context, List<Alarm> allAlarms, List<Program> allPrograms) {
