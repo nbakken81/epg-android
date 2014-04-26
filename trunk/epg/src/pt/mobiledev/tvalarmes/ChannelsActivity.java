@@ -1,31 +1,29 @@
 package pt.mobiledev.tvalarmes;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import pt.mobiledev.tvalarmes.dao.EPGDao;
-import pt.mobiledev.tvalarmes.domain.Channel;
-import pt.mobiledev.tvalarmes.util.Util;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.GridView;
-import android.widget.TextView;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import pt.mobiledev.tvalarmes.dao.EPGDao;
+import pt.mobiledev.tvalarmes.domain.Channel;
+import pt.mobiledev.tvalarmes.util.Util;
 
 public class ChannelsActivity extends Activity {
-	
-	ProgressDialog progress;
-	
+
+    ProgressDialog progress;
+
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -33,10 +31,10 @@ public class ChannelsActivity extends Activity {
         GetChannelsTask getChannelsTask = new GetChannelsTask(this);
         getChannelsTask.execute();
         // Mostrar progress dialog
-    	progress = new ProgressDialog(this);
-    	progress.show();
+        progress = new ProgressDialog(this);
+        progress.show();
     }
-    
+
     private void createGridView(final List<Channel> channels) {
         Collections.sort(channels, new Comparator<Channel>() {
             public int compare(Channel ch1, Channel ch2) {
@@ -57,51 +55,56 @@ public class ChannelsActivity extends Activity {
             }
         });
         // prepara pesquisa rapida
-        TextView channelSearch = (TextView) findViewById(R.id.channelSearch);
-        channelSearch.addTextChangedListener(new TextWatcher() {
-            public void beforeTextChanged(CharSequence cs, int i, int i1, int i2) {
-            }
+        List<String> CHANNELS = new ArrayList<String>(channels.size());
+        for (Channel ch : channels) {
+            CHANNELS.add(ch.getName());
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, CHANNELS);
+        final AutoCompleteTextView channelSearch = (AutoCompleteTextView) findViewById(R.id.channelSearch);
+        channelSearch.setAdapter(adapter);
+        channelSearch.setOnItemClickListener(new OnItemClickListener() {
 
-            public void onTextChanged(CharSequence cs, int i, int i1, int i2) {
-                if (cs.toString().trim().isEmpty()) {
+            public void onItemClick(AdapterView<?> av, View view, int i, long l) {
+                String textAC = channelSearch.getText().toString();
+                if (textAC.trim().isEmpty()) {
                     channelsAdapter.setChannels(new ArrayList<Channel>(channels));
-                } else {
-                    channelsAdapter.getChannels().clear();
-                    for (Channel channel : channels) {
-                        if (Util.relaxedStartsWith(channel.getName(), cs.toString())) {
-                            channelsAdapter.getChannels().add(0, channel);
-                        } else if (Util.relaxedContains(channel.getName(), cs.toString())) {
-                            channelsAdapter.getChannels().add(channel);
-                        }
+                    return;
+                }
+                channelsAdapter.getChannels().clear();
+                for (Channel channel : channels) {
+                    if (Util.relaxedStartsWith(channel.getName(), textAC)) {
+                        channelsAdapter.getChannels().add(0, channel);
+                    } else if (Util.relaxedContains(channel.getName(), textAC)) {
+                        channelsAdapter.getChannels().add(channel);
                     }
                 }
                 channelsGrid.invalidateViews();
             }
-
-            public void afterTextChanged(Editable edtbl) {
-            }
         });
     }
-    
+
     private class GetChannelsTask extends AsyncTask<Void, Void, Integer> {
-    	List<Channel> channels;
-    	Context context;
-    	
-    	public GetChannelsTask(Context context) {
-    		this.context = context;
-    	}
-    	
-        protected Integer doInBackground(Void... params) {
-        	// Sacar canais em background
-        	channels = EPGDao.getChannels(context);
-    		return 1;
+
+        List<Channel> channels;
+        Context context;
+
+        public GetChannelsTask(Context context) {
+            this.context = context;
         }
 
-        protected void onPostExecute(Integer result) { 
-        	// Criar gridView
-        	createGridView(channels);
-        	progress.dismiss();
+        protected Integer doInBackground(Void... params) {
+            // Sacar canais em background
+            channels = EPGDao.getChannels(context);
+            return 1;
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            // Criar gridView
+            createGridView(channels);
+            progress.dismiss();
         }
     }
-   
+
 }
