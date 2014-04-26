@@ -4,6 +4,7 @@ import java.util.List;
 
 import pt.mobiledev.tvalarmes.dao.AlarmDao;
 import pt.mobiledev.tvalarmes.domain.Alarm;
+import pt.mobiledev.tvalarmes.util.AlarmNotifier;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +25,7 @@ public class AlarmsActivity extends Activity {
 
         context = getApplicationContext();        
         db = new AlarmDao(this); // Sacar a base de dados
+        AlarmNotifier.backgroundTaskScheduler(this);
     }
 
     @Override
