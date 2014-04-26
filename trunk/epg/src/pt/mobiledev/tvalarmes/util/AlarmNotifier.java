@@ -92,12 +92,14 @@ public class AlarmNotifier {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            // Sacar a lista de todos os alarmes e canais com alarme
+            // Sacar alarmes e lista de canais com alarme
         	AlarmDao alarmDao = new AlarmDao(context);
             List<Channel> channels = alarmDao.getAllChannels();
+            List<Alarm> allAlarms = alarmDao.findAll();
             // Sacar a programação dos canais com alarmes
             List<Program> programs = EPGDao.getAllPrograms(context, channels); // tem que ser feito em async task também...?
             // Agendar alarmes
+            findMatches(context, allAlarms, programs);
         	// Update às notificações existentes
             updateNotifications(context);
         }
