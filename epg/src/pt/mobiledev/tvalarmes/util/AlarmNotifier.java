@@ -1,15 +1,5 @@
 package pt.mobiledev.tvalarmes.util;
 
-import static java.util.Arrays.asList;
-
-import java.util.List;
-
-import pt.mobiledev.tvalarmes.AlarmsActivity;
-import pt.mobiledev.tvalarmes.dao.AlarmDao;
-import pt.mobiledev.tvalarmes.dao.EPGDao;
-import pt.mobiledev.tvalarmes.domain.Alarm;
-import pt.mobiledev.tvalarmes.domain.Channel;
-import pt.mobiledev.tvalarmes.domain.Program;
 import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -19,6 +9,14 @@ import android.content.Intent;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
+import static java.util.Arrays.asList;
+import java.util.List;
+import pt.mobiledev.tvalarmes.AlarmsActivity;
+import pt.mobiledev.tvalarmes.dao.AlarmDao;
+import pt.mobiledev.tvalarmes.dao.EPGDao;
+import pt.mobiledev.tvalarmes.domain.Alarm;
+import pt.mobiledev.tvalarmes.domain.Channel;
+import pt.mobiledev.tvalarmes.domain.Program;
 
 /**
  * @author diogomateus
@@ -46,13 +44,13 @@ public class AlarmNotifier {
         List<Program> allPrograms = EPGDao.getAllPrograms(context, channels);
         findMatches(context, allAlarms, allPrograms);
     }
-    
+
     /**
      * Agendamento da tarefa de actualização de alarmes em background
      */
     public static void backgroundTaskScheduler(Context context) {
-    	AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-    	Intent backgroundIntent = new Intent(context, BackgroundTaskReceiver.class);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Intent backgroundIntent = new Intent(context, BackgroundTaskReceiver.class);
         PendingIntent backgroundPendingIntent = PendingIntent.getBroadcast(context, 1, backgroundIntent, 0); // criar Intent
         alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, AlarmManager.INTERVAL_HALF_DAY, AlarmManager.INTERVAL_HALF_DAY, backgroundPendingIntent);
     }
@@ -96,14 +94,15 @@ public class AlarmNotifier {
         public void onReceive(Context context, Intent intent) {
             // Sacar a lista de todos os alarmes
             // Sacar a programação dos canais com alarmes
-        	updateNotifications(context);
+            updateNotifications(context);
         }
     }
 
     public static void runNotification(Context context, Alarm alarm) {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
                 .setSmallIcon(Channel.getLogoResourceId(context, new Channel(alarm.getProgram().getChannelId())))
-                .setContentTitle(alarm.getProgram().getTitle());
+                .setContentTitle(alarm.getProgram().getTitle())
+                .setAutoCancel(true);
         Intent resultIntent = new Intent(context, AlarmsActivity.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
         stackBuilder.addParentStack(AlarmsActivity.class);

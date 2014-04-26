@@ -1,14 +1,9 @@
 package pt.mobiledev.tvalarmes.dao;
 
-import static java.lang.Integer.parseInt;
-import static org.xmlpull.v1.XmlPullParser.END_DOCUMENT;
-import static org.xmlpull.v1.XmlPullParser.END_TAG;
-import static org.xmlpull.v1.XmlPullParser.START_TAG;
-import static pt.mobiledev.tvalarmes.dao.XmlCachedParser.getParser;
-import static pt.mobiledev.tvalarmes.dao.XmlCachedParser.readValuesAsMap;
-
+import android.content.Context;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import static java.lang.Integer.parseInt;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.ParseException;
@@ -27,15 +22,17 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.apache.http.protocol.HTTP;
 import org.xmlpull.v1.XmlPullParser;
+import static org.xmlpull.v1.XmlPullParser.END_DOCUMENT;
+import static org.xmlpull.v1.XmlPullParser.END_TAG;
+import static org.xmlpull.v1.XmlPullParser.START_TAG;
 import org.xmlpull.v1.XmlPullParserException;
-
+import static pt.mobiledev.tvalarmes.dao.XmlCachedParser.getParser;
+import static pt.mobiledev.tvalarmes.dao.XmlCachedParser.readValuesAsMap;
 import pt.mobiledev.tvalarmes.domain.Channel;
 import pt.mobiledev.tvalarmes.domain.Program;
 import pt.mobiledev.tvalarmes.util.Util;
-import android.content.Context;
 
 public class EPGDao {
 
@@ -71,8 +68,8 @@ public class EPGDao {
         try {
             URL url = new URL(BASE_URL + GET_PROGRAMS_FUNCTION
                     + "?channelSiglas=" + formatSiglas(channels)
-                    + "&startDate=" + formatDate(Util.subtractDays(0))
-                    + "&endDate=" + formatDate(Util.addDays(1)));
+                    + "&startDate=" + formatDate(Util.subtractHours(-5))
+                    + "&endDate=" + formatDate(Util.addHours(24)));
             XmlPullParser parser = getParser(context, formatSiglas(channels), url.toString(), 1);
             while (parser.next() != END_DOCUMENT) {
                 if (parser.getEventType() == START_TAG && parser.getName().equals("Program")) {
