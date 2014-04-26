@@ -94,7 +94,9 @@ public class AlarmNotifier {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            updateNotifications(context);
+            // Sacar a lista de todos os alarmes
+            // Sacar a programação dos canais com alarmes
+        	updateNotifications(context);
         }
     }
 
