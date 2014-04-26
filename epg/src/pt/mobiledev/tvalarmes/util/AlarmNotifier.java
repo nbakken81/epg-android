@@ -93,14 +93,14 @@ public class AlarmNotifier {
         @Override
         public void onReceive(Context context, Intent intent) {
             // Sacar alarmes e lista de canais com alarme
-        	AlarmDao alarmDao = new AlarmDao(context);
+            AlarmDao alarmDao = new AlarmDao(context);
             List<Channel> channels = alarmDao.getAllChannels();
             List<Alarm> allAlarms = alarmDao.findAll();
             // Sacar a programação dos canais com alarmes
             List<Program> programs = EPGDao.getAllPrograms(context, channels); // tem que ser feito em async task também...?
             // Agendar alarmes
             findMatches(context, allAlarms, programs);
-        	// Update às notificações existentes
+            // Update às notificações existentes
             updateNotifications(context);
         }
     }
@@ -113,9 +113,9 @@ public class AlarmNotifier {
                 .setAutoCancel(true);
         int smallIcon = Channel.getLogoResourceId(context, new Channel(alarm.getProgram().getChannelId()));
         if (smallIcon == 0) {
-        	smallIcon = (android.R.drawable.alert_light_frame);
-        } 
-    	mBuilder.setSmallIcon(smallIcon);
+            smallIcon = (android.R.drawable.alert_light_frame);
+        }
+        mBuilder.setSmallIcon(smallIcon);
         Intent resultIntent = new Intent(context, AlarmsActivity.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
         stackBuilder.addParentStack(AlarmsActivity.class);
