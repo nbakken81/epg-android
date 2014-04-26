@@ -52,7 +52,7 @@ public class AlarmNotifier {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent backgroundIntent = new Intent(context, BackgroundTaskReceiver.class);
         PendingIntent backgroundPendingIntent = PendingIntent.getBroadcast(context, 1, backgroundIntent, 0); // criar Intent
-        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, AlarmManager.INTERVAL_HALF_DAY, AlarmManager.INTERVAL_HALF_DAY, backgroundPendingIntent);
+        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, AlarmManager.INTERVAL_HALF_DAY, AlarmManager.INTERVAL_HALF_DAY, backgroundPendingIntent);
     }
 
     static void findMatches(Context context, List<Alarm> allAlarms, List<Program> allPrograms) {
@@ -92,8 +92,13 @@ public class AlarmNotifier {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            // Sacar a lista de todos os alarmes
+            // Sacar a lista de todos os alarmes e canais com alarme
+        	AlarmDao alarmDao = new AlarmDao(context);
+            List<Channel> channels = alarmDao.getAllChannels();
             // Sacar a programação dos canais com alarmes
+            List<Program> programs = EPGDao.getAllPrograms(context, channels); // tem que ser feito em async task também...?
+            // Agendar alarmes
+        	// Update às notificações existentes
             updateNotifications(context);
         }
     }
