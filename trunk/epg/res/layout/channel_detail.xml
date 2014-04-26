@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
- >
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/tvImage"
@@ -17,6 +16,7 @@
         android:layout_height="70dp"
         android:layout_gravity="center"
         android:gravity="center"
-        android:textColor="@android:color/black" />
+        android:paddingLeft="4dp"
+        android:textColor="#2E2C2C" />
 
 </RelativeLayout>
