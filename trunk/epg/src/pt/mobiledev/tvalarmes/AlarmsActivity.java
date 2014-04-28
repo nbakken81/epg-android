@@ -1,16 +1,15 @@
 package pt.mobiledev.tvalarmes;
 
-import java.util.List;
-
-import pt.mobiledev.tvalarmes.dao.AlarmDao;
-import pt.mobiledev.tvalarmes.domain.Alarm;
-import pt.mobiledev.tvalarmes.util.AlarmNotifier;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
+import java.util.List;
+import pt.mobiledev.tvalarmes.dao.AlarmDao;
+import pt.mobiledev.tvalarmes.domain.Alarm;
+import pt.mobiledev.tvalarmes.util.AlarmNotifier;
 
 public class AlarmsActivity extends Activity {
 
@@ -19,11 +18,12 @@ public class AlarmsActivity extends Activity {
     List<Alarm> alarms;
     AlarmDao db;
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alarm_list);
 
-        context = getApplicationContext();        
+        context = getApplicationContext();
         db = new AlarmDao(this); // Sacar a base de dados
         AlarmNotifier.backgroundTaskScheduler(this); // Agendamento da tarefa de actualização de alarmes em background
     }
