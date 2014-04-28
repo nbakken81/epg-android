@@ -67,7 +67,7 @@ public class EPGDao {
         try {
             URL url = new URL(BASE_URL + GET_PROGRAMS_FUNCTION
                     + "?channelSiglas=" + formatSiglas(channels)
-                    + "&startDate=" + formatDate(Util.subtractHours(-5))
+                    + "&startDate=" + formatDate(Util.subtractHours(5))
                     + "&endDate=" + formatDate(Util.addHours(24)));
             XmlPullParser parser = getParser(context, formatSiglas(channels), url.toString(), 1);
             while (parser.next() != END_DOCUMENT) {

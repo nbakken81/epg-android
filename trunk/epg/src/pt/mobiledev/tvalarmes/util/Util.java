@@ -11,8 +11,7 @@ public class Util {
     public static Date addHours(int hours) {
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.HOUR, hours);
-        Date endDate = cal.getTime();
-        return endDate;
+        return cal.getTime();
     }
 
     public static Date subtractHours(int hours) {
