@@ -108,7 +108,7 @@ public class AlarmNotifier {
     public static void runNotification(Context context, Alarm alarm) {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
                 .setContentTitle(alarm.getProgram().getTitle())
-                .setContentText(alarm.getProgram().getChannelName() + "   "
+                .setContentText(alarm.getProgram().getChannelName() + "     "
                         + (alarm.getProgram().getSeason() > 0 ? "T" + alarm.getProgram().getSeason() + "  " : "")
                         + (alarm.getProgram().getEpisode() > 0 ? "E" + alarm.getProgram().getEpisode() : ""))
                 .setAutoCancel(true);
