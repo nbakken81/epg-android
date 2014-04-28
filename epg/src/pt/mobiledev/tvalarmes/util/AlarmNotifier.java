@@ -84,7 +84,14 @@ public class AlarmNotifier {
         @Override
         public void onReceive(Context context, Intent intent) {
             Alarm alarm = (Alarm) intent.getSerializableExtra("notification");
-            AlarmNotifier.runNotification(context, alarm, EPGDao.getChannels(context));
+            List<Channel> channels = EPGDao.getChannels(context);
+            for (Channel channel : channels) {
+                if (channel.getId().equals(alarm.getProgram().getChannelId())) {
+                    alarm.getProgram().setChannelName(channel.getName());
+                    break;
+                }
+            }
+            AlarmNotifier.runNotification(context, alarm);
         }
     }
 
@@ -96,17 +103,10 @@ public class AlarmNotifier {
         }
     }
 
-    public static void runNotification(Context context, Alarm alarm, List<Channel> channels) {
-        Channel chFind = new Channel(alarm.getProgram().getChannelId());
-        for (Channel channel : channels) {
-            if (channel.equals(chFind)) {
-                chFind = channel;
-            }
-        }
-
+    public static void runNotification(Context context, Alarm alarm) {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
                 .setContentTitle(alarm.getProgram().getTitle())
-                .setContentText(chFind.getName() + "  "
+                .setContentText(alarm.getProgram().getChannelName() + "   "
                         + (alarm.getProgram().getSeason() > 0 ? "T" + alarm.getProgram().getSeason() + "  " : "")
                         + (alarm.getProgram().getEpisode() > 0 ? "E" + alarm.getProgram().getEpisode() : ""))
                 .setAutoCancel(true);
