@@ -84,7 +84,7 @@ public class AlarmNotifier {
         @Override
         public void onReceive(Context context, Intent intent) {
             Alarm alarm = (Alarm) intent.getSerializableExtra("notification");
-            AlarmNotifier.runNotification(context, alarm);
+            AlarmNotifier.runNotification(context, alarm, EPGDao.getChannels(context));
         }
     }
 
@@ -96,10 +96,18 @@ public class AlarmNotifier {
         }
     }
 
-    public static void runNotification(Context context, Alarm alarm) {
+    public static void runNotification(Context context, Alarm alarm, List<Channel> channels) {
+        Channel chFind = new Channel(alarm.getProgram().getChannelId());
+        for (Channel channel : channels) {
+            if (channel.equals(chFind)) {
+                chFind = channel;
+            }
+        }
+
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
                 .setContentTitle(alarm.getProgram().getTitle())
-                .setContentText((alarm.getProgram().getSeason() > 0 ? "T" + alarm.getProgram().getSeason() + "  " : "")
+                .setContentText(chFind.getName() + "  "
+                        + (alarm.getProgram().getSeason() > 0 ? "T" + alarm.getProgram().getSeason() + "  " : "")
                         + (alarm.getProgram().getEpisode() > 0 ? "E" + alarm.getProgram().getEpisode() : ""))
                 .setAutoCancel(true);
         int smallIcon = Channel.getLogoResourceId(context, new Channel(alarm.getProgram().getChannelId()));
