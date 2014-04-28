@@ -6,7 +6,7 @@ import java.util.Date;
 @SuppressWarnings("serial")
 public class Program implements Serializable {
 
-    int id, season, episode;
+    int id, season, episode, duration;
     String title, description, channelId, channelName;
     Date startDate;
 
@@ -79,6 +79,14 @@ public class Program implements Serializable {
 
     public void setChannelName(String channelName) {
         this.channelName = channelName;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
 
     @Override

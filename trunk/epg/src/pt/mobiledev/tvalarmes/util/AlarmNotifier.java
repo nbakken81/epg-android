@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import static java.util.Arrays.asList;
-import java.util.Date;
 import java.util.List;
 import pt.mobiledev.tvalarmes.AlarmsActivity;
 import pt.mobiledev.tvalarmes.R;
@@ -66,11 +65,14 @@ public class AlarmNotifier {
                     notificationIntent.putExtra("notification", alarm); // Adicionar alarme ao intent
                     PendingIntent alarmIntent = PendingIntent.getBroadcast(context, program.getId(), notificationIntent, 0);
                     // Agendamento
-                    alarmManager.set(AlarmManager.RTC_WAKEUP, program.getStartDate().getTime() - 1000 * 60, alarmIntent);
-                    System.out.println("VOU MARCAR O ALARME: " + alarm + " para as " + program.getStartDate());
+                    alarmManager.cancel(alarmIntent);
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, program.getStartDate().getTime(), alarmIntent);
+                    System.out.println("VOU MARCAR O ALARME: " + alarm + " para as " + program.getStartDate()
+                            + " " + program.getStartDate().getTime() + " " + System.currentTimeMillis());
                     // Fake Alarm
                     PendingIntent alarmIntent30 = PendingIntent.getBroadcast(context, program.getId() + 30, notificationIntent, 0);
-                    alarmManager.set(AlarmManager.RTC_WAKEUP, new Date().getTime() + 50000, alarmIntent30);
+                    alarmManager.cancel(alarmIntent30);
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 50000, alarmIntent30);
                 }
             }
         }
