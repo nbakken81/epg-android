@@ -15,7 +15,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
@@ -39,7 +38,7 @@ public class EPGDao {
     final static String BASE_URL = "http://services.sapo.pt/EPG/";
     final static String GET_PROGRAMS_FUNCTION = "GetChannelListByDateInterval";
     final static String GET_CHANNELS_FUNCTION = "GetChannelList";
-    final static SimpleDateFormat MEO_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+    final static SimpleDateFormat MEO_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     final static Pattern PROG_EP_PATTERN = Pattern.compile("^(.*) - Ep. ([0-9]{1,3})$");
     final static Pattern PROG_EP_SE_PATTERN = Pattern.compile("^(.*) T([0-9]{1,2}) - Ep. ([0-9]{1,3})$");
 
@@ -74,11 +73,11 @@ public class EPGDao {
             while (parser.next() != END_DOCUMENT) {
                 if (parser.getEventType() == START_TAG && parser.getName().equals("Program")) {
                     // Constrói programa
-                    Map<String, String> channelAsMap = readValuesAsMap(parser, "Id", "Title", "ChannelSigla", "StartTime");
+                    Map<String, String> programAsMap = readValuesAsMap(parser, "Id", "Title", "ChannelSigla", "StartTime", "Duration");
                     Program program = new Program();
-                    program.setId(Integer.parseInt(channelAsMap.get("Id")));
-                    program.setTitle(channelAsMap.get("Title"));
-                    Matcher matcher = PROG_EP_SE_PATTERN.matcher(channelAsMap.get("Title"));
+                    program.setId(Integer.parseInt(programAsMap.get("Id")));
+                    program.setTitle(programAsMap.get("Title"));
+                    Matcher matcher = PROG_EP_SE_PATTERN.matcher(programAsMap.get("Title"));
                     // "nome programa Txy - Ep. kzy"
                     if (matcher.matches()) {
                         program.setTitle(matcher.group(1).trim());
@@ -86,14 +85,15 @@ public class EPGDao {
                         program.setEpisode(matcher.group(3) == null ? 0 : parseInt(matcher.group(3)));
                     } else {
                         // "nome programa Ep. kzy"
-                        matcher = PROG_EP_PATTERN.matcher(channelAsMap.get("Title"));
+                        matcher = PROG_EP_PATTERN.matcher(programAsMap.get("Title"));
                         if (matcher.matches()) {
                             program.setTitle(matcher.group(1).trim());
                             program.setSeason(matcher.group(2) == null ? 0 : parseInt(matcher.group(2)));
                         }
                     }
-                    program.setChannelId(channelAsMap.get("ChannelSigla"));  // TODO buscar objeto canal?
-                    program.setStartDate(MEO_DATE_FORMAT.parse(channelAsMap.get("StartTime")));
+                    program.setChannelId(programAsMap.get("ChannelSigla"));  // TODO buscar objeto canal?
+                    program.setStartDate(MEO_DATE_FORMAT.parse(programAsMap.get("StartTime")));
+                    program.setDuration(parseInt(programAsMap.get("Duration")));
                     entries.add(program);
                 }
             }
