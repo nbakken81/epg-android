@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="pt.mobiledev.tvalarmes"
-    android:versionCode="1"
-    android:versionName="1.0" >
+          package="pt.mobiledev.tvalarmes"
+          android:versionCode="1"
+          android:versionName="1.0" >
 
     <uses-sdk
         android:minSdkVersion="9"
@@ -33,6 +33,8 @@
             android:theme="@android:style/Theme.Black.NoTitleBar" />
 
         <receiver android:name="pt.mobiledev.tvalarmes.util.AlarmNotifier$AlarmReceiver" />
+        <receiver android:name="pt.mobiledev.tvalarmes.util.AlarmNotifier$BackgroundTaskReceiver" />
+        
     </application>
 
 </manifest>
