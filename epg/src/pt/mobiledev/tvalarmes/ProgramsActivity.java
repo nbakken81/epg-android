@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
@@ -66,7 +65,7 @@ public class ProgramsActivity extends Activity {
                 alarmsDao.add(alarm);
                 AlarmNotifier.updateNotifications(context, new Channel(alarm.getProgram().getChannelId()));
                 dialog.dismiss();
-                startActivity(new Intent(ProgramsActivity.this, AlarmsActivity.class)); // volta ao home screen
+                ProgramsActivity.this.finish();
             }
         });
         // Botão Cancelar
