@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import static java.util.Arrays.asList;
+import java.util.Date;
 import java.util.List;
 import pt.mobiledev.tvalarmes.AlarmsActivity;
 import pt.mobiledev.tvalarmes.R;
@@ -52,27 +53,28 @@ public class AlarmNotifier {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent backgroundIntent = new Intent(context, BackgroundTaskReceiver.class);
         PendingIntent backgroundPendingIntent = PendingIntent.getBroadcast(context, 1, backgroundIntent, 0); // criar Intent
-        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, AlarmManager.INTERVAL_HALF_DAY, AlarmManager.INTERVAL_HALF_DAY, backgroundPendingIntent);
+        alarmManager.cancel(backgroundPendingIntent);
+        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,
+                AlarmManager.INTERVAL_HALF_DAY, AlarmManager.INTERVAL_HALF_DAY,
+                backgroundPendingIntent);
     }
 
     static void findMatches(Context context, List<Alarm> allAlarms, List<Program> allPrograms) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE); // iniciar alarm Manager
         for (Program program : allPrograms) {
             for (Alarm alarm : allAlarms) {
-                if (alarm.getProgram().equals(program)) {
+                if (alarm.getProgram().equals(program) && program.getStartDate().after(new Date())) {
                     Intent notificationIntent = new Intent(context, AlarmReceiver.class); // criar Intent
                     alarm.setProgram(program);
-                    notificationIntent.putExtra("notification", alarm); // Adicionar alarme ao intent
+                    notificationIntent.putExtra("alarm", alarm); // Adicionar alarme ao intent
                     PendingIntent alarmIntent = PendingIntent.getBroadcast(context, program.getId(), notificationIntent, 0);
                     // Agendamento
                     alarmManager.cancel(alarmIntent);
                     alarmManager.set(AlarmManager.RTC_WAKEUP, program.getStartDate().getTime(), alarmIntent);
-                    System.out.println("VOU MARCAR O ALARME: " + alarm + " para as " + program.getStartDate()
-                            + " " + program.getStartDate().getTime() + " " + System.currentTimeMillis());
                     // Fake Alarm
-                    PendingIntent alarmIntent30 = PendingIntent.getBroadcast(context, program.getId() + 30, notificationIntent, 0);
-                    alarmManager.cancel(alarmIntent30);
-                    alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 50000, alarmIntent30);
+//                    PendingIntent alarmIntent30 = PendingIntent.getBroadcast(context, program.getId() + 30, notificationIntent, 0);
+//                    alarmManager.cancel(alarmIntent30);
+//                    alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 50000, alarmIntent30);
                 }
             }
         }
@@ -85,7 +87,7 @@ public class AlarmNotifier {
          */
         @Override
         public void onReceive(Context context, Intent intent) {
-            Alarm alarm = (Alarm) intent.getSerializableExtra("notification");
+            Alarm alarm = (Alarm) intent.getSerializableExtra("alarm");
             List<Channel> channels = EPGDao.getChannels(context);
             for (Channel channel : channels) {
                 if (channel.getId().equals(alarm.getProgram().getChannelId())) {
