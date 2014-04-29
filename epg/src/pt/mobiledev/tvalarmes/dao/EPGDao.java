@@ -88,7 +88,7 @@ public class EPGDao {
                         matcher = PROG_EP_PATTERN.matcher(programAsMap.get("Title"));
                         if (matcher.matches()) {
                             program.setTitle(matcher.group(1).trim());
-                            program.setSeason(matcher.group(2) == null ? 0 : parseInt(matcher.group(2)));
+                            program.setEpisode(matcher.group(2) == null ? 0 : parseInt(matcher.group(2)));
                         }
                     }
                     program.setChannelId(programAsMap.get("ChannelSigla"));  // TODO buscar objeto canal?
