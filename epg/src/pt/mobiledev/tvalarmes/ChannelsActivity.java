@@ -51,7 +51,7 @@ public class ChannelsActivity extends Activity {
         });
         // prepara grelha de canais
         final GridView channelsGrid = (GridView) findViewById(R.id.gvChannels);
-        final ChannelsBaseAdapter channelsAdapter = new ChannelsBaseAdapter(this, 0, channels);
+        final ChannelsBaseAdapter channelsAdapter = new ChannelsBaseAdapter(this, R.layout.channel_detail, channels);
         channelsGrid.setAdapter(channelsAdapter);
         channelsGrid.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {

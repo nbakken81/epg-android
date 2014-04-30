@@ -34,6 +34,7 @@
 
     <AutoCompleteTextView
         android:id="@+id/programSearch"
+        android:hint="Pesquisar programa.."
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:inputType="textVisiblePassword"
