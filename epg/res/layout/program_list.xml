@@ -32,11 +32,10 @@
             android:textSize="18sp" />
     </LinearLayout>
 
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/programSearch"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="Pesquisar programa.."
         android:inputType="textVisiblePassword"
         android:nextFocusLeft="@id/programSearch"
         android:nextFocusUp="@id/programSearch" />
