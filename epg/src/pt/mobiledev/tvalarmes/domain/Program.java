@@ -91,7 +91,7 @@ public class Program implements Serializable {
 
     @Override
     public String toString() {
-        return getTitle() + "(" + getChannelId() + ")";
+        return getTitle() + " (" + getChannelId() + ")";
     }
 
     @Override
