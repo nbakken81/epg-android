@@ -38,7 +38,8 @@ public class Channel implements Serializable {
     }
 
     public static int getLogoResourceId(Context context, Channel ch) {
-        return (Util.getResourceId(context, "drawable", ch.getId().toLowerCase()));
+        return (Util.getResourceId(context, "drawable",
+                ch.getId().toLowerCase().replace(" ", "_").replace("!", "")));
     }
 
     @Override
