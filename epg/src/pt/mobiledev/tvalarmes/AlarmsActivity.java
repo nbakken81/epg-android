@@ -32,7 +32,7 @@ public class AlarmsActivity extends Activity {
     public void onResume() {
         super.onResume();
         lvAlarms = (ListView) findViewById(R.id.lvAlarms); // Listview de alarmes
-        AlarmsBaseAdapter alarmsAdapter = new AlarmsBaseAdapter(context, db.findAll(), db);
+        AlarmsBaseAdapter alarmsAdapter = new AlarmsBaseAdapter(context, R.layout.alarm_detail, db.findAll(), db);
         lvAlarms.setAdapter(alarmsAdapter);
     }
 
