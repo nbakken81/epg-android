@@ -106,7 +106,7 @@ public class ProgramsActivity extends Activity {
         programSearch.setOnItemClickListener(lvPrograms.getOnItemClickListener());
     }
 
-    private class CreateAlarmTask extends AsyncTask<Void, Void, Integer> {
+    class CreateAlarmTask extends AsyncTask<Void, Void, Integer> {
 
         Program program;
 
@@ -129,7 +129,7 @@ public class ProgramsActivity extends Activity {
         }
     }
 
-    private class GetProgramsTask extends AsyncTask<Void, Void, Integer> {
+    class GetProgramsTask extends AsyncTask<Void, Void, Integer> {
 
         List<Program> programs;
         Channel selectedChannel;

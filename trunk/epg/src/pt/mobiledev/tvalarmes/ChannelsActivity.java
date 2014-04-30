@@ -67,7 +67,7 @@ public class ChannelsActivity extends Activity {
         channelSearch.setOnItemClickListener(channelsGrid.getOnItemClickListener());
     }
 
-    private class GetChannelsTask extends AsyncTask<Void, Void, Integer> {
+    class GetChannelsTask extends AsyncTask<Void, Void, Integer> {
 
         List<Channel> channels;
         Context context;
