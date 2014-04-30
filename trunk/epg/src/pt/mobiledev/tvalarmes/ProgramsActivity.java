@@ -6,12 +6,11 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -24,7 +23,6 @@ import pt.mobiledev.tvalarmes.domain.Alarm;
 import pt.mobiledev.tvalarmes.domain.Channel;
 import pt.mobiledev.tvalarmes.domain.Program;
 import pt.mobiledev.tvalarmes.util.AlarmNotifier;
-import pt.mobiledev.tvalarmes.util.Util;
 
 public class ProgramsActivity extends Activity {
 
@@ -88,7 +86,7 @@ public class ProgramsActivity extends Activity {
         programs.removeAll(alarmsPerChannelP);
 
         lvPrograms = (ListView) findViewById(R.id.lvPrograms);
-        final ProgramsBaseAdapter programsAdapter = new ProgramsBaseAdapter(context, programs);
+        final ProgramsBaseAdapter programsAdapter = new ProgramsBaseAdapter(context, 0, programs);
         lvPrograms.setAdapter(programsAdapter);
 
         // info canal
@@ -96,34 +94,6 @@ public class ProgramsActivity extends Activity {
         logoChannel.setImageResource(selectedChannel.getLogoResourceId(context));
         TextView textLogo = (TextView) findViewById(R.id.channelName);
         textLogo.setText("(" + selectedChannel.getName() + ")");
-
-        // prepara pesquisa rápida
-        TextView programsSearch = (TextView) findViewById(R.id.programSearch);
-        programsSearch.addTextChangedListener(new TextWatcher() {
-
-            public void beforeTextChanged(CharSequence cs, int i, int i1, int i2) {
-            }
-
-            public void onTextChanged(CharSequence cs, int i, int i1, int i2) {
-                if (cs.toString().trim().isEmpty()) {
-                    programsAdapter.setPrograms(new ArrayList<Program>(programs));
-                } else {
-                    programsAdapter.getPrograms().clear();
-                    for (Program program : programs) {
-                        if (Util.relaxedStartsWith(program.getTitle(), cs.toString())) {
-                            programsAdapter.getPrograms().add(0, program);
-                        } else if (Util.relaxedContains(program.getTitle(), cs.toString())) {
-                            programsAdapter.getPrograms().add(program);
-                        }
-                    }
-                }
-                lvPrograms.invalidateViews();
-            }
-
-            public void afterTextChanged(Editable edtbl) {
-            }
-        });
-
         // On Item Click Listener
         lvPrograms.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
@@ -131,6 +101,11 @@ public class ProgramsActivity extends Activity {
                 showPopup(programs.get(position));
             }
         });
+
+        // prepara pesquisa rápida
+        final AutoCompleteTextView programSearch = (AutoCompleteTextView) findViewById(R.id.programSearch);
+        programSearch.setAdapter(programsAdapter);
+        programSearch.setOnItemClickListener(lvPrograms.getOnItemClickListener());
     }
 
     private class GetProgramsTask extends AsyncTask<Void, Void, Integer> {
@@ -149,6 +124,7 @@ public class ProgramsActivity extends Activity {
             return 1;
         }
 
+        @Override
         protected void onPostExecute(Integer result) {
             createListView(programs);
             progress.dismiss();

@@ -9,16 +9,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.GridView;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import pt.mobiledev.tvalarmes.dao.EPGDao;
 import pt.mobiledev.tvalarmes.domain.Channel;
-import pt.mobiledev.tvalarmes.util.Util;
 
 public class ChannelsActivity extends Activity {
 
@@ -35,7 +33,15 @@ public class ChannelsActivity extends Activity {
         progress.show();
     }
 
-    private void createGridView(final List<Channel> channels) {
+    void createGridView(final List<Channel> channels) {
+        for (Iterator<Channel> it = channels.iterator(); it.hasNext();) {
+            Channel channel = it.next();
+            if (channel.getLogoResourceId(this) == 0) {
+                // remove canal pois não tem logo // TODO incluir todos!
+                it.remove();
+            }
+        }
+
         Collections.sort(channels, new Comparator<Channel>() {
             public int compare(Channel ch1, Channel ch2) {
                 Boolean hasLogo1 = ch1.getLogoResourceId(ChannelsActivity.this) > 0;
@@ -45,7 +51,7 @@ public class ChannelsActivity extends Activity {
         });
         // prepara grelha de canais
         final GridView channelsGrid = (GridView) findViewById(R.id.gvChannels);
-        final ChannelsBaseAdapter channelsAdapter = new ChannelsBaseAdapter(this, channels);
+        final ChannelsBaseAdapter channelsAdapter = new ChannelsBaseAdapter(this, 0, channels);
         channelsGrid.setAdapter(channelsAdapter);
         channelsGrid.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
@@ -53,35 +59,12 @@ public class ChannelsActivity extends Activity {
                 intent.putExtra("channel", channelsAdapter.getItem(position));
                 startActivity(intent);
             }
+
         });
         // prepara pesquisa rapida
-        List<String> CHANNELS = new ArrayList<String>(channels.size());
-        for (Channel ch : channels) {
-            CHANNELS.add(ch.getName());
-        }
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_dropdown_item_1line, CHANNELS);
         final AutoCompleteTextView channelSearch = (AutoCompleteTextView) findViewById(R.id.channelSearch);
-        channelSearch.setAdapter(adapter);
-        channelSearch.setOnItemClickListener(new OnItemClickListener() {
-
-            public void onItemClick(AdapterView<?> av, View view, int i, long l) {
-                String textAC = channelSearch.getText().toString();
-                if (textAC.trim().isEmpty()) {
-                    channelsAdapter.setChannels(new ArrayList<Channel>(channels));
-                    return;
-                }
-                channelsAdapter.getChannels().clear();
-                for (Channel channel : channels) {
-                    if (Util.relaxedStartsWith(channel.getName(), textAC)) {
-                        channelsAdapter.getChannels().add(0, channel);
-                    } else if (Util.relaxedContains(channel.getName(), textAC)) {
-                        channelsAdapter.getChannels().add(channel);
-                    }
-                }
-                channelsGrid.invalidateViews();
-            }
-        });
+        channelSearch.setAdapter(channelsAdapter);
+        channelSearch.setOnItemClickListener(channelsGrid.getOnItemClickListener());
     }
 
     private class GetChannelsTask extends AsyncTask<Void, Void, Integer> {
@@ -106,5 +89,4 @@ public class ChannelsActivity extends Activity {
             progress.dismiss();
         }
     }
-
 }
