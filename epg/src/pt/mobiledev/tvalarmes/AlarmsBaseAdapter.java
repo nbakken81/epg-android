@@ -31,7 +31,8 @@ public class AlarmsBaseAdapter extends ArrayAdapter<Alarm> {
             convertView = inflater.inflate(R.layout.alarm_detail, null);
         }
         detail(convertView, getItem(position));
-        Button btnDelete = (Button) convertView.findViewById(R.id.btnDeleteAlarm);        btnDelete.setTag(position);
+        Button btnDelete = (Button) convertView.findViewById(R.id.btnDeleteAlarm);
+        btnDelete.setTag(position);
         btnDelete.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
