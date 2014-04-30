@@ -2,7 +2,9 @@ package pt.mobiledev.tvalarmes;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ListView;
 import java.util.List;
 import pt.mobiledev.tvalarmes.dao.AlarmDao;
@@ -31,5 +33,10 @@ public class AlarmsActivity extends Activity {
         lvAlarms = (ListView) findViewById(R.id.lvAlarms); // Listview de alarmes
         AlarmsBaseAdapter alarmsAdapter = new AlarmsBaseAdapter(context, R.layout.alarm_detail, alarmDao.findAll(), alarmDao);
         lvAlarms.setAdapter(alarmsAdapter);
+    }
+
+    public void goToChannels(View view) {
+        Intent intent = new Intent(this, ChannelsActivity.class);
+        startActivity(intent);
     }
 }

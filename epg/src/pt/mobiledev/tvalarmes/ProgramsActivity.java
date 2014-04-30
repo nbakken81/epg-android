@@ -39,8 +39,7 @@ public class ProgramsActivity extends Activity {
         selectedChannel = (Channel) getIntent().getExtras().get("channel");
         GetProgramsTask getPrograsmTask = new GetProgramsTask(context, selectedChannel);
         getPrograsmTask.execute();
-        // Mostrar progress dialog
-        progress = new ProgressDialog(this);
+        progress = new ProgressDialog(this);  // mostrar progress dialog
         progress.show();
     }
 
@@ -50,28 +49,27 @@ public class ProgramsActivity extends Activity {
      * @param program
      */
     public void showPopup(final Program program) {
-        final Dialog dialog = new Dialog(context);
-        dialog.setContentView(R.layout.popup_setalarm);
-        dialog.setTitle(program.getTitle());
-        dialog.show();
-        // Botão Criar
-        Button createAlarm = (Button) dialog.findViewById(R.id.btnCreateAlarm);
+        final Dialog confirmDialog = new Dialog(context);
+        confirmDialog.setContentView(R.layout.popup_setalarm);
+        confirmDialog.setTitle(program.getTitle());
+        confirmDialog.show();
+        // botão Criar
+        Button createAlarm = (Button) confirmDialog.findViewById(R.id.btnCreateAlarm);
         createAlarm.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(View v) {  // Criar alarme
-                Alarm alarm = new Alarm(program, false);
-                alarmsDao.add(alarm);
-                AlarmNotifier.updateNotifications(context, new Channel(alarm.getProgram().getChannelId()));
-                dialog.dismiss();
-                ProgramsActivity.this.finish();
+            public void onClick(View v) {
+                progress.show();
+                CreateAlarmTask createAlarmTask = new CreateAlarmTask(program);
+                createAlarmTask.execute();
+                confirmDialog.dismiss();
             }
         });
-        // Botão Cancelar
-        Button cancelAlarm = (Button) dialog.findViewById(R.id.btnCancelAlarm);
+        // botão Cancelar
+        Button cancelAlarm = (Button) confirmDialog.findViewById(R.id.btnCancelAlarm);
         cancelAlarm.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+                confirmDialog.dismiss();
             }
         });
     }
@@ -86,7 +84,7 @@ public class ProgramsActivity extends Activity {
         programs.removeAll(alarmsPerChannelP);
 
         lvPrograms = (ListView) findViewById(R.id.lvPrograms);
-        final ProgramsBaseAdapter programsAdapter = new ProgramsBaseAdapter(context, 0, programs);
+        final ProgramsBaseAdapter programsAdapter = new ProgramsBaseAdapter(context, R.layout.program_detail, programs);
         lvPrograms.setAdapter(programsAdapter);
 
         // info canal
@@ -106,6 +104,29 @@ public class ProgramsActivity extends Activity {
         final AutoCompleteTextView programSearch = (AutoCompleteTextView) findViewById(R.id.programSearch);
         programSearch.setAdapter(programsAdapter);
         programSearch.setOnItemClickListener(lvPrograms.getOnItemClickListener());
+    }
+
+    private class CreateAlarmTask extends AsyncTask<Void, Void, Integer> {
+
+        Program program;
+
+        public CreateAlarmTask(Program program) {
+            this.program = program;
+        }
+
+        @Override
+        protected Integer doInBackground(Void... arg0) {
+            Alarm alarm = new Alarm(program, false);
+            alarmsDao.add(alarm);
+            AlarmNotifier.updateNotifications(context, new Channel(alarm.getProgram().getChannelId()));
+            return 1;
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            progress.dismiss();
+            ProgramsActivity.this.finish();
+        }
     }
 
     private class GetProgramsTask extends AsyncTask<Void, Void, Integer> {
