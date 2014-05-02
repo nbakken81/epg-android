@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import static java.util.Arrays.asList;
@@ -39,11 +40,33 @@ public class AlarmNotifier {
      * canal).
      */
     public static void updateNotifications(Context context, Channel channel) {
-        AlarmDao alarmDao = new AlarmDao(context);
-        List<Alarm> allAlarms = alarmDao.findAll();
-        List<Channel> channels = channel == null ? alarmDao.getAllChannels() : asList(channel);
-        List<Program> allPrograms = EPGDao.getAllPrograms(context, channels);
-        findMatches(context, allAlarms, allPrograms);
+        UpdateNotificationsTask updateNotificationsTask = new UpdateNotificationsTask(context, channel);
+        updateNotificationsTask.execute();
+    }
+
+    static class UpdateNotificationsTask extends AsyncTask<Void, Void, Integer> {
+
+        Channel channel;
+        Context context;
+
+        public UpdateNotificationsTask(Context context, Channel channel) {
+            this.channel = channel;
+            this.context = context;
+        }
+
+        @Override
+        protected Integer doInBackground(Void... arg0) {
+            AlarmDao alarmDao = new AlarmDao(context);
+            List<Alarm> allAlarms = alarmDao.findAll();
+            List<Channel> channels = channel == null ? alarmDao.getAllChannels() : asList(channel);
+            List<Program> allPrograms = EPGDao.getAllPrograms(context, channels);
+            findMatches(context, allAlarms, allPrograms);
+            return 1;
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+        }
     }
 
     /**
