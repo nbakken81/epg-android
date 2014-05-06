@@ -73,7 +73,8 @@ public class EPGDao {
             while (parser.next() != END_DOCUMENT) {
                 if (parser.getEventType() == START_TAG && parser.getName().equals("Program")) {
                     // Constrói programa
-                    Map<String, String> programAsMap = readValuesAsMap(parser, "Id", "Title", "ChannelSigla", "StartTime", "Duration");
+                    Map<String, String> programAsMap = readValuesAsMap(
+                            parser, "Id", "Title", "ChannelSigla", "StartTime", "EndTime", "Duration");
                     Program program = new Program();
                     program.setId(Integer.parseInt(programAsMap.get("Id")));
                     program.setTitle(programAsMap.get("Title"));
@@ -93,6 +94,7 @@ public class EPGDao {
                     }
                     program.setChannelId(programAsMap.get("ChannelSigla"));  // TODO buscar objeto canal?
                     program.setStartDate(MEO_DATE_FORMAT.parse(programAsMap.get("StartTime")));
+                    program.setEndDate(MEO_DATE_FORMAT.parse(programAsMap.get("EndTime")));
                     program.setDuration(parseInt(programAsMap.get("Duration")));
                     entries.add(program);
                 }

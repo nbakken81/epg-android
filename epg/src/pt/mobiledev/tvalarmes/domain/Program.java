@@ -8,7 +8,7 @@ public class Program implements Serializable {
 
     int id, season, episode, duration;
     String title, description, channelId, channelName;
-    Date startDate;
+    Date startDate, endDate;
 
     public Program() {
     }
@@ -79,6 +79,14 @@ public class Program implements Serializable {
 
     public void setChannelName(String channelName) {
         this.channelName = channelName;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
     public int getDuration() {
