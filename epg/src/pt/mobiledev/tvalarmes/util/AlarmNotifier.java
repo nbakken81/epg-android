@@ -86,7 +86,8 @@ public class AlarmNotifier {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE); // iniciar alarm Manager
         for (Program program : allPrograms) {
             for (Alarm alarm : allAlarms) {
-                if (alarm.getProgram().equals(program) && program.getStartDate().after(new Date())) {
+                if (alarm.getProgram().equals(program)
+                        && (program.getEndDate().after(new Date()))) {
                     Intent notificationIntent = new Intent(context, AlarmReceiver.class); // criar Intent
                     alarm.setProgram(program);
                     notificationIntent.putExtra("alarm", alarm); // Adicionar alarme ao intent
