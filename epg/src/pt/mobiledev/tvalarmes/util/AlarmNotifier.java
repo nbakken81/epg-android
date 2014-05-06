@@ -94,10 +94,7 @@ public class AlarmNotifier {
                     // Agendamento
                     alarmManager.cancel(alarmIntent);
                     alarmManager.set(AlarmManager.RTC_WAKEUP, program.getStartDate().getTime(), alarmIntent);
-                    // Fake Alarm
-//                    PendingIntent alarmIntent30 = PendingIntent.getBroadcast(context, program.getId() + 30, notificationIntent, 0);
-//                    alarmManager.cancel(alarmIntent30);
-//                    alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 50000, alarmIntent30);
+                    System.out.println("Vou inserir alarme de: " + program + " para as " + alarm.getProgram().getStartDate());
                 }
             }
         }
