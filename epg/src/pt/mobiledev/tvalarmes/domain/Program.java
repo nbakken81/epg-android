@@ -91,7 +91,10 @@ public class Program implements Serializable {
 
     @Override
     public String toString() {
-        return getTitle() + " (" + getChannelId() + ")";
+        String more = "";
+        more += getSeason() > 0 ? ("T" + (getSeason() < 10 ? "0" : "") + getSeason()) : "";
+        more += getEpisode() > 0 ? ("E" + (getEpisode() < 10 ? "0" : "") + getEpisode()) : "";
+        return getTitle() + " (" + getChannelId() + ") " + more;
     }
 
     @Override
