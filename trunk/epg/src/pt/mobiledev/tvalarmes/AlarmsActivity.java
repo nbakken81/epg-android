@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import java.util.List;
 import pt.mobiledev.tvalarmes.dao.AlarmDao;
@@ -33,6 +34,15 @@ public class AlarmsActivity extends Activity {
         lvAlarms = (ListView) findViewById(R.id.lvAlarms); // Listview de alarmes
         AlarmsBaseAdapter alarmsAdapter = new AlarmsBaseAdapter(context, R.layout.alarm_detail, alarmDao.findAll(), alarmDao);
         lvAlarms.setAdapter(alarmsAdapter);
+        Button btnGoToChannels = (Button) findViewById(R.id.btnGoToChannels);
+        if (alarmsAdapter.getCount() == 0) {
+            btnGoToChannels.getLayoutParams().height = 100;
+            btnGoToChannels.getLayoutParams().width = 100;
+        } else {
+            btnGoToChannels.getLayoutParams().height = 35;
+            btnGoToChannels.getLayoutParams().width = 35;
+        }
+        lvAlarms.invalidateViews();
     }
 
     public void goToChannels(View view) {
