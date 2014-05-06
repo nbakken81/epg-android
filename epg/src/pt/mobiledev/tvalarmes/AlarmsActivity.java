@@ -36,8 +36,8 @@ public class AlarmsActivity extends Activity {
         lvAlarms.setAdapter(alarmsAdapter);
         Button btnGoToChannels = (Button) findViewById(R.id.btnGoToChannels);
         if (alarmsAdapter.getCount() == 0) {
-            btnGoToChannels.getLayoutParams().height = 100;
-            btnGoToChannels.getLayoutParams().width = 100;
+            btnGoToChannels.getLayoutParams().height = 90;
+            btnGoToChannels.getLayoutParams().width = 90;
         } else {
             btnGoToChannels.getLayoutParams().height = 35;
             btnGoToChannels.getLayoutParams().width = 35;
