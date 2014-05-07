@@ -6,6 +6,9 @@
 
     <uses-sdk android:minSdkVersion="9"
               android:targetSdkVersion="19" />
+    
+    <supports-screens android:smallScreens="true" android:normalScreens="true" 
+                      android:largeScreens="true" android:xlargeScreens="true" />
 
     <uses-permission android:name="android.permission.INTERNET" />
 
