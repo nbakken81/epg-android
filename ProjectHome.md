@@ -1,0 +1,1 @@
+Obter alertas para o guia de TV no telemóvel
